@@ -1,0 +1,16 @@
+
+{% extends "mobile.html" %}
+
+{% block title %}Reimpressão{% endblock %}
+
+{% block content %}
+	<h1 style="margin-top: 70px;">{{ user.nome }}</h1>
+	{% for doc in docs %}
+
+		<a href="{% url "bcp:print" doc.id %}" class="btn btn-danger a-btn-slide-text btn-sm">
+		  <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
+		  <span><strong>Nº documento: {{doc.numeroDocumento}}</strong> - Nº de cupons: {{doc.get_cupons}}  </span> 
+		</a>
+		<br/>
+  	{% endfor %}
+{% endblock %}

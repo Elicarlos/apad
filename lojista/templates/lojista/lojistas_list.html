@@ -1,0 +1,46 @@
+{% extends 'mobile.html' %}
+{% load bootstrap4 %}
+{% load widget_tweaks %}
+{% block title %}Lojistas{% endblock %}
+{% block content %}
+  <form method="get">
+    <div class="well" style="margin-top: 70px;">
+      <h4 style="margin-top: 0">Filtro</h4>
+      <div class="row">
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.CNPJLojista.label_tag }}
+          {% render_field filter.form.CNPJLojista class="form-control cnpj" %}
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <span class="glyphicon glyphicon-search"></span> Buscar
+        </button>
+      </div>
+    </div>
+  </form>
+<div class="table-responsive">
+  <table class="table table-hover table-striped">
+    <thead>
+      <tr>
+        <th>Nome Fantasia</th>
+        <th>CNPJ do Lojista</th>
+        <th>Inscrição Estadual</th>
+        <th>Ramo de Atividade</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for lojista in filter.qs %}
+        <tr>
+          <td>{{ lojista.fantasiaLojista }}</td>
+          <td>{{ lojista.CNPJLojista }}</td>
+          <td>{{ lojista.IELojista }}</td>
+          <td>{{ lojista.ramoAtividade }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No data</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

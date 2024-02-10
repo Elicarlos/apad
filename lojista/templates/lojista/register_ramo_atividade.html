@@ -1,0 +1,17 @@
+{% extends "mobile.html" %}
+{% load bootstrap4 %}
+{% block title %}Adicionar Ramo de Atividade{% endblock %}
+
+{% block content %}
+    <h1 style="margin-top: 70px;">Adicionar Ramo de Atividade</h1>
+    <p>Por favor, preencha os seguintes dados para efetuar o cadastro de um novo ramo de atividade:</p>
+    <form action="." method="post" class="form-group">
+      <div class=".container-fluid col-md-6">
+        {% bootstrap_form ramoatividade_form layout='horizontal' exclude='ativo' %}
+      </div>
+
+        {% csrf_token %}
+        <p><input type="submit" class="btn btn-primary btn-lg" value="Salvar">
+            <a type="button" class="btn" href="{% url 'lojista:homepage' %}">Cancelar</button></p>
+    </form>
+{% endblock %}

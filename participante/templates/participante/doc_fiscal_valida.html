@@ -1,0 +1,16 @@
+{% extends "mobile.html" %}
+{% load bootstrap4 %}
+{% block title %}Validar Documento{% endblock %}
+
+{% block content %}
+    <h1 style="margin-top: 70px;">Validar Documento Fiscal</h1>
+    <p>Você pode conferir as infomações do documento:</p>
+    <form action="." method="post" enctype="multipart/form-data"class="form-group">
+      <div class="container-fluid col-md-6">
+        {% bootstrap_form documentofiscal_form layout='horizontal' show_help=False exclude='status, photo, photo2, user, qtdeCupom' %}
+        </div>
+        {% csrf_token %}
+        <p><input type="submit" class="btn btn-primary btn-lg" value="Validar">
+        <a type="button" class="btn" href="{% url 'participante:user_detail' doc.user.id %}">Cancelar</button></p>
+    </form>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "mobile.html" %}
+{% load auth_extras %}
+{% block title %}Liquida Teresina 2023{% endblock %}
+
+{% block content %}
+<h1></h1>
+<h1 style="margin-top: 70px;">Liquida Teresina 2023</h1>
+
+
+ <p>Bem vindo a sua conta do Liquida Teresina 2023 Colaborador. Agora você pode <a href="{% url 'participante:password_change' %}">mudar a sua senha</a>.</p>
+    <h1>Participantes</h1>
+    
+    <p>
+      {% comment %} BackOffice{{ is_backoffice }}
+      Operador{{ is_operador }}
+      Gerente{{ is_gerente }}
+      Superivisor{{ is_supervisor }} {% endcomment %}
+      {% if is_operador or is_supervisor or is_gerente%}
+      <a type="button" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url "participante:register-op" %}">
+        Adicionar Participante <span class="glyphicon glyphicon-plus"></span>
+      </a>
+      {% endif %}
+      <!-- <a type="button" id="mymodal" class="btn btn-secondary btn-lg" data-toggle="modal" href="{% url "participante:search" %}">
+        Ver Participantes <span class="glyphicon glyphicon-user"></span>
+      </a> -->
+      {% if is_operador or is_supervisor or is_gerente %}
+        <a type="button" id="mymodal" class="btn btn-info btn-lg" data-toggle="modal" href="{% url "participante:search_by_cpf" %}">
+          Buscar participante <span class="glyphicon glyphicon-search"></span>
+        </a>
+      {% endif %}
+      {% comment %} {% if request.user.is_staff %} {% endcomment %}
+      {% if is_backoffice or is_supervisor or is_gerente %}
+      <a type="button" id="mymodal" class="btn btn-warning btn-lg" data-toggle="modal" href="{% url "lojista:search_by_doc" %}">
+        Reimprimir <span class="glyphicon glyphicon-print"></span>
+      </a>
+      {% endif %}
+      {% comment %} {% endif %} {% endcomment %}
+    
+    </p>
+
+    <h1>Lojistas</h1>
+    <p>
+
+      {% if is_backoffice or is_gerente %}
+      <a type="button" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url "lojista:register" %}">
+        Adicionar Lojistas <span class="glyphicon glyphicon-plus"></span>
+      </a>
+      {% endif %}
+
+      {% if is_operador or is_supervisor or is_gerente or is_backoffice %}
+        <a type="button" id="mymodal" class="btn btn-secondary btn-lg" data-toggle="modal" href="{% url "lojista:search" %}">
+          Ver lojistas <span class="glyphicon glyphicon-home">
+        </a>
+      {% endif %}
+
+      {% if is_backoffice or is_gerente %}
+        <a type="button" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url "lojista:registeratividade" %}">
+        Adicionar Ramo de atividade <span class="glyphicon glyphicon-plus"></span>
+        </a>
+      {% endif %}
+
+      {% if is_backoffice or is_gerente %}
+      <a type="button" id="mymodal" class="btn btn-secondary btn-lg" data-toggle="modal" href="{% url "lojista:listatividade" %}">
+        Ver Ramos de atividade <span class="glyphicon glyphicon-tag">
+      </a>
+      {% endif %}
+    </p>
+    
+
+{% endblock %}

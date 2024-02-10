@@ -1,0 +1,128 @@
+{% load static %}
+{% load auth_extras %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Começou a maior campanha do varejo Piauiense! Natal de Prêmios Teresina traz grandes descontos e premios para você. CLIQUE e participe">
+  <meta name="author" content="Marko Solution">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Bootstrap Core CSS -->
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+
+    <!-- Custom Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Mrs+Sheppards%7CDosis:300,400,700%7COpen+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800;' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/select2.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/perfect-scrollbar.css' %}" type="text/css">
+    <!-- Custom CSS -->
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <!-- <link rel="stylesheet" href="{% static "css/main.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "css/util.css" %}" type="text/css"> -->
+    <script type='text/javascript'>
+
+        $(document).ready(function() {
+            $('#barcode').load('{{ bcp_url }}');
+        });
+
+    </script>
+
+</head>
+<body>
+    <div id="header">
+        {% if request.user.is_authenticated %}
+        <span class="logo"><a href="{% url 'participante:dashboard' %}">Natal de Prêmios Teresina 2023</a></span>
+        {% else %}
+        <span class="logo"><a href="{% url 'participante:homepage' %}">Natal de Prêmios Teresina 2023</a></span>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+        <ul class="menu">
+          {% if request.user.is_superuser %}
+          <li {% if section == "lojista" %}class="selected"{% endif %}><a href="{% url 'lojista:homepage' %}">Inicio</a></li>
+          <li {% if section == "lojistas" %}class="selected"{% endif %}><a href="{% url 'lojista:search' %}">Lojistas</a></li>
+          <li {% if section == "participantes" %}class="selected"{% endif %}><a href="{% url 'participante:backoffice' %}">Backoffice</a></li>
+          <li {% if section == "Cupons" %}class="selected"{% endif %}><a href="{% url 'lojista:cupons' %}">Cupons</a></li>
+          <!-- {% if request.user.is_staff %}
+          <li {% if section == "backoffice" %}class="selected"{% endif %}><a href="{% url "participante:backoffice" %}">Back Office</a></li>
+          {% endif %} -->
+          {% else %}
+            <li {% if section == 'dashboard' %}class="selected"{% endif %}><a href="{% url 'participante:dashboard' %}">Minha Conta</a></li>
+
+            <li {% if section == 'docsfiscais' %}class="selected"{% endif %}><a href="{% url 'participante:docsfiscais' %}">Documentos Fiscais</a></li>
+
+            <li {% if section == "coupons" %}class="selected"{% endif %}><a href="{% url "participante:coupons" %}">Cupons</a></li>
+            <!-- <li {% if section == "premios" %}class="selected"{% endif %}><a href="{% url "participante:premios" %}">Premios</a></li> -->
+          {% endif %}
+          </ul>
+        {% endif %}
+
+        <span class="user">
+        {% if request.user.is_authenticated %}
+            Olá {{ request.user.username }}, <a href="{% url 'participante:logout' %}">Sair</a>
+        {% else %}
+            <a  href="{% url 'participante:login' %}">Entrar</a>
+        {% endif %}
+        </span>
+    </div>
+
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">
+                    {{ message|safe }}
+                    <a href="#" class="close">×</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <scrip>
+        $(document).ready(function() {
+            $('#id_cep').blur(function() {
+                var cep = $(this).val();
+                if (cep) {
+                    $.ajax({
+                        type: 'GET',
+                        url: `https://viacep.com.br/ws/${cep}/json/`,
+                        success: function(data) {
+                            $('#id_logradouro').val(data.logradouro || '');
+                            $('#id_bairro').val(data.bairro || '');
+                            $('#id_cidade').val(data.localidade || '');
+                            $('#id_estado').val(data.uf || '');
+                        }
+                    });
+                }
+            });
+        });
+  
+    </script>
+
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/parallax.js' %}"></script>
+    <script src="{% static 'js/contact.js' %}"></script>
+    <script src="{% static 'js/countto.js' %}"></script>
+    <script src="{% static 'js/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'js/wow.min.js' %}"></script>
+    <script src="{% static 'js/common.js' %}"></script>
+    <script src="{% static 'js/jquery.mask.min.js' %}"></script>
+    <script src="{% static 'js/jquery.mask.js' %}"></script>
+    <script src="{% static 'js/masks.js' %}"></script>
+    <script src="{% static 'js/select2.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <noscript>Seu navegador não suporta JavaScript!</noscript>
+</body>
+</html>

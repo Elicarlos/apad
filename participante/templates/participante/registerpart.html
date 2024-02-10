@@ -1,0 +1,144 @@
+{% extends "mobile.html" %}
+{% load bootstrap4 %}
+{% load static %}
+{% block title %}Criar a conta de participante{% endblock %}
+
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="{% static 'js/polyfiller.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+        $(".CPF").on("input", function(){
+            var textoDigitado = $(this).val();
+            var inputCusto = $(this).attr("username");
+            $("#"+ inputCusto).val(textoDigitado);
+        });
+    });
+    </script>
+    <style type="text/css">
+        .form-group >[class*="col-"] + .ws-errorbox {
+            padding: 0 15px;
+        }
+    </style>
+    <h1 style="margin-top: 100px;">Criar minha conta</h1>
+    <a href="{% url 'participante:login' %}" class="btn btn-primary btn-lg page-scroll" >Já sou cadastrado</a>
+
+    <p>Por favor, preencha os seguintes dados para efetuar o seu cadastro:</p>
+    <form action="." method="post" class="form-horizontal ws-validate">
+      {% csrf_token %}
+      <div class="container-fluid col-md-6">
+        {% bootstrap_form user_form show_label=False show_help=True layout='horizontal' %}
+        {% bootstrap_form profile_form show_label=False layout='horizontal' show_help=True exclude='enderecoComplemento, whatsapp, facebook, twitter, foneFixo, foneCelular2, foneCelular3, pergunta' %}
+
+       
+        Ao selecionar criar conta você concorda com o nosso termo de aceite para tratamento de dados
+        <a type="button" data-toggle="modal" data-target="#myModal">Termo de Aceite</a>
+        <p><input type="submit" class="btn btn-primary btn-lg" value="Criar conta"></p>
+
+      </div>
+    </form>
+    <div class="container">
+      <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">TERMO DE ACEITE PARA TRATAMENTO DE DADOS PESSOAIS</h4>
+          </div>
+          <div class="modal-body" style="white-space: pre-line; margin-top: -50px; text-align: left;">
+          <p>
+
+  Este documento visa registrar a manifestação livre, informada e inequívoca pela qual o usuário concorda com o tratamento
+  de  seus  dados  pessoais  para  finalidade  específica,  em  conformidade  com  a  Lei  nº  13.709  –  Lei  Geral  de  Proteção  de
+  Dados Pessoais (LGPD).
+  Ao  aceitar  o  presente  termo,  o  usuário  consente  e  concorda  que  a  empresa  CDL  TERESINA  –  Câmara  de  Dirigentes
+  Lojistas de Teresina, CNPJ nº 06.510.499/0001-63. com sede na Rua Desembargador Freitas, 977 – Centro.
+  –  Teresina-PI, telefone (86)  3221-3313, e-mail  gerencia@cdlteresina.com.br,  doravante  denominada Controlador,  tome
+  decisões  referentes  ao  tratamento  de  seus  dados  pessoais,  bem  como  realize  o  tratamento  de  seus  dados  pessoais,
+  envolvendo operações como as que se referem a coleta, produção, recepção, classificação, utilização, acesso, reprodução,
+  transmissão, distribuição, processamento, arquivamento, armazenamento, eliminação, avaliação ou controle da
+  informação, modificação, comunicação, transferência, difusão ou extração.</p>
+  <h5><strong>Dados Pessoais </strong></h5>
+  O Controlador fica autorizado a tomar decisões referentes ao tratamento e a realizar o tratamento dos seguintes dados
+  pessoais do Titular:
+  <ul>
+  <li>Nome completo.</li>
+  <li>Registro Geral (RG).</li>
+  <li>Número do Cadastro de Pessoas Físicas (CPF).</li>
+  <li>Endereço de e-mail pessoal. </li>
+  <li>Dados Relacionado a Compras (NFE/NFCe).</li>
+  <li>Itens demais relacionados ao cadastro. </li>
+
+  </ul>
+
+  <h5><strong>Finalidades do Tratamento dos Dados</strong></h5>
+  O tratamento dos dados pessoais listados neste termo tem as seguintes finalidades:
+  <ul>
+  <li>Possibilitar que o Controlador identifique e entre em contato com o Titular para fins de relacionamento. </li>
+  <li>Possibilitar que o Controlador possa dar acesso ao sistema de cuponagem eletronica da Liquida Teresina 2023</li>
+  </ul>
+
+  <h5><strong>Compartilhamento de Dados </strong></h5>
+  O Controlador fica autorizado a compartilhar os dados pessoais do Titular com outros agentes de tratamento de dados,
+  caso seja necessário para as finalidades listadas neste termo, observados os princípios e as garantias estabelecidas pela
+  Lei nº 13.709.
+  <h5><strong>Segurança dos Dados </strong></h5>
+  O Controlador responsabiliza-se pela manutenção de medidas de segurança, técnicas e administrativas aptas a proteger
+  os  dados  pessoais  de  acessos  não  autorizados  e  de  situações  acidentais  ou  ilícitas  de  destruição,  perda,  alteração,
+  comunicação ou qualquer forma de tratamento inadequado ou ilícito.
+  Em conformidade ao art. 48 da Lei nº 13.709, o Controlador comunicará ao Titular e à Autoridade Nacional de Proteção
+  de Dados (ANPD) a ocorrência de incidente de segurança que possa acarretar risco ou dano relevante ao Titular.
+  <h5><strong>Término do Tratamento dos Dados </strong></h5>
+  O  Controlador  poderá  manter  e  tratar  os  dados  pessoais  do  Titular  durante  todo  o  período  em  que  os  mesmos  forem
+  pertinentes  ao  alcance  das  finalidades  listadas  neste  termo.  Dados  pessoais  anonimizados,  sem  possibilidade  de
+  associação ao indivíduo, poderão ser mantidos por período indefinido.
+  O Titular poderá solicitar via e-mail ou correspondência ao Controlador, a qualquer momento, que sejam eliminados os
+  dados pessoais não anonimizados do Titular
+  <h5><strong>Direitos do Titular </strong></h5>
+  O  Titular  tem  direito  a  obter  do  Controlador,  em  relação  aos  dados  por  ele  tratados,  a  qualquer  momento  e  mediante
+  requisição: I - confirmação da existência de tratamento; II - acesso aos dados; III - correção de dados incompletos, inexatos
+  ou  desatualizados;  IV  -  anonimização,  bloqueio  ou  eliminação  de  dados  desnecessários,  excessivos  ou  tratados  em
+  desconformidade com o disposto na Lei nº 13.709; V - portabilidade dos dados a outro fornecedor de serviço ou produto,
+  mediante  requisição  expressa,  de  acordo  com  a  regulamentação  da  autoridade  nacional,  observados  os  segredos
+  comercial e industrial; VI - eliminação dos dados pessoais tratados com o consentimento do titular, exceto nas hipóteses
+  previstas no art. 16 da Lei nº 13.709; VII - informação das entidades públicas e privadas com as quais o controlador realizou
+  uso  compartilhado  de  dados;  VIII  -  informação  sobre  a  possibilidade  de  não  fornecer  consentimento  e  sobre  as
+  consequências da negativa; IX - revogação do consentimento, nos termos do § 5º do art. 8º da Lei nº 13.709.
+  <h5><strong>Direito de Revogação do Consentimento </strong></h5>
+  Este  consentimento  poderá  ser  revogado  pelo  usuário,  a  qualquer  momento,  mediante  solicitação  via  e-mail  ou
+  correspondência ao Controlador</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#id_cep').blur(function (event) {
+            var cep = $(this).val();
+            if (cep) {
+                $.ajax({
+                    type: 'GET',
+                    url: `https://viacep.com.br/ws/${cep}/json/`,
+                    success: function (data) {
+                        $('#id_logradouro').val(data.logradouro || '');
+                        $('#id_bairro').val(data.bairro || '');
+                        $('#id_cidade').val(data.localidade || '');
+                        $('#id_estado').val(data.uf || '');
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
+{% endblock %}

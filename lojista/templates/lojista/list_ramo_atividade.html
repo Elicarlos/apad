@@ -1,0 +1,14 @@
+{% extends "mobile.html" %}
+
+{% block title %}Ramos de Atividade{% endblock %}
+
+{% block content %}
+    <h1 style="margin-top: 70px;">Ramos de Atividade cadastrados</h1>
+    <div id="user-list">
+        {% for ramoatividade in ramosatividade %}
+            <div class="user">
+                <a href="#"><h2>{{ ramoatividade.atividade }}</h2></a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "mobile.html" %}
+{% load bootstrap4 %}
+{% block title %}Adicionar Lojista{% endblock %}
+
+{% block content %}
+    <h1 style="margin-top: 70px;">Adicionar Lojista</h1>
+    <p>Por favor, preencha os seguintes dados para efetuar o seu cadastro de um novo lojista:</p>
+
+    <form action="." method="post" class="form-group">
+      <div class="container-fluid col-md-6">
+        {% bootstrap_field  lojista_form.CNPJLojista layout='horizontal' show_help=False %}
+        {% bootstrap_field  lojista_form.IELojista layout='horizontal' show_help=False %}
+        {% bootstrap_field  lojista_form.fantasiaLojista layout='horizontal' show_help=False %}
+        {% bootstrap_field  lojista_form.razaoLojista layout='horizontal' show_help=False %}
+        {% bootstrap_field  lojista_form.ramoAtividade layout='horizontal' show_help=False  %}
+
+        {% csrf_token %}
+        <input type="submit" class="btn btn-primary btn-lg" value="Salvar">
+            <a type="button" class="btn" href="{% url 'lojista:homepage' %}">Cancelar</button>
+      </div>
+    </form>
+{% endblock %}

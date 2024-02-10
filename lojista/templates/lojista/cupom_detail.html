@@ -1,0 +1,69 @@
+{% extends 'mobile.html' %}
+{% block title %}Sorteio Liquida Teresina 2023{% endblock %}
+{% block content %}
+<h1 style="margin-top: 70px;">Participante: <strong>{{user.nome}}</strong></h1>
+<div class="col-sm-6 col-md-6">
+      <h1>Cupom <strong>{{cupom.id}}</strong></h5>
+
+        <h4> <a data-toggle="modal" href="#{{ cupom.documentoFiscal.numeroDocumento }}cartao"class="btn btn-primary a-btn-slide-text btn-sm">
+                    <span><strong>Perfil do Participante Sorteado</strong></span> </a></h3>
+        <h4>Cupom gerado: <strong>{{cupom.dataCriacao}}</strong></h3>
+
+
+</div>
+<div class="col-sm-6 col-md-6">
+<h1>Documento Fiscal <strong>{{cupom.documentoFiscal.numeroDocumento}}</strong></h1>
+<h4>{{ cupom.documentoFiscal.lojista.fantasiaLojista }} - {{ cupom.documentoFiscal.lojista.razaoLojista }} - <strong>{{ cupom.documentoFiscal.lojista.CNPJLojista }}</strong></h4>
+{% if cupom.documentoFiscal.vendedor %}
+<h4>Vendedor: <strong>{{cupom.documentoFiscal.vendedor }}</strong></h3>
+{% else %}
+<h4>Vendedor: <strong>Não informado</strong></h3>
+{% endif %}
+<h4>Data de Emissão: <strong>{{ cupom.documentoFiscal.dataDocumento }}</strong></h4>
+<h4>Valor: <strong>{{ cupom.documentoFiscal.valorDocumento }}</strong></h4>
+{% comment %} <h4>Cartão Mastercard? {% if cupom.documentoFiscal.compradoMASTERCARD %}
+                    <span style="color:lightgreen" class="glyphicon glyphicon-ok" aria-hidden="true">
+                    {% else %}
+                    <span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true">
+                    {% endif %}</h4> {% endcomment %}
+<h4>Rede? {% if cupom.documentoFiscal.compradoREDE %}
+                    <span style="color:lightgreen" class="glyphicon glyphicon-ok" aria-hidden="true">
+                    {% else %}
+                    <span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true">
+                    {% endif %}</h4>
+</div>
+<h1><a class="btn btn-primary btn-lg" href="{% url 'lojista:sorteio' %}">Buscar outro
+</a></h1>
+
+
+ <!-- Modal -->
+              <div class="modal fade" id="{{ cupom.documentoFiscal.numeroDocumento }}cartao" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h2 class="modal-title" id="exampleModalLabel"> {{ user.nome }}</h2>
+
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                     <h3><strong>Email:</strong> {{ user.user.email }}</h3>
+                     <h3><strong>CPF:</strong> {{ user.CPF }}</h3>
+                     <h3><strong>RG:</strong> {{ user.RG }}</h3>
+                     <h3><strong>Celular:</strong> {{ user.foneCelular1 }}</h3>
+                     <h3><strong>Endereço:</strong> {{ user.endereco }}</h3>
+                     <h3><strong>Número:</strong> {{ user.enderecoNumero }}</h3>
+                     <h3><strong>Cidade:</strong> {{ user.cidade }}</h3>
+                     <h3><strong>Bairro:</strong> {{ user.bairro }}</h3>
+                     <h3><strong>Estado:</strong> {{ user.estado }}</h3>
+                     <h3><strong>CEP:</strong> {{ user.CEP }}</h3>
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+{% endblock %}

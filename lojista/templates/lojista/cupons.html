@@ -1,0 +1,23 @@
+{% extends 'mobile.html' %}
+
+{% block content %}
+<h1 style="margin-top: 70px;">{{user.nome}}</h1>
+{% for cupom in cupons %}
+<div class="panel panel-success col-sm-2 col-md-2">
+  <div class="card text-white text-center bg-secondary mb-3" style="max-width: 18rem;">
+    <div class="card-header"> <strong>{{cupom.id}}</strong> </div>
+    <div class="card-body">
+      <h5 class="card-title">Cupom</h5>
+      <p class="card-text">
+        <h4>Documento Fiscal: <strong> {{cupom.documentoFiscal.numeroDocumento }}</strong></h3>
+        <h4>Loja: <strong>{{cupom.documentoFiscal.lojista.fantasiaLojista }}</strong></h3>
+        <h4>Data da compra: <strong>{{cupom.documentoFiscal.dataDocumento|date:"d/m/Y" }}</strong> </h3>
+        <h4>Vendedor: <strong>{{cupom.documentoFiscal.vendedor }}</strong></h3>
+        <h4>Cupom gerado: <strong>{{cupom.dataCriacao|date:"d/m/Y" }}</strong></h3>
+
+      </p>
+    </div>
+  </div>
+</div>
+  {% endfor %}
+{% endblock %}

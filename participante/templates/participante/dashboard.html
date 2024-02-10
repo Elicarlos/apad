@@ -1,0 +1,89 @@
+{% extends "mobile.html" %}
+{% load static %}
+{% block title %}Liquida Teresina 2023{% endblock %}
+
+{% block content %}
+    <h1 style="margin-top: 100px;">Liquida Teresina 2023</h1>
+    <p>Bem vindo a sua conta. Você pode <a href="{% url 'participante:edit' %}">editar o seu perfil</a> ou <a href="{% url 'participante:password_change' %}">mudar a sua senha</a>.</p>
+    {% comment %} <a type="button" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url 'participante:adddocfiscal' %}">
+  Adicionar documento fiscal
+</a> {% endcomment %}
+
+<!-- <span style="color: red">O envio de documentos já foi encerrado! Te desejamos boa sorte!</span> -->
+
+<br/>
+<br/>
+
+  <h1>Documentos Lançados</h1>
+  <div id="doc-list" class="table-responsive">
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th style="text-align: center; vertical-align:middle !important">Nº Doc</th>
+          <th style="text-align: center; vertical-align:middle !important">Loja</th>
+          <th style="text-align: center; vertical-align:middle !important">Data Compra</th>
+          <th style="text-align: center; vertical-align:middle !important">Valor do Doc</th>
+          <th style="text-align: center; vertical-align:middle !important">Observação</th>
+          <th style="text-align: center; vertical-align:middle !important">Status</th>
+          <th style="text-align: center; vertical-align:middle !important">
+          {% if not doc.pendente %}
+            Cupons
+          {% endif %}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for doc in docs %}
+
+            <tr>
+              {% if doc.pendente %}
+                <td style="text-align: center; vertical-align:middle !important"><a href="{{ doc.get_absolute_url }}">{{ doc.numeroDocumento }}</a></td>
+              {% else %}
+              <td style="text-align: center; vertical-align:middle !important">{{doc.numeroDocumento}}</td>
+              {% endif %}
+              <td style="text-align: center; vertical-align:middle !important">{{ doc.lojista }}</td>
+              <td style="text-align: center; vertical-align:middle !important">{{ doc.dataDocumento|date:"d/m/Y" }}</td>
+              <td style="text-align: center; vertical-align:middle !important">{{ doc.valorDocumento }}</td>
+              <td style="text-align: center; vertical-align:middle !important">{{ doc.observacao}}</td>
+              <td style="text-align: center; vertical-align:middle !important">
+                {% if not doc.pendente %}
+                  <span style="color:lightgreen" class="glyphicon glyphicon-ok" aria-hidden="true"> <p> validado </p> </span>
+                  {% else %}
+                  <span style="color:orange" class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"> pendente </span>
+                  {% endif %}</td>
+              <td style="text-align: center; vertical-align:middle !important">
+                {% if not doc.pendente %}
+                  <strong style="color:lightgreen">{{doc.get_cupons}}</strong>
+                  {% endif %}
+              </td>
+            </tr>
+
+        {% empty %}
+          <tr>
+            <td colspan="5">Nenhum documento lançado</td>
+          </tr>
+
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="myModalLabel">Novo cupom</h4>
+  </div>
+  <div class="modal-body">
+    ...
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+    <button type="button" class="btn btn-primary">Salvars</button>
+  </div>
+</div>
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "mobile.html" %}
+{% load thumbnail %}
+{% load bootstrap4 %}
+{% block title %}Documentos Fiscais{% endblock %}
+
+{% block content %}
+    <!-- <div class="profile-info">
+      {% thumbnail user.photo "100x100" crop="center" as im %}
+      <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+  {% endthumbnail %}
+</div> including -->
+    <h2 style="margin-top: 70px;">Pagina de impressão de cupons</h2>
+    <p></p>
+    <div class="table-responsive">
+      <nav>
+        <ul class="pagination">
+          {% if docs.has_previous %}
+          <li>
+            <a href="?page={{docs.previous_page_number}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% endif %}
+          {% for p in docs.paginator.page_range %}
+          <li class="{% if docs.number == p %}active{% endif %}"><a href="?page={{p}}">{{p}}</a></li>
+          {% endfor %}
+          {% if docs.has_next %}
+          <li>
+            <a href="?page={{docs.next_page_number}}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      <table class="table table-hover table-bordered text-center">
+        <thead>
+          <tr>
+            <th style="text-align: center; vertical-align:middle !important">Loja</th>
+            <th style="text-align: center; vertical-align:middle !important">Documentos</th>
+            <th style="text-align: center; vertical-align:middle !important">Data Compra</th>
+            <th style="text-align: center; vertical-align:middle !important">Valor</th>
+            <th style="text-align: center; vertical-align:middle !important">Validação</th>
+            <th style="text-align: center; vertical-align:middle !important">Cupons</th>
+            <th style="text-align: center; vertical-align:middle !important">Imprimir</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for doc in docs %}
+
+              <tr>
+                <td style="text-align: center; vertical-align:middle !important">{{ doc.lojista }}</td>
+                <td style="text-align: center; vertical-align:middle !important"><a href="{{ doc.get_absolute_url_byop }}">{{ doc.numeroDocumento }}</a></td>
+                <td style="text-align: center; vertical-align:middle !important">{{ doc.dataDocumento|date:"d/m/Y" }}</td>
+                <td style="text-align: center; vertical-align:middle !important">{{ doc.valorDocumento }}</td>
+                <td style="text-align: center; vertical-align:middle !important">
+                  {% if not doc.pendente %}
+                  <strong style="color:lightgreen">Validado</strong>
+                  {% else %}
+                  <a data-toggle="modal" href="{% url "participante:validadocfiscal" doc.id %}" class="btn btn-primary a-btn-slide-text btn-sm">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    <span><strong>Validar</strong></span> </a>
+                  {% endif %}
+                </td>
+
+                <td style="text-align: center; vertical-align:middle !important">{{ doc.get_cupons }}</td>
+                <td style="text-align: center; vertical-align:middle !important">
+
+                  {% if not doc.status %}
+                    <a style="pointer-events:none; background-color:gray" data-toggle="modal" href="#{{ doc.id }}cartao"class="btn btn-primary a-btn-slide-text btn-sm">
+                      <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
+                      <span><strong>Imprimir</strong></span> </a>
+                  {% else %}
+                  <a href="{% url "bcp:print" doc.id %}" class="btn btn-primary a-btn-slide-text btn-sm">
+                    <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
+                    <span><strong>Imprimir</strong></span> </a>
+                  {% endif %}
+
+
+                </td>
+              </tr>
+
+
+          {% empty %}
+            <tr>
+              <td colspan="5">Nenhum documento lançado</td>
+            </tr>
+
+          {% endfor %}
+        </tbody>
+        
+      </table>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "mobile.html" %}
+
+{% block title %}Bem Vindo{% endblock %}
+
+{% block content %}
+    <h1>Bem vindo {{ new_user.nome }}!</h1>
+    <p>Seu perfil foi criado com sucesso. Agora você pode <a href="{% url 'participante:login' %}">fazer o seu login</a>.</p>
+
+{% endblock %}

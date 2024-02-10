@@ -1,0 +1,145 @@
+{% extends "mobile.html" %}
+{% load static %}
+{% load auth_extras %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Liquida Teresina 2023</title>
+<!-- Bootstrap Core CSS -->
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static 'css/register2.css' %}" type="text/css">
+<script src="{% static 'js/polyfiller.js' %}"></script>
+<script src="{% static 'js/jquery.js' %}"></script>
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<script type="text/javascript">
+        $(document).ready(function(){
+        $(".cpf").on("input", function(){
+            var textoDigitado = $(this).val();
+            var inputCusto = $(this).attr("cpf");
+            $("#"+ inputCusto).val(textoDigitado);
+        });
+    });
+</script>
+</head>
+<body>
+  {% if user_form.non_field_errors %}
+      <ul class="messages">
+          {% for error in user_form.non_field_errors %}
+              <li class="{{ error.tags }}">
+                  {{ error|safe }}
+                  <a href="#" class="close">×</a>
+              </li>
+          {% endfor %}
+      </ul>
+  {% endif %}
+  {% if profile_form.non_field_errors %}
+      <ul class="messages">
+          {% for error in user_form.non_field_errors %}
+              <li class="{{ error.tags }}">
+                  {{ error|safe }}
+                  <a href="#" class="close">×</a>
+              </li>
+          {% endfor %}
+      </ul>
+  {% endif %}
+  <!-- multistep form -->
+  <form id="msform" action="." method="post" class="ws-validate">
+    <!-- progressbar -->
+    <ul id="progressbar">
+      <li class="active">informações da conta</li>
+      <li>Dados Pessoais</li>
+      <li>Redes Sociais</li>
+      <li>Endereço</li>
+    </ul>
+    <!-- fieldsets -->
+    <fieldset>
+      <h2 class="fs-title">Criar sua conta</h2>
+      {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">
+                    {{ message|safe }}
+                    <a href="#" class="close">×</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+      <h3 class="fs-subtitle">Esse é o passo 1</h3>
+      {{ user_form.non_field_errors }}
+      {{ user_form.username.errors }}
+      {{ user_form.username }}
+      {{ user_form.email.errors }}
+      {{ user_form.email }}
+      {{ user_form.password.errors }}
+      {{ user_form.password }}
+      {{ user_form.password2.errors }}
+      {{ user_form.password2 }}
+      <input type="button" name="next" class="next action-button" value="Próximo" />
+    </fieldset>
+    <fieldset>
+      <h2 class="fs-title">Dados Pessoais</h2>
+      <h3 class="fs-subtitle">Precisamos de suas informações pessoais</h3>
+      {{ profile_form.nome }}
+      {{ profile_form.RG }}
+      {{ profile_form.CPF.errors }}
+      {{ profile_form.CPF }}
+      {{ profile_form.sexo }}
+      {{ profile_form.foneCelular1.errors }}
+      {{ profile_form.foneCelular1 }}
+      <input type="button" name="previous" class="previous action-button" value="Voltar" />
+      <input type="button" name="next" class="next action-button" value="Próximo" />
+    </fieldset>
+    <fieldset>
+      <h2 class="fs-title">Redes Sociais</h2>
+      <h3 class="fs-subtitle">Sua presença nas redes sociais</h3>
+      {{ profile_form.whatsapp }}
+        {{ profile_form.twitter }}
+        {{ profile_form.facebook }}
+      <input type="button" name="previous" class="previous action-button" value="Voltar" />
+      <input type="button" name="next" class="next action-button" value="Próximo" />
+    </fieldset>
+    <fieldset>
+      <h2 class="fs-title">Endereço Pessoal</h2>
+      <h3 class="fs-subtitle">Informações sobre sua residencia</h3>
+        {{ profile_form.cidade.errors }}
+        {{ profile_form.cidade }}
+        {{ profile_form.bairro }}
+        {{ profile_form.estado }}
+        {{ profile_form.CEP }}
+        {{ profile_form.endereco }}
+        {{ profile_form.enderecoNumero }}
+        {{ profile_form.enderecoComplemento }}
+      <h3 class="fs-subtitle">Qual a maior liquidação de Teresina?*</h3>
+      {{ profile_form.pergunta }}
+      <input type="button" name="previous" class="previous action-button" value="Voltar" />
+      {% csrf_token %}
+      <input type="submit" class="submit action-button" value="Cadastrar">
+    </fieldset>
+  </form>
+
+
+<!-- jQuery -->
+<script src="{% static "js/jquery.js" %}"></script>
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+<script src="{% static "js/parallax.js" %}"></script>
+<script src="{% static "js/contact.js" %}"></script>
+<script src="{% static "js/countto.js" %}"></script>
+<script src="{% static "js/jquery.easing.min.js" %}"></script>
+<script src="{% static "js/wow.min.js" %}"></script>
+<script src="{% static "js/common.js" %}"></script>
+<script src="{% static "js/register2.js" %}"></script>
+<script src="{% static "js/jquery.mask.min.js" %}"></script>
+<script src="{% static "js/jquery.mask.js" %}"></script>
+<script src="{% static "js/masks.js" %}"></script>
+</body>
+</html>

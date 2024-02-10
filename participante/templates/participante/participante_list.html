@@ -1,0 +1,91 @@
+{% extends 'mobile.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+  <form method="get">
+    <div class="well" style="margin-top: 70px;">
+      <h4 style="margin-top: 0">Informe o CPF do participante</h4>
+      <div class="row">
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.CPF.label_tag }}
+          {% render_field filter.form.CPF class="form-control cpf" %}
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <span class="glyphicon glyphicon-search"></span> Buscar
+        </button>
+      </div>
+    </div>
+  </form>
+<div class="table-responsive">
+  <table class="table table-hover table-striped" >
+    <thead>
+      <tr>
+        <th style="text-align: center; vertical-align:middle !important">Nome</th>
+        <th style="text-align: center; vertical-align:middle !important">CPF</th>
+        <th style="text-align: center; vertical-align:middle !important">Email</th>
+        <th style="text-align: center; vertical-align:middle !important">Data Cadastro</th>
+        <th style="text-align: center; vertical-align:middle !important">Pergunta</th>
+        <th style="text-align: center; vertical-align:middle !important"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in filter.qs %}
+        <tr>
+          {% if not user.user.is_superuser %}
+          <td style="text-align: center; vertical-align:middle !important">{{ user.nome|upper }}</td>
+          <td style="text-align: center; vertical-align:middle !important">{{ user.CPF }}</td>
+          <td style="text-align: center; vertical-align:middle !important">{{ user.user.email }}</td>
+          <td style="text-align: center; vertical-align:middle !important">{{ user.dataCadastro|date:"d/m/Y" }}</td>
+          <td style="text-align: center; vertical-align:middle !important">{{ user.pergunta}}</td>
+          <td style="text-align: center; vertical-align:middle !important"><a data-toggle="modal" href="#{{ user.user.username }}"class="btn btn-primary a-btn-slide-text btn-sm">
+        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+        <span><strong>Ver</strong></span> </a>
+        <a href="{{ user.get_absolute_url_edit }}" class="btn btn-secondary a-btn-slide-text btn-sm">
+          <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+          <span><strong>Editar</strong></span>
+      </a>
+      <a href="{% url 'participante:adddocfiscalbyop' user.user.id %}" class="btn btn-info a-btn-slide-text btn-sm">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+        <span><strong>Lançar</strong></span>
+    </a>
+    </td>
+
+          <!-- Modal -->
+          <div class="modal fade" id="{{ user.user.username }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h2 class="modal-title" id="exampleModalLabel">{{ user.nome }}</h2>
+
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>{{ user.CPF }}</p>
+                  <p>{{ user.user.email }}</p>
+                  <p>{{ user.dataCadastro }}</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                  <a type="button" class="btn btn-primary" href="{{ user.get_absolute_url_detail }}">Ver perfil</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tr>
+        {% endif %}
+      {% empty %}
+        <tr>
+          <td colspan="5">Nenhum participante encontrado</td>
+        </tr>
+
+
+
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

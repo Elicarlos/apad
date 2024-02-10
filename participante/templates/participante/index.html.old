@@ -1,0 +1,492 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Liquida Teresina 2018</title>
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" type="text/css">
+<!-- Custom Fonts -->
+<link href='https://fonts.googleapis.com/css?family=Mrs+Sheppards%7CDosis:300,400,700%7COpen+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800;' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{% static "font-awesome/css/font-awesome.min.css" %}" type="text/css">
+
+<!-- Plugin CSS -->
+<link rel="stylesheet" href="{% static "css/animate.min.css" %}" type="text/css">
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static "css/style.css" %}" type="text/css">
+<link rel="stylesheet" href="{% static "css/custom.css" %}" type="text/css">
+
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body id="page-top">
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+<div class="container">
+	<!-- Brand and toggle get grouped for better mobile display -->
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+		<span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand page-scroll" href="#page-top"><img src="{% static "img/image.png" %}" alt="liquida" id="logo" class="img-responsive"></a>
+	</div>
+	<!-- Collect the nav links, forms, and other content for toggling -->
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<ul class="nav navbar-nav navbar-right">
+			<li>
+			<a class="page-scroll" href="#page-top">Inicio</a>
+			</li>
+			<li>
+			<a class="page-scroll" href="#about">Como funciona</a>
+			</li>
+			<li>
+			<a class="page-scroll" href="#portfolio">Prêmios</a>
+			</li>
+			<li>
+			<a class="page-scroll" href="{% url 'participante:register' %}">Cadastre-se</a>
+			</li>
+			{% if request.user.is_authenticated and request.user.is_superuser %}
+			<li >
+				<a style="color: #FBB65C" href="{% url 'lojista:homepage' %}">{{ request.user.username }} <span style="color: #30C778" class="glyphicon glyphicon-log-in"> </div></a>
+			</li id="entrar">
+			{% elif user.is_authenticated %}
+			<li style="color: #FBB65C">
+				<a  href="{% url 'participante:dashboard' %}">{{ request.user.username }} <span style="color: #30C778" class="glyphicon glyphicon-user"></span></a>
+			</li id="entrar">
+			{% else %}
+			<li>
+				<a data-toggle="modal" href="#myModal">Entrar <span style="color: #30C778" class="glyphicon glyphicon-log-in"></a>
+			</li id="entrar">
+			{% endif %}
+		</ul>
+	</div>
+	<!-- /.navbar-collapse -->
+</div>
+<!-- /.container -->
+</nav>
+
+<!-- Modal Login -->
+<div id="myModal" class="modal fade text-center modal-dialog-centered">
+  <div class="modal-dialog">
+    <div class="col-lg-8 col-sm-8 col-12 main-section">
+      <div class="modal-content">
+        <div class="col-lg-12 col-sm-12 col-12 user-img">
+          <img src="{% static "img/man.png" %}">
+        </div>
+        <div class="col-lg-12 col-sm-12 col-12 user-name">
+          <h1>Entrar</h1>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="col-lg-12 col-sm-12 col-12 form-input">
+          <form action="." method="post">
+            <div class="form-group">
+							{{ lf.username.errors }}
+                {{ lf.username }}
+            </div>
+            <div class="form-group">
+              {{ lf.password.errors }}
+							  {{ lf.password }}
+            </div>
+						{% csrf_token %}
+            <button type="submit" class="btn btn-success">Entrar</button>
+          </form>
+        </div>
+        <div class="col-lg-12 col-sm-12 col-12 link-part">
+            <a href="http://www.nicesnippets.com" target="_blank">Esqueceu a sua senha?</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Login end -->
+
+<!-- Section Intro Slider
+================================================== -->
+<div id="carousel-example-generic" class="carousel intro slide">
+	<!-- Indicators
+	<ol class="carousel-indicators">
+		<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+		<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+		<li data-target="#carousel-example-generic" data-slide-to="2"></li>
+	</ol>
+	-->
+	<!-- Wrapper for slides -->
+	<div class="carousel-inner" role="listbox">
+		<!-- First slide -->
+		<div class="item active" style="background-image:url(https://s3-eu-west-1.amazonaws.com/layanademo/s1-min.jpg)">
+			<div class="carousel-caption">
+				<h2 data-animation="animated bounceInDown">
+				A maior campanha de varejo de Teresina </h2>
+				<h1 data-animation="animated bounceInUp">
+				Liquida Teresina 2018 </h1>
+				<a href="{% url "participante:register" %}" class="btn btn-primary btn-lg page-scroll" data-animation="animated fadeInRight">Cadastre-se aqui</a>
+			</div>
+		</div>
+		<!-- /.item -->
+		<!-- Second slide
+		<div class="item" style="background-image:url(https://s3-eu-west-1.amazonaws.com/layanademo/s2-min.jpg)">
+			<div class="carousel-caption">
+				<h2 data-animation="animated zoomInLeft">
+				Responsive HTML Template </h2>
+				<h1 data-animation="animated zoomInRight">
+				Bootstrap Theme </h1>
+				<a href="#" class="btn btn-ghost btn-lg" data-animation="animated bounceIn">Cadastrar</a><a href="#" class="btn btn-primary btn-lg" data-animation="animated bounceIn">Learn More</a>
+			</div>
+		</div>
+		<!-- /.item -->
+		<!-- Third slide
+		<div class="item" style="background-image:url(https://s3-eu-west-1.amazonaws.com/layanademo/s3-min.jpg)">
+			<div class="carousel-caption">
+				<h2 data-animation="animated bounceInLeft">
+				Layana by WowThemesNet</h2>
+				<h1 data-animation="animated bounceInRight">
+				Happy Coding</h1>
+				<a href="#" class="btn btn-ghost btn-lg" data-animation="animated zoomInRight">Start Tour</a><a href="#" class="btn btn-primary btn-lg" data-animation="animated zoomInRight">Learn More</a>
+			</div>
+		</div>
+		<!-- /.item -->
+	</div>
+	<!-- /.carousel-inner -->
+	<!-- Controls (currently displayed none from style.css)
+	<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+	<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+	<span class="sr-only">Previous</span>
+	</a>
+	<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+	<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+	<span class="sr-only">Next</span>
+	</a>
+	-->
+</div>
+<!-- /.carousel -->
+
+<!-- Section About
+================================================== -->
+<section id="about">
+<!-- Section Timeline
+================================================== -->
+<section id="tline">
+<div class="container">
+<div class="row">
+	<div class="col-lg-12 text-center">
+		<h2 class="section-heading"><b>Como participar</b></h2>
+	</div>
+</div>
+</div>
+<br/>
+<div class="container">
+<div class="row">
+	<div class="col-md-12">
+		<ul class="tline-holder">
+			<!-- tline ITEM-->
+			<li class="tline-item-left wow fadeInLeft">
+			<div class="tline-item-content">
+				<div class="date-icon fa fa-shopping-cart">
+				</div>
+				<div class="tline-item-txt text-right">
+					<div class="meta">
+						 Passo 1
+					</div>
+					<h3>Compre 40 reais e ganhe 1 cumpom</h3>
+					<p>
+						 A cada R$40,00 reais em compras nas lojas parceiras, você ganha um cupom para concorrer a varios prêmios especiais!
+					</p>
+					<a data-toggle="modal" href="#exampleModalLong">
+  Lojas Parceiras
+</a>
+				</div>
+			</div>
+			</li>
+			<!-- /tline-->
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			        ...
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-primary">Save changes</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<!-- tline-->
+			<li class="tline-item-right wow fadeInRight">
+			<div class="tline-item-content">
+				<div class="date-icon fa fa-user">
+				</div>
+				<div class="tline-item-txt text-left">
+					<div class="meta">
+						 Passo 2
+					</div>
+					<h3>Cadastre-se</h3>
+					<p>
+						 It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+					</p>
+				</div>
+			</div>
+			</li>
+			<!-- /tline-->
+			<!-- tline-->
+			<li class="tline-item-left wow fadeInLeft">
+			<div class="tline-item-content">
+				<div class="date-icon fa fa-car">
+				</div>
+				<div class="tline-item-txt text-right">
+					<div class="meta">
+						 Passo 3
+					</div>
+					<h3>Se dirija ao ponto de troca mais proximo</h3>
+					<p>
+						 It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+					</p>
+				</div>
+			</div>
+			</li>
+			<!-- /tline-->
+			<!-- tline-->
+			<li class="tline-item-right wow fadeInRight">
+			<div class="tline-item-content">
+				<div class="date-icon fa fa-bullhorn">
+				</div>
+				<div class="tline-item-txt text-left">
+					<div class="meta">
+						 Passo 4
+					</div>
+					<h3>Agora é só esperar ser sorteado!</h3>
+					<p>
+						 It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+					</p>
+				</div>
+			</div>
+			</li>
+			<!-- /tline-->
+			<li class="tline-start">
+			<div class="tline-start-content">
+				<div class="tline-start-icon">
+				</div>
+				<a href="{% url 'participante:register'}" class="btn btn-primary bgn-xl wow zoomIn page-scroll">CADASTRE-SE</a>
+			</div>
+			</li>
+		</ul>
+	</div>
+</div>
+</div>
+</section>
+</section>
+
+
+<!-- Section Awards
+================================================== -->
+<section id="portfolio">
+<div class="container">
+<div class="row">
+	<div class="col-lg-12 text-center">
+		<h2 class="section-heading"><b>PRÊMIOS</b></h2>
+		<hr class="primary">
+		<br/>
+	</div>
+</div>
+</div>
+<div class="container-fluid">
+<div class="row no-gutter">
+	<div class="col-lg-4 col-sm-6">
+		<a href="#" class="portfolio-box">
+		<img src="http://s3.amazonaws.com/caymandemo/wp-content/uploads/sites/11/2015/09/15222605/beauty-354565_1280-450x300.jpg" class="img-responsive" alt="">
+		<div class="portfolio-box-caption">
+			<div class="portfolio-box-caption-content">
+				<div class="project-category text-faded">
+					 Category
+				</div>
+				<div class="project-name">
+					 Project Name
+				</div>
+			</div>
+		</div>
+		</a>
+	</div>
+
+	<div class="col-lg-4 col-sm-6">
+		<a href="#" class="portfolio-box">
+		<img src="http://s3.amazonaws.com/caymandemo/wp-content/uploads/sites/11/2015/09/30160348/woman-919047_1280-450x300.jpg" class="img-responsive" alt="">
+		<div class="portfolio-box-caption">
+			<div class="portfolio-box-caption-content">
+				<div class="project-category text-faded">
+					 Category
+				</div>
+				<div class="project-name">
+					 Project Name
+				</div>
+			</div>
+		</div>
+		</a>
+	</div>
+	<div class="col-lg-4 col-sm-6">
+		<a href="#" class="portfolio-box">
+		<img src="http://s3.amazonaws.com/caymandemo/wp-content/uploads/sites/11/2015/09/30160151/time-425818_1280-450x300.jpg" class="img-responsive" alt="">
+		<div class="portfolio-box-caption">
+			<div class="portfolio-box-caption-content">
+				<div class="project-category text-faded">
+					 Category
+				</div>
+				<div class="project-name">
+					 Project Name
+				</div>
+			</div>
+		</div>
+		</a>
+	</div>
+	<div class="col-lg-4 col-sm-6">
+		<a href="#" class="portfolio-box">
+		<img src="http://s3.amazonaws.com/caymandemo/wp-content/uploads/sites/11/2015/09/18160911/woman-659352_1280-450x300.jpg" class="img-responsive" alt="">
+		<div class="portfolio-box-caption">
+			<div class="portfolio-box-caption-content">
+				<div class="project-category text-faded">
+					 Category
+				</div>
+				<div class="project-name">
+					 Project Name
+				</div>
+			</div>
+		</div>
+		</a>
+	</div>
+	<div class="col-lg-4 col-sm-6">
+		<a href="#" class="portfolio-box">
+		<img src="http://s3.amazonaws.com/caymandemo/wp-content/uploads/sites/11/2015/09/15222605/woman-918614_1280-449x300.jpg" class="img-responsive" alt="">
+		<div class="portfolio-box-caption">
+			<div class="portfolio-box-caption-content">
+				<div class="project-category text-faded">
+					 Category
+				</div>
+				<div class="project-name">
+					 Project Name
+				</div>
+			</div>
+		</div>
+		</a>
+	</div>
+</div>
+</div>
+</section>
+
+
+
+<!-- Section Social
+================================================== -->
+<section id="social" class="parallax parallax-image" style="background-image:url(https://s3-eu-west-1.amazonaws.com/layanademo/s3-min.jpg);">
+<div class="overlay" style="background:#222;opacity:0.5;">
+</div>
+<div class="wrapsection">
+<div class="container">
+	<div class="parallax-content">
+		<div class="row wow fadeInLeft">
+			<div class="col-md-4">
+				<div class="funfacts text-center">
+					<div class="icon">
+						<a href="https://www.instagram.com/cdlteresina/"><i class="fa fa-instagram"></i></a>
+					</div>
+					<h4>Instagram</h4>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="funfacts text-center">
+					<div class="icon">
+						<a href="https://www.facebook.com/cdlteresina/"><i class="fa fa-facebook"></i></a>
+					</div>
+					<h4>Facebook</h4>
+				</div>
+			</div>
+
+			<div class="col-md-4">
+				<div class="funfacts text-center">
+					<div class="icon">
+						<a href="http://www.cdlteresina.com.br/"><i class="fa fa-building"></i></a>
+					</div>
+					<h4>CDL Teresina</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+</section>
+<div class="clearfix">
+</div>
+
+<!-- Section Contact
+==================================================
+<section id="contact">
+<div class="container">
+<div class="row">
+	<div class="col-md-8 col-md-offset-2 text-center">
+		<h2 class="section-heading">CADASTRE-SE</b></h2>
+		<hr class="primary">
+
+		<div class="regularform">
+			<div class="done">
+				<div class="alert alert-success">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					Your message has been sent. Thank you!
+				</div>
+			</div>
+			<form method="post" action="contact.php" id="contactform" class="text-left">
+				<input name="name" type="text" class="col-md-6 norightborder" placeholder="Seu nome *">
+				<input name="email" type="email" class="col-md-6" placeholder="Seu email *">
+				<input name="rg" type="text" class="col-md-6 norightborder" placeholder="RG *">
+				<input name="cpf" type="text" class="col-md-6" placeholder="CPF *">
+				<input name="adress" type="text" class="col-md-12" placeholder="Endereço *">
+				<h3>Qual é a maior promoção de comércio de Teresina?</h3>
+				<input name="answer" type="text" class="col-md-12" placeholder="Sua resposta *">
+				<input type="submit" id="submit" class="contact submit btn btn-primary btn-xl" value="Cadastrar">
+			</form>
+		</div>
+	</div>
+</div>
+</div>
+</section>-->
+
+<!-- Section Footer
+================================================== -->
+<section class="bg-dark">
+<div class="container">
+<div class="row">
+	<div class="col-md-12 text-center">
+		<h1 class="bottombrand wow flipInX">Liquida Teresina 2018</h1>
+		<p>
+			&copy; 2018 Desenvolvido by Marko Solution
+		</p>
+	</div>
+</div>
+</div>
+</section>
+
+<!-- jQuery -->
+<script src="{% static "js/jquery.js" %}"></script>
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+<script src="{% static "js/parallax.js" %}"></script>
+<script src="{% static "js/contact.js" %}"></script>
+<script src="{% static "js/countto.js" %}"></script>
+<script src="{% static "js/jquery.easing.min.js" %}"></script>
+<script src="{% static "js/wow.min.js" %}"></script>
+<script src="{% static "js/common.js" %}"></script>
+</body>
+</html>

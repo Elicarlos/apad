@@ -1,0 +1,204 @@
+{% extends "mobile.html" %}
+{% load thumbnail %}
+{% load bootstrap4 %}
+{% block title %}Back office{% endblock %}
+{% load static %}
+
+{% block content %}
+    <!-- <div class="profile-info">
+      {% thumbnail user.photo "100x100" crop="center" as im %}
+      <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+  {% endthumbnail %}
+    </div> -->
+    <script type="text/javascript">
+      var angle = 0, img = document.getElementById('imgdoc');
+      document.getElementById('button').onclick = function() {
+          angle = (angle+90)%360;
+          img.className = "rotate"+angle;
+      }
+    </script>
+
+    <h1 style="margin-top: 70px;">Documentos Pendentes</h1>
+    <p></p>
+    <div class="table-responsive">
+      <nav>
+        <ul class="pagination">
+          {% if docs.has_previous %}
+          <li>
+            <a href="?page={{docs.previous_page_number}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% endif %}
+          {% for p in docs.paginator.page_range %}
+          <li class="{% if docs.number == p %}active{% endif %}"><a href="?page={{p}}">{{p}}</a></li>
+          {% endfor %}
+          {% if docs.has_next %}
+          <li>
+            <a href="?page={{docs.next_page_number}}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      <table class="table table-hover table-bordered text-center">
+        <thead>
+          <tr>
+            <th style="text-align: center; vertical-align:middle !important">Loja</th>
+            <th style="text-align: center; vertical-align:middle !important">Documentos</th>
+            <th style="text-align: center; vertical-align:middle !important">Data Compra</th>
+            <th style="text-align: center; vertical-align:middle !important">Valor</th>
+            <th style="text-align: center; vertical-align:middle !important">Doc fiscal</th>
+            <th style="text-align: center; vertical-align:middle !important">Comprov. Cartão</th>
+            <th style="text-align: center; vertical-align:middle !important">Master</th>
+            <th style="text-align: center; vertical-align:middle !important">Rede</th>
+            <th style="text-align: center; vertical-align:middle !important">Verificação</th>
+            <th style="text-align: center; vertical-align:middle !important">Pendencias</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for doc in docs %}
+            {% if doc.user.profile %}
+            {% if doc.photo or doc.photo2 %}
+            {% if doc.observacao == "Nenhuma" %}
+              <tr>
+                <td style="text-align: center; vertical-align:middle !important">{{ doc.lojista }}</td>
+                <td style="text-align: center; vertical-align:middle !important"><a href="{{ doc.get_absolute_url_byop }}">{{ doc.numeroDocumento }}</a></td>
+                <td style="text-align: center; vertical-align:middle !important">{{ doc.dataDocumento|date:"d/m/Y" }}</td>
+                <td style="text-align: center; vertical-align:middle !important">{{ doc.valorDocumento }}</td>
+                <td style="text-align: center; vertical-align:middle !important">
+                  {% if not doc.photo %}
+                <a style="pointer-events:none; background-color:gray" data-toggle="modal" href="#{{ doc.id }}fiscal"class="btn btn-primary a-btn-slide-text btn-sm">
+                  <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                  <span><strong>Ver</strong></span> </a>
+                {% else %}
+                <a data-toggle="modal" href="#{{ doc.id }}fiscal"class="btn btn-primary a-btn-slide-text btn-sm">
+                  <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                  <span><strong>Ver</strong></span> </a>
+                {% endif %}
+              </td>
+                <td style="text-align: center; vertical-align:middle !important">
+                  {% if not doc.photo2 %}
+                  <a style="pointer-events:none; background-color:gray" data-toggle="modal" href="#{{ doc.id }}cartao"class="btn btn-primary a-btn-slide-text btn-sm">
+                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                    <span><strong>Ver</strong></span> </a>
+                  {% else %}
+                  <a data-toggle="modal" href="#{{ doc.id }}cartao"class="btn btn-primary a-btn-slide-text btn-sm">
+                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                    <span><strong>Ver</strong></span> </a>
+                  {% endif %}
+
+            </td>
+                <td style="text-align: center; vertical-align:middle !important">
+                  {% if doc.compradoMASTERCARD %}
+                    <span style="color:lightgreen" class="glyphicon glyphicon-ok" aria-hidden="true">
+                    {% else %}
+                    <span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true">
+                    {% endif %}
+                  </td>
+                <td style="text-align: center; vertical-align:middle !important">  {% if doc.compradoREDE %}
+                    <span style="color:lightgreen" class="glyphicon glyphicon-ok" aria-hidden="true">
+                    {% else %}
+                    <span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true">
+                    {% endif %}
+                  </td>
+
+                <td style="text-align: center; vertical-align:middle !important">
+                  {% if not doc.pendente %}
+                  <strong style="color:lightgreen">Validado</strong>
+                  {% else %}
+                  <a data-toggle="modal" href="{% url "participante:validadocfiscal" doc.id %}" class="btn btn-primary a-btn-slide-text btn-sm">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    <span><strong>Validar</strong></span> </a>
+                  {% endif %}
+                </td>
+
+
+                <td style="text-align: center; vertical-align:middle !important">{{ doc.observacao }}</td>
+
+              </tr>
+
+              <!-- Modal -->
+              <div class="modal fade" id="{{ doc.id }}fiscal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h2 class="modal-title" id="exampleModalLabel">Documento fiscal {{ doc.numeroDocumento }}</h2>
+
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      {% if doc.photo %}
+                      <img class="img-responsive sample-image" id="imgdoc" src="{{ doc.photo.url }}">
+                      {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-alert" id="button">Girar</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal include -->
+              <div class="modal fade" id="{{ doc.id }}cartao" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h2 class="modal-title" id="exampleModalLabel">Comprovante do cartão do {{ doc.numeroDocumento }}</h2>
+
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+
+                      {% if doc.photo2 %}
+                      <img class="img-responsive sample-image" id="imgdoc" src="{{ doc.photo2.url }}">
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-alert" id="button">Girar</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+          {% empty %}
+            <tr>
+              <td colspan="5">Nenhum documento lançado</td>
+            </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+      <nav>
+        <ul class="pagination">
+          {% if docs.has_previous %}
+          <li>
+            <a href="?page={{docs.previous_page_number}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% endif %}
+          {% for p in docs.paginator.page_range %}
+          <li class="{% if docs.number == p %}active{% endif %}"><a href="?page={{p}}">{{p}}</a></li>
+          {% endfor %}
+          {% if docs.has_next %}
+          <li>
+            <a href="?page={{docs.next_page_number}}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'mobile.html' %}
+
+{% load bootstrap4 %}
+{% block title %}Reimpressão{% endblock %}
+{% block content %}
+<h1 style="margin-top: 70px;">Buscar pelo CPF para reimpressão dos cupons</h1>
+<form method="get" class="form-group">
+  <div class="container-fluid col-md-3">
+      <input type="text" name="q" class="form-control cpf" placeholder="XXX.XXX.XXX-XX">
+      <p><input type="submit" class="btn btn-primary btn-lg" value="Buscar">
+      <a type="button" class="btn" href="{% url 'lojista:homepage' %}">Voltar</button></p>
+    </div>
+</form>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "mobile.html" %}
+
+{% block title %}Lojistas{% endblock %}
+
+{% block content %}
+    <h1 style="margin-top: 70px;">Lojistas cadastrados</h1>
+    <div id="user-list">
+        {% for lojista in lojistas %}
+            <div class="user">
+                <a href="#"><h2>nome: {{ lojista.fantasiaLojista }}</h2></a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

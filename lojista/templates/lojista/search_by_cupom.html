@@ -1,0 +1,16 @@
+{% extends 'mobile.html' %}
+
+{% load bootstrap4 %}
+{% block title %}Buscar pelo Cupom{% endblock %}
+{% block content %}
+<h1 style="margin-top: 70px;">Buscar pelo Cupom</h1>
+<form method="get" class="form-group">
+  <div class="container-fluid col-md-3">
+      <input type="text" name="q" class="form-control" placeholder="Número do Cupom">
+      <p><input type="submit" class="btn btn-primary btn-lg" value="Buscar">
+      <a type="button" class="btn" href="{% url 'lojista:homepage' %}">Voltar</button></p>
+    </div>
+</form>
+
+
+{% endblock %}

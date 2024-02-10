@@ -1,0 +1,24 @@
+{% extends "mobile.html" %}
+
+{% block title %}Log-in{% endblock %}
+
+{% block content %}
+    <h1 style="margin-top: 100px;">Entrar</h1>
+    <p>Por favor, use o seguinte formulario para logar no sistema:</p>
+    <form action="." method="post">
+        <!--{{ form.as_p }}-->
+        {{ form.non_field_errors }}
+        <div class="fieldWrapper">
+            {{ form.username.errors }}
+            <label for="{{ form.username.id_for_label }}">Usuario:</label>
+            {{ form.username }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.password.errors }}
+            <label for="{{ form.password.id_for_label }}">Senha:</label>
+            {{ form.password }}
+        </div>
+        {% csrf_token %}
+        <p><input type="submit" value="Log-in"></p>
+    </form>
+{% endblock %}

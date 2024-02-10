@@ -1,0 +1,9 @@
+{% extends "mobile.html" %}
+
+{% block title %}Deslogou{% endblock %}
+
+{% block content %}
+
+    <h1 style="margin-top: 70px;">Deslogou</h1>
+    <p>Você saiu com sucesso do sistema. Você pode <a href="{% url 'participante:login' %}">logar novamente</a>.</p>
+{% endblock %}
