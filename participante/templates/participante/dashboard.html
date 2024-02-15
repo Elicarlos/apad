@@ -1,9 +1,9 @@
 {% extends "mobile.html" %}
 {% load static %}
-{% block title %}Título{% endblock %}
+{% block title %}Painel{% endblock %}
 
 {% block content %}
-    <h1 style="margin-top: 100px;">Apad Social</h1>
+    <h1 style="margin-top: 100px;"></h1>
     <p>Bem vindo a sua conta. Você pode <a href="{% url 'participante:edit' %}">editar o seu perfil</a> ou <a href="{% url 'participante:password_change' %}">mudar a sua senha</a>.</p>
     <a type="button" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url 'participante:adddocfiscal' %}">
     enviar foto do comprovante
@@ -20,7 +20,7 @@
       <thead>
         <tr>
           <th style="text-align: center; vertical-align:middle !important">Nº Doc</th>
-          <th style="text-align: center; vertical-align:middle !important">Loja</th>
+          <!-- <th style="text-align: center; vertical-align:middle !important">Loja</th> -->
           <th style="text-align: center; vertical-align:middle !important">Data Pagamento</th>
           <th style="text-align: center; vertical-align:middle !important">Valor</th>
           <!-- <th style="text-align: center; vertical-align:middle !important">Observação</th> -->
@@ -41,7 +41,7 @@
               {% else %}
               <td style="text-align: center; vertical-align:middle !important">{{doc.numeroDocumento}}</td>
               {% endif %}
-              <td style="text-align: center; vertical-align:middle !important">{{ doc.lojista }}</td>
+              <!-- <td style="text-align: center; vertical-align:middle !important">{{ doc.lojista }}</td> -->
               <td style="text-align: center; vertical-align:middle !important">{{ doc.dataDocumento|date:"d/m/Y" }}</td>
               <td style="text-align: center; vertical-align:middle !important">{{ doc.valorDocumento }}</td>
               <!-- <td style="text-align: center; vertical-align:middle !important">{{ doc.observacao}}</td> -->
