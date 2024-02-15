@@ -1,0 +1,97 @@
+{% extends "mobile.html" %}
+{% load static %}
+{% block title %}Painel{% endblock %}
+
+{% block content %}
+    <h1 style="margin-top: 100px;"></h1>
+    <p>Bem vindo a sua conta. Você pode <a href="{% url 'participante:edit' %}">editar o seu perfil</a> ou <a href="{% url 'participante:password_change' %}">mudar a sua senha</a>.</p>
+  
+  <div class="row">    
+    <div class="col-md-4 order-md-2 mb-4 col-sm-12">
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted">Simulador</span>
+        <span class="badge badge-secondary badge-pill"></span>
+      </h4>
+      <ul class="list-group mb-3">
+        <li class="list-group-item d-flex justify-content-between lh-condensed" >
+          <div>
+            <h6 class="my-0"></h6>
+            <small class="text-muted">Quant</small>
+          </div>
+          <input type="number" name="quantidade" id="quantidade-input" step="1" min="0" oninput="atualiza_valor()">
+       
+          <span class="text-muted" style="color: white;">.</span>
+          <br>
+          <br>   
+       
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total</span>
+          <strong><span id="resultado-span">R$ 0,00</span></strong>
+        </li>
+      </ul>
+
+      <form class="card p-2" style="display: flex;">
+        <div class="input-group" >
+          
+          <input type="text" class="form-control"  name="pix" id="pix-id" value="1111111" readonly="true">
+          <div class="input-group-append">
+            <button class="btn btn-secondary" onclick="copiar()">Copiar Pix</button>
+          </div>
+          <a type="button" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url 'participante:adddocfiscal' %}">
+            enviar foto do comprovante</a>
+        </div>
+      </form>
+    </div> 
+  </div>
+
+    
+    
+
+ 
+<!-- <span style="color: red">O envio de documentos já foi encerrado! Te desejamos boa sorte!</span> -->
+
+
+
+<script>
+  function copiar(){
+    let inputElement = document.getElementById("pix-id")
+
+    inputElement.select()
+
+    document.execCommand("copy")
+
+    try {
+        /* Copia o texto para a área de transferência */
+        document.execCommand("copy");
+        alert("Pix copiado: \n\nApós o pagamento, não esquecer de enviar o comprovante");
+    } catch (err) {
+        console.error("Falha ao copiar texto: ", err);
+    }
+  }
+
+  function atualiza_valor() {
+            // Pega o elemento input
+            var inputElement = document.getElementById("quantidade-input");
+
+            // Valida se o valor é positivo
+            var valor = parseFloat(inputElement.value);
+            if (isNaN(valor) || valor < 0) {
+                alert("Por favor, insira um valor positivo.");
+                inputElement.value = 0;
+                return;
+            }
+
+            // Calcula o valor multiplicado por 50
+            var valorMultiplicado = valor * 50;
+
+            // Formata o valor como uma representação monetária
+            var valorFormatado = valorMultiplicado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            // Atualiza o texto no span
+            var resultadoSpan = document.getElementById("resultado-span");
+            resultadoSpan.textContent = valorFormatado;
+        }
+    </script>
+</script>
+
+{% endblock %}

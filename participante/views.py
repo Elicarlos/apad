@@ -147,6 +147,11 @@ def homepage(request):
     # return render(request, 'participante/coming_soon.html', {'section': 'homepage', 'lf': login_form})
     return render(request, 'participante/index.html', {'section': 'homepage', 'lf': login_form})
 
+
+def checkout(request):
+    return render(request, 'participante/checkout.html')
+
+
    
    
 

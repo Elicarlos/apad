@@ -5,16 +5,14 @@
 {% block content %}
     <h1 style="margin-top: 100px;"></h1>
     <p>Bem vindo a sua conta. Você pode <a href="{% url 'participante:edit' %}">editar o seu perfil</a> ou <a href="{% url 'participante:password_change' %}">mudar a sua senha</a>.</p>
-    <a type="button" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url 'participante:adddocfiscal' %}">
-    enviar foto do comprovante
-</a>
-
+  
+    <a type="button" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url 'participante:checkout' %}">
+      enviar foto do comprovante</a>
 <!-- <span style="color: red">O envio de documentos já foi encerrado! Te desejamos boa sorte!</span> -->
+<br>
 
-<br/>
-<br/>
 
-  <h1>Documentos Lançados</h1>
+  <h1>Comprovantes enviados</h1>
   <div id="doc-list" class="table-responsive">
     <table class="table table-hover table-striped">
       <thead>
@@ -85,5 +83,47 @@
 </div>
 </div>
 </div>
+
+<script>
+  function copiar(){
+    let inputElement = document.getElementById("pix-id")
+
+    inputElement.select()
+
+    document.execCommand("copy")
+
+    try {
+        /* Copia o texto para a área de transferência */
+        document.execCommand("copy");
+        alert("Pix copiado: \n\nApós o pagamento, não esquecer de enviar o comprovante");
+    } catch (err) {
+        console.error("Falha ao copiar texto: ", err);
+    }
+  }
+
+  function atualiza_valor() {
+            // Pega o elemento input
+            var inputElement = document.getElementById("quantidade-input");
+
+            // Valida se o valor é positivo
+            var valor = parseFloat(inputElement.value);
+            if (isNaN(valor) || valor < 0) {
+                alert("Por favor, insira um valor positivo.");
+                inputElement.value = 0;
+                return;
+            }
+
+            // Calcula o valor multiplicado por 50
+            var valorMultiplicado = valor * 50;
+
+            // Formata o valor como uma representação monetária
+            var valorFormatado = valorMultiplicado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            // Atualiza o texto no span
+            var resultadoSpan = document.getElementById("resultado-span");
+            resultadoSpan.textContent = valorFormatado;
+        }
+    </script>
+</script>
 
 {% endblock %}
