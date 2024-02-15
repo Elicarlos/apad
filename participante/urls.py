@@ -53,13 +53,13 @@ urlpatterns = [
 
     # path('cadastrar/', views.register, name='register'),
     # Removido final de campanha
-    path('cadastro1212122341355115451511gghghffdrrdsdsds/', views.register, name='register'),
+    path('cadastro/', views.register, name='register'),
     path('register/', views.register2, name='register-op'),
     path('edit/', views.edit, name='edit'),
 
     # Documentos Fiscais paths
     # Removido para final da campanha
-    path('adddocfiscal12312312313123103103012031203012/', views.adddocfiscal, name='adddocfiscal'),
+    path('adddocfiscal/', views.adddocfiscal, name='adddocfiscal'),
     re_path(r'^adddocfiscal/(?P<id>[-\w]+)/$', views.adddocfiscalbyop, name='adddocfiscalbyop'),
     path('editdocfiscal/', views.editdocfiscal, name='editdocfiscal'),
     re_path(r'^editdocfiscal/(?P<id>[-\w]+)/$', views.editdocfiscal, name='editdocfiscal'),

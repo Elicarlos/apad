@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Começou a maior campanha do varejo Piauiense! Natal de Prêmios Teresina traz grandes descontos e premios para você. CLIQUE e participe">
+  <meta name="description" content="Sorteio Beneficiente em prol da Aurora da Esperança">
   <meta name="author" content="Marko Solution">
     <title>{% block title %}{% endblock %}</title>
     <!-- Bootstrap Core CSS -->
@@ -37,9 +37,9 @@
 <body>
     <div id="header">
         {% if request.user.is_authenticated %}
-        <span class="logo"><a href="{% url 'participante:dashboard' %}">Natal de Prêmios Teresina 2023</a></span>
+        <span class="logo"><a href="{% url 'participante:dashboard' %}">Sorteio Beneficiente em prol da Aurora da Esperança</a></span>
         {% else %}
-        <span class="logo"><a href="{% url 'participante:homepage' %}">Natal de Prêmios Teresina 2023</a></span>
+        <span class="logo"><a href="{% url 'participante:homepage' %}">Sorteio Beneficiente em prol da Aurora da Esperança</a></span>
         {% endif %}
         {% if request.user.is_authenticated %}
         <ul class="menu">

@@ -1,17 +1,17 @@
 {% extends "mobile.html" %}
 {% load bootstrap4 %}
-{% block title %}Adicionar documento fiscal{% endblock %}
+{% block title %}Adicionar comprovante{% endblock %}
 
 {% block content %}
-    <h1 style="margin-top: 100px;">Novo documento Fiscal</h1>
-    <p>Você precisa preencher as seguinter informações referentes ao seu documento fiscal:</p>
+    <h1 style="margin-top: 100px;">Novo Comprovante</h1>
+    <p>Você precisa preencher as seguinter informações referentes ao seu pagamento:</p>
     <form action="." method="post" enctype="multipart/form-data" class="form-group">
       <div class="container-fluid col-md-6">
           {% bootstrap_form documentoFiscal_form layout='horizontal' show_help=False exclude='status' %}
 
         </div>
         {% csrf_token %}
-        <p><input type="submit" class="btn btn-primary btn-lg" value="Salvar">
+        <p><input type="submit" class="btn btn-primary btn-lg" value="Enviar">
         <a type="button" class="btn" href="{% url 'participante:dashboard' %}">Cancelar</button></p>
     </form>
     

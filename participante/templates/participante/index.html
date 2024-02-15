@@ -2,13 +2,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<title data-react-helmet="true">Liquida Teresina 2023 - A maior Campanha do Varejo Piauiense</title>
+<title data-react-helmet="true"></title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Começou a maior campanha do varejo Piauiense! Liquida Teresina 2023 traz grandes descontos e prêmios para você. CLIQUE e participe">
 <meta name="author" content="Marko Solution">
 <!-- <title>Liquida Teresina 2023</title> -->
-<link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/2023/favicon.ico' %}">
+{% comment %} <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/2023/favicon.ico' %}"> {% endcomment %}
 <!-- Bootstrap Core CSS -->
 <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
 <!-- Custom Fonts -->
@@ -143,7 +143,7 @@
 		<span class="icon-bar"></span>
 		</button>
 		
-		<a class="navbar-brand page-scroll" href="#page-top"><img src="{% static 'img/2023/logo.png' %}" alt="Logo Liquida Teresina 2023" id="logo" class="img-responsive" style="width:65px; margin-top: -2px;"></a>
+		{% comment %} <a class="navbar-brand page-scroll" href="#page-top"><img src="{% static 'img/2023/logo.png' %}" alt="Logo Liquida Teresina 2023" id="logo" class="img-responsive" style="width:65px; margin-top: -2px;"></a> {% endcomment %}
 	</div>
 	<!-- Collect the nav links, forms, and other content for toggling -->
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -154,17 +154,17 @@
 			<li>
 			<a class="page-scroll" href="#about">Como funciona</a>
 			</li>
-			<li>
+			{% comment %} <li>
 			<a class="page-scroll" href="#portfolio">Prêmios</a>
-			</li>
+			</li> {% endcomment %}
 			<li>
-			<a class="page-scroll" href="https://drive.google.com/file/d/1D9ZV28zus-AA7QgpS4Sqy5nFzx12DCCD/view?usp=drive_link">Regulamento</a>
-			</li>
+			{% comment %} <a class="page-scroll" href="https://drive.google.com/file/d/1D9ZV28zus-AA7QgpS4Sqy5nFzx12DCCD/view?usp=drive_link">Regulamento</a>
+			</li> {% endcomment %}
 			{% comment %} <li>
 			<a class="page-scroll" href="{% url 'participante:register' %}">Cadastre-se</a>
 			</li> {% endcomment %}
 			<li>
-			<a class="page-scroll" href="https://api.whatsapp.com/send/?phone=558699285100&text=Ola+preciso+de+suporte&app_absent=0">Suporte</a>
+			<a class="page-scroll" href="#">Suporte</a>
 			</li>
 			{% if request.user.is_authenticated and request.user.is_superuser %}
 			<li >
@@ -204,73 +204,14 @@
 
 <!-- Section Intro Slider
 ================================================== -->
-<div id="carousel-example-generic" class="carousel intro slide">
-	<!-- Indicators
-	<ol class="carousel-indicators">
-		<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-		<li data-target="#carousel-example-generic" data-slide-to="1"></li>
-		<li data-target="#carousel-example-generic" data-slide-to="2"></li>
-	</ol>
-	-->
-	<!-- Wrapper for slides -->
-	<div class="background-banner-liso" role="listbox" style="height: 100vh; display: flex; align-items: center; justify-content: center;">
-		<!-- First slide -->
-		<div class="item active">
-			<div class="carousel-caption">
-				<div data-animation="animated bounceInDown">
-					<!-- Conteúdo da animação -->
-				</div>
-	
-				<div data-animation="animated bounceInUp" class="logo-banner-prin">
-					<img src="{% static 'img/2023/banner.png'%}" class="img-responsive" alt="logo-banner" style="width: 30rem; margin: 0 auto 0 auto; margin-top: -8px;">
-				</div>
-	
-				<a href="{% url 'participante:register' %}" class="btn btn-primary btn-lg page-scroll blink_me" data-animation="animated fadeInRight">Cadastre-se aqui</a>
-				<h3 style="font-weight: bold;">
-					25/08/2023 A 03/09/2023
-				</h3>
-				<!-- Outro conteúdo -->
-			</div>
-		</div>
-	</div>
-	
-
-		<!-- /.item -->
-		<!-- Second slide
-		<div class="item" style="background-image:url(https://s3-eu-west-1.amazonaws.com/layanademo/s2-min.jpg)">
-			<div class="carousel-caption">
-				<h2 data-animation="animated zoomInLeft">
-				Responsive HTML Template </h2>
-				<h1 data-animation="animated zoomInRight">
-				Bootstrap Theme </h1>
-				<a href="#" class="btn btn-ghost btn-lg" data-animation="animated bounceIn">Cadastrar</a><a href="#" class="btn btn-primary btn-lg" data-animation="animated bounceIn">Learn More</a>
-			</div>
-		</div>
-		/.item -->
-		<!-- Third slide
-		<div class="item" style="background-image:url(https://s3-eu-west-1.amazonaws.com/layanademo/s3-min.jpg)">
-			<div class="carousel-caption">
-				<h2 data-animation="animated bounceInLeft">
-				Layana by WowThemesNet</h2>
-				<h1 data-animation="animated bounceInRight">
-				Happy Coding</h1>
-				<a href="#" class="btn btn-ghost btn-lg" data-animation="animated zoomInRight">Start Tour</a><a href="#" class="btn btn-primary btn-lg" data-animation="animated zoomInRight">Learn More</a>
-			</div>
-		</div>
-		/.item -->
-	</div>
-	<!-- /.carousel-inner -->
-	<!-- Controls (currently displayed none from style.css)
-	<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-	<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-	<span class="sr-only">Previous</span>
-	</a>
-	<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-	<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-	<span class="sr-only">Next</span>
-	</a>
-	-->
+<div id="carousel-example-generic" class="carousel intro slide" style="width: 100%; height: 100vh; margin-top: 5rem;">
+    <div class="carousel-inner">
+        <div class="item active">
+            <img class="img-premios-mobile2 img-responsive" src="{% static 'img/premios.jpeg' %}" alt="Prêmios" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+    </div>
 </div>
+
 <!-- /.carousel -->
 
 <!--Maquineta da rede -->
@@ -288,24 +229,23 @@
 		</div>
 	</div>
 </div > {% endcomment %}
-<div class="background-div" >
+{% comment %} <div class="background-div" >
 	<img src="{% static 'img/2023/maq.png'%}" alt="Maquininha da rede" class="img-responsive"  alt="logo-banner" id="maquineta" style="">
-</div>
-
+</div> {% endcomment %}
 
 <section id="tline">
 <section id="about" style="padding-bottom: 0px;">
-<div class="container">
-<div class="row">
+<div class="container" >
+<div class="row" >
 	<div class="col-lg-12 text-center">
-		<h2 class="section-heading"><b>Como participar</b></h2>
-		<br><br><br>
-		<video autobuffer controls autoplay style="max-width: 100%; ">
-	  <source id="mp4" src="https://liquida2023.s3.us-east-2.amazonaws.com/videos/liquida2023.mp4">
-	</video>
+		<h2 class="section-heading" style="margin-top: 10em;"><b>Como participar</b></h2>
+	
+		{% comment %} <video autobuffer controls autoplay style="max-width: 100%; ">
+	  	<source id="mp4" src="https://liquida2023.s3.us-east-2.amazonaws.com/videos/liquida2023.mp4">
+		</video> {% endcomment %}
 	</div>
 </div>
-<br><br><br>
+
 </div>
 <br/>
 <div class="container">
@@ -321,11 +261,12 @@
 					<div class="meta">
 						 Passo 1
 					</div>
+					<h3><a href="{% url 'participante:register' %}">Cadastre-se no Sistema:</a>
+						</h3>
 					
 					<p>
-						Separe as notas fiscais e os comprovantes dos cartões das compras
-						 realizadas nas lojas participantes durante o Liquida Teresina 2023, 
-						 no período de 25/08/2023 a 03/09/2023.
+						Realize o seu cadastro no sistema para começar a participar. 
+						Preencha as informações necessárias e crie a sua conta.
 					</p>
 					<!-- <a data-toggle="modal" href="#exampleModalLong">
   Lojas Parceiras
@@ -363,12 +304,11 @@
 					<div class="meta">
 						 Passo 2
 					</div>
+					<h3>Adquira 1 Número por Apenas R$ 50,00:</h3>
 				
 					<p>
-						 Utilize qualquer equipamento como acesso a internet
-						 (smartphone, tablet, ou computador) para entrar no site
-						 da campanha
-						 www.liquidateresina.com.br
+						Após o cadastro, adquira um número exclusivo por apenas R$ 50,00. 
+						Cada número aumenta as suas chances de participar dos sorteios emocionantes..
 					</p>
 				</div>
 			</div>
@@ -383,14 +323,10 @@
 					<div class="meta">
 						 Passo 3
 					</div>
-					<h3><a href="{% url "participante:register" %}"></a>Agora faça o seu cadastro</a></h3>
+					<h3>Envie uma Foto do Comprovante de Pagamento:</h3>
 					<p>
-						Os itens marcados com asteriscos são de preenchimento obrigatório 
-						para a validação do cupom. Os dados informados serão utilizados 
-						para entrar em contato com os contemplados, portanto, preste 
-						muita atenção ao cadastrar seus telefones, endereço e e-mail.
-
-					</p>
+						Após a compra do número, envie uma foto nítida do comprovante de pagamento. 
+						Isso é essencial para validar a transação e garantir a sua participação nos sorteios.					</p>
 				</div>
 			</div>
 			</li>
@@ -404,21 +340,19 @@
 					<div class="meta">
 						 Passo 4
 					</div>
+					<h3>Aguarde a Validação do Comprovante e a Geração dos Números:</h3>
 					
 					<p>
 						
-					Após seu cadastro, registre suas notas e comprovantes. 
-					A cada R$ 100,00 em compras, ganhe 1 cupom. 
-					Pagando com a maquininha da Rede, obtenha 3 cupons. 		
-
-
+						Agora, é só aguardar! Nossa equipe realizará a validação do comprovante e gerará os números correspondentes em até 48 horas. 
+						Fique atento para começar a concorrer aos prêmios incríveis.
 					</p>
 				</div>
 			</div>
 			</li>
 			<!-- /tline-->
 			<!-- tline-->
-			<li class="tline-item-left wow fadeInRight">
+			<!-- <li class="tline-item-left wow fadeInRight">
 			<div class="tline-item-content">
 				<div class="date-icon fa fa-bullhorn">
 				</div>
@@ -434,10 +368,10 @@
 					</p>
 				</div>
 			</div>
-			</li>
+			</li> -->
 			<!-- /tline-->
 			<!-- tline-->
-			<li class="tline-item-right wow fadeInRight">
+			<!-- <li class="tline-item-right wow fadeInRight">
 			<div class="tline-item-content">
 				<div class="date-icon fa fa-bullhorn">
 				</div>
@@ -455,7 +389,7 @@
 					</p>
 				</div>
 			</div>
-			</li>
+			</li> -->
 			<!-- /tline-->
 			<li class="tline-start">
 			<div class="tline-start-content">
@@ -476,22 +410,22 @@
 ================================================== -->
 <section class="imagem-premios" style="margin-bottom: -7%;">
 <div class="container-fluid">
-<div class="row">
+<!-- <div class="row">
 	<div class="col-lg-12 text-center">
 		<h2 class="section-heading" id="premio"><b>PRÊMIOS</b>
 		<hr class="primary">
 	</div>
-</div>
+</div> -->
 </div>
 
 
-<div class="background-orange">
+{% comment %} <div class="background-orange">
 	<div class="row no-gutter">
 		<div class="col-12 text-center">
-		  <img class="img-premios-mobile2" src="{% static 'img/2023/premios.png' %}" id="portfolio" class="img-responsive" style="display: inline-block;">
+		  <img class="img-premios-mobile2" src="{% static 'img/premios.jpeg' %}" id="portfolio" class="img-responsive" style="display: inline-block;">
 		</div>
 	  </div>
-</div>
+</div> {% endcomment %}
 
   
   
@@ -513,7 +447,7 @@
 			<div class="col-md-3">
 				<div class="funfacts text-center">
 					<div class="icon">
-						<a href="https://www.instagram.com/cdlteresina/"target="_blank"><i class="fa fa-instagram"></i></a>
+						<a href="#"target="_blank"><i class="fa fa-instagram"></i></a>
 					</div>
 					<h4>Instagram</h4>
 				</div>
@@ -521,7 +455,7 @@
 			<div class="col-md-3">
 				<div class="funfacts text-center">
 					<div class="icon">
-						<a href="https://www.facebook.com/cdlteresina/" target="_blank"><i class="fa fa-facebook"></i></a>
+						<a href="#" target="_blank"><i class="fa fa-facebook"></i></a>
 					</div>
 					<h4>Facebook</h4>
 				</div>
@@ -530,16 +464,16 @@
 			<div class="col-md-3">
 				<div class="funfacts text-center">
 					<div class="icon">
-						<a href="http://www.cdlteresina.com.br/" target="_blank"><i class="fa fa-building"></i></a>
+						<a href="#" target="_blank"><i class="fa fa-building"></i></a>
 					</div>
-					<h4>CDL Teresina</h4>
+					<h4>Site</h4>
 				</div>
 			</div>
 
 			<div class="col-md-3">
 				<div class="funfacts text-center">
 					<div class="icon" id="suporte">
-						<a href="https://wa.me/5586999285100?text=Ola%20preciso%20de%20suporte" target="_blank"><i class="fa fa-whatsapp" aria-hidden="true"></i></a>
+						<a href="#" target="_blank"><i class="fa fa-whatsapp" aria-hidden="true"></i></a>
 					</div>
 					<h4>Suporte</h4>
 				</div>
@@ -586,9 +520,7 @@
 
 <!-- Section Footer
 ================================================== -->
-<div class="img-patrocinio" style="width: 100%; text-align: center;">
-	<img src="{% static 'img/2023/patron.png' %}" style="max-width: 100%;" class="patrocinador">
-  </div>
+
 <section class="bg-dark" >
 <div class="container">
 <div class="row">

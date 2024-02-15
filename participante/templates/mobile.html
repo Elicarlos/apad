@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Começou a maior campanha do varejo Piauiense! Liquida Teresina 2023 traz grandes descontos e premios para você. CLIQUE e participe">
+  <meta name="description" content="Sorteio Beneficiente em prol da Aurora da Esperança">
   <meta name="author" content="Marko Solution">
     <title>{% block title %}{% endblock %}</title>
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/2023/favicon.ico' %}">
@@ -48,9 +48,9 @@
             <span class="icon-bar"></span>
         </button>
         {% if request.user.is_authenticated %}
-          <span class="logo navbar-brand page-scroll"><a href="#"><img src="{% static 'img/2023/logo.png' %}" alt="Liquida Teresina 2023" id="logo" class="img-responsive" style="width:65px; margin-top: -2px;"></a></span>
+          <span class="logo navbar-brand page-scroll"><a href="#">Home</a></span>
         {% else %}
-          <span class="logo navbar-brand page-scroll"><a href="#"><img src="{% static 'img/2023/logo.png' %}" alt="Liquida Teresina 2023" id="logo" class="img-responsive" style="width:65px; margin-top: -2px;"></a></span>
+          <span class="logo navbar-brand page-scroll"><a href="#">Home</a></span>
         {% endif %}
 	</div>
     {% if request.user.is_authenticated %}
