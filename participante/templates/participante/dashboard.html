@@ -1,6 +1,6 @@
 {% extends "mobile.html" %}
 {% load static %}
-{% block title %}Liquida Teresina 2023{% endblock %}
+{% block title %}Título{% endblock %}
 
 {% block content %}
     <h1 style="margin-top: 100px;">Apad Social</h1>
@@ -21,9 +21,9 @@
         <tr>
           <th style="text-align: center; vertical-align:middle !important">Nº Doc</th>
           <th style="text-align: center; vertical-align:middle !important">Loja</th>
-          <th style="text-align: center; vertical-align:middle !important">Data Compra</th>
-          <th style="text-align: center; vertical-align:middle !important">Valor do Doc</th>
-          <th style="text-align: center; vertical-align:middle !important">Observação</th>
+          <th style="text-align: center; vertical-align:middle !important">Data Pagamento</th>
+          <th style="text-align: center; vertical-align:middle !important">Valor</th>
+          <!-- <th style="text-align: center; vertical-align:middle !important">Observação</th> -->
           <th style="text-align: center; vertical-align:middle !important">Status</th>
           <th style="text-align: center; vertical-align:middle !important">
           {% if not doc.pendente %}
@@ -44,7 +44,7 @@
               <td style="text-align: center; vertical-align:middle !important">{{ doc.lojista }}</td>
               <td style="text-align: center; vertical-align:middle !important">{{ doc.dataDocumento|date:"d/m/Y" }}</td>
               <td style="text-align: center; vertical-align:middle !important">{{ doc.valorDocumento }}</td>
-              <td style="text-align: center; vertical-align:middle !important">{{ doc.observacao}}</td>
+              <!-- <td style="text-align: center; vertical-align:middle !important">{{ doc.observacao}}</td> -->
               <td style="text-align: center; vertical-align:middle !important">
                 {% if not doc.pendente %}
                   <span style="color:lightgreen" class="glyphicon glyphicon-ok" aria-hidden="true"> <p> validado </p> </span>
