@@ -22,14 +22,14 @@ DEBUG = False
 
 # Teste
 # ALLOWED_HOSTS = ['127.0.0.1', 'www.liquidateresina.com.br', '.liquidateresina.com.br']
-ALLOWED_HOSTS = ['127.0.0.1', 'https://lqd2023-546e52ab8180.herokuapp.com', '.lqd2023-546e52ab8180.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'https://apad-a3824e4005be.herokuapp.com/', '.apad-a3824e4005be.herokuapp.com/']
 # ALLOWED_HOSTS = ['*']
 
 # SECURE_SSL_REDIRECT = True
 
 # Ajuda a abrir cupons na no firefox Importante
 SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'ALLOW-FROM https://lqd2023-546e52ab8180.herokuapp.com/'
+X_FRAME_OPTIONS = 'ALLOW-FROM https://apad-a3824e4005be.herokuapp.com/'
 
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
