@@ -57,35 +57,34 @@ class ProfileRegistrationForm(forms.ModelForm):
               ('RJ', 'Rio de Janeiro'), ('RN', 'Rio Grande do Norte'), ('RS', 'Rio Grande do Sul'),
               ('RO', 'Rondônia'), ('RR', 'Roraima'), ('SC', 'Santa Catarina'), ('SP', 'São Paulo'), ('SE', 'Sergipe'),
               ('TO', 'Tocantins'))
-    sexo = forms.ChoiceField(choices=CHOICES_SEXO, widget=forms.Select(attrs={'id' : 'sexo'}))
-    estado = forms.ChoiceField(required=True, choices=STATE_CHOICES, widget=forms.Select(attrs={'id' : 'estados'}))
-    pergunta = forms.CharField(required=True,widget=forms.TextInput(attrs={'placeholder':'Sua resposta', 'autocomplete':'off'}))
+    #sexo = forms.ChoiceField(choices=CHOICES_SEXO, widget=forms.Select(attrs={'id' : 'sexo'}))
+    #estado = forms.ChoiceField(required=True, choices=STATE_CHOICES, widget=forms.Select(attrs={'id' : 'estados'}))
+    #pergunta = forms.CharField(required=True,widget=forms.TextInput(attrs={'placeholder':'Sua resposta', 'autocomplete':'off'}))
     nome = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder':'Nome Completo*', 'autocomplete':'off'}))
-    RG = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder':'RG*', 'autocomplete':'off'}))
+    #RG = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder':'RG*', 'autocomplete':'off'}))
     CPF = BRCPFField(required=False, max_length=14, min_length=11, widget=forms.TextInput(attrs={'placeholder':'CPF*',
                                                                                                 'class':'cpf', 'type':'hidden'}))
     foneCelular1 = forms.CharField( required=False, widget=forms.TextInput(attrs={'placeholder':'Celular*',
                                                                                   'class': 'phone_with_ddd', 'autocomplete':'off'}))
-    whatsapp = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder':'Whatsapp',
-                                                                                  'class': 'phone_with_ddd', 'autocomplete':'off'}))
-    facebook = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder':'Facebook', 'autocomplete':'off'}))
-    twitter = forms.CharField( required=False, widget=forms.TextInput(attrs={'placeholder':'Twitter', 'autocomplete':'off'}) )
-    endereco = forms.CharField( required=True, widget=forms.TextInput(attrs={'placeholder':'Endereço*', 'autocomplete':'off'}))
-    enderecoNumero = forms.CharField( required=False, widget=forms.TextInput(attrs={'placeholder':'Nº da casa', 'autocomplete':'off'}))
-    enderecoComplemento = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder':'Complemento', 'autocomplete':'off'}))
-    bairro = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder':'Bairro*', 'autocomplete':'off'}))
-    cidade = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder':'Cidade*', 'autocomplete':'off'}))
-    estado = forms.ChoiceField(required=True, choices=CHOICES_STATES, widget=forms.Select(attrs={'id' : 'estados'}))
+    #whatsapp = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder':'Whatsapp', 'class': 'phone_with_ddd', 'autocomplete':'off'}))
+    #facebook = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder':'Facebook', 'autocomplete':'off'}))
+    #twitter = forms.CharField( required=False, widget=forms.TextInput(attrs={'placeholder':'Twitter', 'autocomplete':'off'}) )
+    #endereco = forms.CharField( required=True, widget=forms.TextInput(attrs={'placeholder':'Endereço*', 'autocomplete':'off'}))
+    #enderecoNumero = forms.CharField( required=False, widget=forms.TextInput(attrs={'placeholder':'Nº da casa', 'autocomplete':'off'}))
+    #enderecoComplemento = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder':'Complemento', 'autocomplete':'off'}))
+    #bairro = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder':'Bairro*', 'autocomplete':'off'}))
+    #cidade = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder':'Cidade*', 'autocomplete':'off'}))
+    #estado = forms.ChoiceField(required=True, choices=CHOICES_STATES, widget=forms.Select(attrs={'id' : 'estados'}))
     # estado = forms.ChoiceField(required=True, widget=forms.TextInput(attrs={'placeholder':'Estado*', 'autocomplete':'off'}))
-    CEP = BRZipCodeField(required=False, label='Cep*' , widget=forms.TextInput(attrs={'class':'cep', 'placeholder':'CEP*', 'autocomplete':'off'}))
-    pergunta = forms.CharField( required=False, widget=forms.TextInput(attrs={'placeholder':'Liquida Teresina'}))
+    #CEP = BRZipCodeField(required=False, label='Cep*' , widget=forms.TextInput(attrs={'class':'cep', 'placeholder':'CEP*', 'autocomplete':'off'}))
+    #pergunta = forms.CharField( required=False, widget=forms.TextInput(attrs={'placeholder':'Promoção'}))
 
     class Meta:
         model = Profile
-        fields = ('nome', 'CPF', 'RG', 'sexo', 'foneFixo', 'foneCelular1', 'CEP', 'foneCelular2', 'foneCelular3',
+        fields = ('nome', 'CPF', 'sexo', 'foneFixo', 'foneCelular1', 'CEP', 'foneCelular2', 'foneCelular3',
                   'whatsapp','facebook','twitter','endereco','enderecoNumero','enderecoComplemento' ,'bairro','cidade', 'estado',
                    'pergunta' )
-        exclude = ('user', 'dataCadastro', 'cadastradoPor', 'ativo', 'pendente')
+        exclude = ('user', 'RG', 'sexo', 'CEP','dataCadastro','endereco','enderecoNumero','enderecoComplemento' ,'bairro','cidade', 'estado', 'cadastradoPor', 'ativo', 'pendente')
 
     def clean_RG(self):
         RG = self.cleaned_data.get('RG')
