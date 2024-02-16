@@ -287,6 +287,8 @@ DEBUG_PROPAGATE_EXCEPTIONS = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+QR_CODE_DIR = os.path.join(BASE_DIR, 'qrcode')
+
 django_heroku.settings(locals())
 
 

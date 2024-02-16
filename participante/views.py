@@ -25,6 +25,8 @@ from django.db import transaction
 from .forms import LoginForm, CepForm
 import requests
 from django.contrib.auth.models import Group
+from pixqrcodegen import Payload
+from django.conf import settings
 
 
 
@@ -149,6 +151,12 @@ def homepage(request):
 
 
 def checkout(request):
+    nome = request.user.profile.nome
+
+    qr_code_path = settings.QR_CODE_DIR
+    payload = Payload(nome, 'ffc5effd-f33d-4959-b115-da3e9954c1a4', '1,00', 'Teresina', 'Apad', qr_code_path)
+    payload.gerarPayload()
+    
     return render(request, 'participante/checkout.html')
 
 
