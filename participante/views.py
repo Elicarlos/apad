@@ -322,7 +322,8 @@ def adddocfiscal(request):
                                                     files=request.FILES)        
         
         # cnpj = documentoFiscal_form['lojista_cnpj'].value()
-        cnpj = '10.570.679/0001-08'         
+        cnpj = '10.570.679/0001-08'
+               
 
         try:
             lojista = Lojista.objects.get(CNPJLojista=cnpj)
