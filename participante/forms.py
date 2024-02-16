@@ -128,17 +128,17 @@ class UserAddCoupom(forms.ModelForm):
 
 
 class UserAddFiscalDocForm(forms.ModelForm):
-    lojista_cnpj = BRCNPJField(label='CNPJ da loja*', required=True, max_length=18, widget=forms.TextInput(attrs={'class':'cnpj', 'autocomplete':'off'}))
+    lojista_cnpj = BRCNPJField(label='CNPJ', required=True, max_length=18, widget=forms.TextInput(attrs={'class':'cnpj', 'autocomplete':'off'}))
     dataDocumento = forms.DateField(label='Data*',widget=forms.TextInput(attrs={ 'class':'date', 'autocomplete':'off'}))
     valorDocumento = forms.DecimalField(max_digits=8, decimal_places=2, localize=True, label='Valor*', widget=forms.TextInput(attrs={'autocomplete':'off', 'id': 'id_add_doc'}))
-    # valorDocumento = forms.CharField(label='Valor*', widget=forms.TextInput(attrs={'autocomplete':'off'}))
-    numeroDocumento = forms.CharField(label='Número do documento*', widget=forms.TextInput(attrs={ 'autocomplete':'off'}))
-    photo = forms.FileField(label='Documento fiscal', required=True)
-    photo2 = forms.FileField(label='Comprovante do cartão', required=False)
+    
+    numeroDocumento = forms.CharField(label='Identificador*', widget=forms.TextInput(attrs={ 'autocomplete':'off'}))
+    photo = forms.FileField(label='Comprovante PIX', required=True)
+  
     class Meta:
         model = DocumentoFiscal
-        fields = ('lojista_cnpj', 'vendedor', 'numeroDocumento', 'dataDocumento', 'valorDocumento', 'compradoREDE',
-                    'photo', 'photo2')
+        fields = ('lojista_cnpj', 'numeroDocumento', 'dataDocumento', 'valorDocumento', 'photo')
+        exclude = ('photo2',)
         widgets = {
             #'lojista': forms.HiddenInput,
             'user': forms.HiddenInput,
@@ -148,6 +148,7 @@ class UserAddFiscalDocForm(forms.ModelForm):
             'valorMASTERCARD': forms.HiddenInput,
             'valorVirtual': forms.HiddenInput,
         }
+        
         
 
     def clean_numeroDocumento(self):

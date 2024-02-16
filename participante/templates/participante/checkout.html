@@ -30,14 +30,15 @@
         </li>
       </ul>
 
-      <form class="card p-2" style="display: flex;">
+      <form method="post" class="card p-2" style="display: flex;">
+        {% csrf_token %}
         <div class="input-group" >
           
-          <input type="text" class="form-control"  name="pix" id="pix-id" value="1111111" readonly="true">
+          <input type="text" class="form-control"  name="pix" id="pix-id" value={{ chave_pix }} readonly="true">
           <div class="input-group-append">
-            <button class="btn btn-secondary" onclick="copiar()">Copiar Pix</button>
+            <button class="btn btn-secondary">Copiar Pix</button>
           </div>
-          <a type="button" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url 'participante:adddocfiscal' %}">
+          <a type="submit" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url 'participante:adddocfiscal' %}">
             enviar foto do comprovante</a>
         </div>
       </form>

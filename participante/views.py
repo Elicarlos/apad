@@ -150,14 +150,36 @@ def homepage(request):
     return render(request, 'participante/index.html', {'section': 'homepage', 'lf': login_form})
 
 
-def checkout(request):
+def processar_checkout_post(request):
+    """
+    Processa o checkout para o método POST.
+    """
     nome = request.user.profile.nome
-
     qr_code_path = settings.QR_CODE_DIR
-    payload = Payload(nome, 'ffc5effd-f33d-4959-b115-da3e9954c1a4', '1,00', 'Teresina', 'Apad', qr_code_path)
-    payload.gerarPayload()
-    
-    return render(request, 'participante/checkout.html')
+    payload = Payload(nome, 'ffc5effd-f33d-4959-b115-da3e9954c1a4', '1,00', 'Teresina', '141414141414', qr_code_path)
+    return payload.gerarPayload()
+
+def checkout(request):
+    """
+    View para processar o checkout.
+    """
+    context = {
+        'chave_pix': 'ffc5effd-f33d-4959-b115-da3e9954c1a4',
+        'payload': None
+    }
+
+    if request.method == 'POST':
+        # Processamento do checkout para o método POST
+        print('POST')
+        context['payload'] = processar_checkout_post(request)
+        print(context)
+        return render(request, 'participante/checkout.html', context)
+
+    # Se não for um método POST, trata-se de um GET
+    print('GET')
+    return render(request, 'participante/checkout.html', context)
+
+
 
 
    
@@ -293,10 +315,14 @@ def user_edit(request, id):
 @login_required
 @transaction.atomic
 def adddocfiscal(request):
+    
+
     if request.method == 'POST':
         documentoFiscal_form = UserAddFiscalDocForm(request.POST,
-                                                    files=request.FILES)
-        cnpj = documentoFiscal_form['lojista_cnpj'].value()              
+                                                    files=request.FILES)        
+        
+        # cnpj = documentoFiscal_form['lojista_cnpj'].value()
+        cnpj = '10.570.679/0001-08'         
 
         try:
             lojista = Lojista.objects.get(CNPJLojista=cnpj)
@@ -316,7 +342,7 @@ def adddocfiscal(request):
                                   'participante/doc_fiscal_done.html',
                                   {'new_documentoFiscal': new_documentoFiscal})
         except Lojista.DoesNotExist:
-            messages.error(request, "Lojista não cadastrado na base de lojistas do Liquida Teresina 2023 <a href='https://wa.me/5586999950081?text=Ola%20preciso%20de%20suporte' style='color: #FFF'>     <b> |Informar ao Suporte|</b></a>")
+            messages.error(request, "Lojista não cadastrado na base de dados <a href='https://wa.me/5586999950081?text=Ola%20preciso%20de%20suporte' style='color: #FFF'>     <b> |Informar ao Suporte|</b></a>")
             documentoFiscal_form = UserAddFiscalDocForm()
             return render(request, 'participante/doc_fiscal_add.html', {'documentoFiscal_form': documentoFiscal_form})
     else:
