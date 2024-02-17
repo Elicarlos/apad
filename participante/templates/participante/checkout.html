@@ -1,98 +1,181 @@
 {% extends "mobile.html" %}
 {% load static %}
-{% block title %}Painel{% endblock %}
+{% block title %}Chekout{% endblock %}
 
 {% block content %}
-    <h1 style="margin-top: 100px;"></h1>
-    <p>Bem vindo a sua conta. Você pode <a href="{% url 'participante:edit' %}">editar o seu perfil</a> ou <a href="{% url 'participante:password_change' %}">mudar a sua senha</a>.</p>
-  
-  <div class="row">    
-    <div class="col-md-4 order-md-2 mb-4 col-sm-12">
-      <h4 class="d-flex justify-content-between align-items-center mb-3">
-        <span class="text-muted">Simulador</span>
-        <span class="badge badge-secondary badge-pill"></span>
-      </h4>
-      <ul class="list-group mb-3">
-        <li class="list-group-item d-flex justify-content-between lh-condensed" >
-          <div>
-            <h6 class="my-0"></h6>
-            <small class="text-muted">Quant</small>
-          </div>
-          <input type="number" name="quantidade" id="quantidade-input" step="1" min="0" oninput="atualiza_valor()">
-       
-          <span class="text-muted" style="color: white;">.</span>
-          <br>
-          <br>   
-       
-        <li class="list-group-item d-flex justify-content-between">
-          <span>Total</span>
-          <strong><span id="resultado-span">R$ 0,00</span></strong>
-        </li>
-      </ul>
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+       input[type=number]::-webkit-outer-spin-button {
+           -webkit-appearance: none;
+           margin: 0;
+       }
+   </style>
 
-      <form method="post" class="card p-2" style="display: flex;">
-        {% csrf_token %}
-        <div class="input-group" >
-          
-          <input type="text" class="form-control"  name="pix" id="pix-id" value={{ chave_pix }} readonly="true">
-          <div class="input-group-append">
-            <button class="btn btn-secondary">Copiar Pix</button>
-          </div>
-          <a type="submit" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url 'participante:adddocfiscal' %}">
-            enviar foto do comprovante</a>
+<!-- Adicione a div do spinner -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <p>Carregando...</p>
+                <div class="spinner"></div>
+                <!-- Ou use a classe 'glyphicon-refresh' para um ícone de spinner específico -->
+            </div>
         </div>
-      </form>
-    </div> 
-  </div>
+    </div>
+</div>
 
+<div class="row" style=" margin: 200px;">
+    <div class="col-xs-12 col-md-6" id="finalizando-pix__div" style="display: none;">
+        <p>Finalizando com: PIX <img src="{% static 'img/logo-pix.png' %}" alt="" style="width: 2rem;"></p>
+        <div class="panel panel-default">
+            <div class="panel-body">               
+                
+                    <div class="card">                        
+                        <p>Seu codigo expira em </p>
+                        <p>00:00:15 </p>
+                        <p>
+                            pix copiar colar
+                        </p>
+                        <button>COPIAR CODIGO</button>
+                    </div>
+            </div>
+
+            <div class="panel-footer">
+                <span><b>Total a pagar por <span id="total_pagar_quantidade"></span> cupons</b></span>
+                <span id="total_pagar_final"></span>
+            </div>
+        </div>      
+    </div>
     
-    
+    <div class="col-xs-12 col-md-6" id="forma-pagemento__div">
+        <p>Forma de Pagamento</p>
+        <div class="panel panel-default">
+            
+            <div class="panel-body">               
+                
+                   
+                    <img src="{% static 'img/logo-pix.png' %}" alt="" style="width: 3rem;">
+                    <span><b>PIXs</b></span>
+                    <span>></span>
+                    <form method="post" action="/checkout/pagamento/"  onsubmit="return pagamento();">
+                        {% csrf_token %}
+                        <button id="pagarButton" onclick="mostraFinalizandoPix()">Escolher</button>
+                    </form>
+            </div>
+        </div>      
+    </div>
 
- 
-<!-- <span style="color: red">O envio de documentos já foi encerrado! Te desejamos boa sorte!</span> -->
+    <div class="col-xs-12 col-md-6" style="width: 45rem;">
+        <p>Resumo de Pagamento</p>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" 
+                        id="diminui__button" type="button" onclick="alterarQuantidade(-1)" style="size: 15px;">-</button>
+                    </span>
+                <input class="form-control"  type="number" value="0"  name="quantidade" id="quantidade__input" min="0" step="1" oninput="atualizar_valor()">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" id="aumenta__button" onclick="alterarQuantidade(1)" type="button">+</button>
+                  </span>
 
-
+                </div>
+                
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="badge" id="quantidade__badge">0</span>
+                        Quantidade
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">50</span>
+                        Valor Unitario
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge" id="total__badge">R$ 00,00</span>
+     
+                        <b>Total</b>
+                    </li>
+                </ul>
+            </div>
+        </div>       
+    </div>
+</div>
 
 <script>
-  function copiar(){
-    let inputElement = document.getElementById("pix-id")
+    function atualizar_valor(){
+        let quantidade_input = document.getElementById('quantidade__input')
 
-    inputElement.select()
+        let valor = parseFloat(quantidade_input.value)
 
-    document.execCommand("copy")
-
-    try {
-        /* Copia o texto para a área de transferência */
-        document.execCommand("copy");
-        alert("Pix copiado: \n\nApós o pagamento, não esquecer de enviar o comprovante");
-    } catch (err) {
-        console.error("Falha ao copiar texto: ", err);
-    }
-  }
-
-  function atualiza_valor() {
-            // Pega o elemento input
-            var inputElement = document.getElementById("quantidade-input");
-
-            // Valida se o valor é positivo
-            var valor = parseFloat(inputElement.value);
-            if (isNaN(valor) || valor < 0) {
+        if (isNaN(valor) || valor < 0) {
                 alert("Por favor, insira um valor positivo.");
                 inputElement.value = 0;
                 return;
-            }
-
-            // Calcula o valor multiplicado por 50
-            var valorMultiplicado = valor * 50;
-
-            // Formata o valor como uma representação monetária
-            var valorFormatado = valorMultiplicado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-            // Atualiza o texto no span
-            var resultadoSpan = document.getElementById("resultado-span");
-            resultadoSpan.textContent = valorFormatado;
         }
-    </script>
+
+        let valorMultiplicado = valor * 50
+
+        let = quantidade_badge = document.getElementById('quantidade__badge')
+        quantidade_badge.textContent = valor
+
+        let total_pagar_quantidade = document.getElementById('total_pagar_quantidade')
+
+        total_pagar_quantidade.textContent = valor
+
+        var valorFormatado = valorMultiplicado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        var resultadoSpan = document.getElementById("total__badge");
+
+        resultadoSpan.textContent = valorFormatado;
+
+        let total_pagar_final = document.getElementById('total_pagar_final')
+        total_pagar_final.textContent = valorFormatado
+    }
+
+    function alterarQuantidade(delta){
+        let quantidade_input = document.getElementById('quantidade__input')
+
+        let valor = parseInt(quantidade_input.value) + delta
+
+        if (valor < 1 ){
+            // alert('Quantidade nao pode ser negativa')
+            return;
+        }
+
+        quantidade_input.value = valor
+
+        atualizar_valor()
+    }
+
+    function mostraFinalizandoPix() {
+        let formaPagamento = document.getElementById('forma-pagemento__div');
+        formaPagamento.style.display = 'none';
+        
+        let finalizandoPix = document.getElementById('finalizando-pix__div');
+        finalizandoPix.style.display = 'block';
+
+        // return false
+    }
+
+    function pagamento() {
+    // Lógica de pagamento, se necessário
+    console.log('Efetuando pagamento...');
+
+    // Troca para a div finalizandoPix
+    mostraFinalizandoPix();
+
+    // Retorno false para evitar o envio do formulário
+    return false
+
+}
+        
 </script>
 
 {% endblock %}
+
+    
+    
+
+
+
+

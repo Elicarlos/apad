@@ -121,6 +121,14 @@ class DocumentoFiscal(models.Model):
         email.send()
 
 
+class Transacao(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    valor_total = models.DecimalField(max_digits=15, decimal_places=2)
+    data_transacao = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Transacao de { self.user.username } em { self.data_transacao}'
+
 # class Ticket(models.Model):
 #     ticketUser =  models.ForeignKey(User, related_name='ticket_user_set', on_delete=models.PROTECT)
 #     ticketDocumentoFiscal = models.ForeignKey(DocumentoFiscal, related_name='ticket_doc_set', null=False, blank=False, default=1, on_delete=models.PROTECT)

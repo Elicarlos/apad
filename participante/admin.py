@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from .models import Profile, DocumentoFiscal
+from .models import Profile, DocumentoFiscal, Transacao
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from django.contrib.auth.admin import UserAdmin
@@ -9,6 +9,8 @@ from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.urls import reverse
 from import_export.admin import ImportExportActionModelAdmin
+
+admin.site.register(Transacao)
 
 class UserResource(resources.ModelResource):
 

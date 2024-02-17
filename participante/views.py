@@ -1,6 +1,7 @@
 from calendar import month
 from datetime import datetime
 from decimal import Decimal
+import json
 from pydoc import Doc
 from unicodedata import decimal
 from unittest import result
@@ -12,7 +13,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from yaml import DocumentEndEvent
 from .forms import *
-from .models import Profile, DocumentoFiscal
+from .models import Profile, DocumentoFiscal, Transacao
 from lojista.models import Lojista
 from .filters import UserFilter, DocFilter
 from django.db.models.functions import Lower, Upper
@@ -27,6 +28,9 @@ import requests
 from django.contrib.auth.models import Group
 from pixqrcodegen import Payload
 from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 
@@ -150,13 +154,13 @@ def homepage(request):
     return render(request, 'participante/index.html', {'section': 'homepage', 'lf': login_form})
 
 
-def processar_checkout_post(request):
+def processar_checkout_post(nome_usuario, valor_total, codigo_transacao ):
     """
     Processa o checkout para o método POST.
     """
-    nome = request.user.profile.nome
+    
     qr_code_path = settings.QR_CODE_DIR
-    payload = Payload(nome, 'ffc5effd-f33d-4959-b115-da3e9954c1a4', '1,00', 'Teresina', '141414141414', qr_code_path)
+    payload = Payload(nome_usuario, 'ffc5effd-f33d-4959-b115-da3e9954c1a4', valor_total, 'Teresina', codigo_transacao, qr_code_path)
     return payload.gerarPayload()
 
 def checkout(request):
@@ -169,16 +173,44 @@ def checkout(request):
     }
 
     if request.method == 'POST':
-        # Processamento do checkout para o método POST
-        print('POST')
-        context['payload'] = processar_checkout_post(request)
-        print(context)
+        
+        
         return render(request, 'participante/checkout.html', context)
 
     # Se não for um método POST, trata-se de um GET
-    print('GET')
+   
     return render(request, 'participante/checkout.html', context)
 
+def pagamento(request):
+    if request.method == "POST":
+        try:
+            usuario = request.user
+            nome_usuario = request.user.profile.nome
+            data = request.POST
+            print(data)
+            
+
+           
+
+            transacao = Transacao(user=usuario, valor_total=valor_total)
+
+            transacao.save()
+
+            numero_transacao = transacao.id
+
+            print(numero_transacao)
+            print(nome_usuario)
+            print(valor_total)
+
+            processar_checkout_post(nome_usuario, valor_total, numero_transacao)
+        
+            return JsonResponse({'numero_transacao': numero_transacao})
+        except Exception as e:
+           return JsonResponse({'error': str(e)}, status=400)
+    else:
+        return JsonResponse({'error': 'Método não permitido'}, status=405)
+
+            
 
 
 

@@ -22,6 +22,7 @@ urlpatterns = [
     #Relatorios
     path('dados_campanha/', views.dados_campanha, name="dados_campanha"),
     path('checkout/', views.checkout, name="checkout"),
+    path('checkout/pagamento/',  views.pagamento, name='pagamento'),
     path('resumo_lojistas/', views.resumo_lojistas, name='resumo_lojistas'),
     path('relatorios_camp/', views.relatorios_camp, name='relatorios_camp'),
     path('graficos/', views.graficos, name="graficos"),
