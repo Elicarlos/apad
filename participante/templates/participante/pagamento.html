@@ -1,0 +1,229 @@
+{% extends "mobile.html" %}
+{% load static %}
+{% block title %}Chekout{% endblock %}
+
+{% block content %}
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+       input[type=number]::-webkit-outer-spin-button {
+           -webkit-appearance: none;
+           margin: 0;
+       }
+   </style>
+
+<!-- Adicione a div do spinner -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <p>Carregando...</p>
+                <div class="spinner"></div>
+                <!-- Ou use a classe 'glyphicon-refresh' para um ícone de spinner específico -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style=" margin: 200px;">
+    
+
+
+    <div class="col-xs-12 col-md-6" id="conteudo_dinamico__div">
+        <div class="col-xs-12 col-md-6" id="finalizando-pix__div" style="display: none;">
+            <p>Finalizando com: PIX <img src="{% static 'img/logo-pix.png' %}" alt="" style="width: 2rem;"></p>
+            <div class="panel panel-default">
+                <div class="panel-body">               
+                    
+                        <div class="card">                        
+                            <p>Seu codigo expira em </p>
+                            <p>00:00:15 </p>
+                            <p>
+                                pix copiar colar
+                            </p>
+                            <button>COPIAR CODIGO</button>
+                        </div>
+                </div>
+    
+                <div class="panel-footer">
+                    <span><b>Total a pagar por <span id="total_pagar_quantidade"></span> cupons</b></span>
+                    <span id="total_pagar_final"></span>
+                </div>
+            </div>      
+        </div>
+        
+        <div class="col-xs-12 col-md-6" id="forma-pagamento__div" style="display: none;">
+            <p>Forma de Pagamento</p>
+            <div class="panel panel-default">
+                
+                <div class="panel-body">               
+                    
+                       
+                        <img src="{% static 'img/logo-pix.png' %}" alt="" style="width: 3rem;">
+                        <span><b>PIXs</b></span>
+                        <span>></span>
+                        <form method="post" action="/checkout/pagamento/"  onsubmit="return pagamento();">
+                            {% csrf_token %}
+                            <button id="pagarButton" onclick="mostraFinalizandoPix()">Escolher</button>
+                        </form>
+                </div>
+            </div>      
+        </div>
+    
+        
+    </div>
+    
+    
+    <div class="col-xs-12 col-md-6" style="width: 45rem;">        
+        <div class="panel panel-default" id="compre_cupons__div">     
+            <div class="panel-body">
+                <p>Compre seus cupons</p>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" 
+                        id="diminui__button" type="button" onclick="alterarQuantidade(-1)" style="size: 15px;">-</button>
+                    </span>
+                <input class="form-control"  type="number" value="0"  name="quantidade" id="quantidade__input" min="0" step="1" oninput="atualizar_valor()">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" id="aumenta__button" onclick="alterarQuantidade(1)" type="button">+</button>
+                  </span>
+
+                </div>
+                
+                <ul class="list-group">                    
+                    <li class="list-group-item">
+                        <span class="badge" id="total__badge">R$ 00,00</span>
+     
+                        <b>Total</b>
+                    </li>
+                </ul>
+                <form method="post" onsubmit="return pagamento();">
+                    {% csrf_token %}
+                    <button class="btn btn-primary">Pagar</button>
+                </form>
+            </div>            
+        </div>
+        
+        <div class="panel panel-default" id="resumo_pagamento__div" style="display: none;">     
+            <div class="panel-body">               
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="badge" id="quantidade__badge">0</span>
+                        Quantidade
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">50</span>
+                        Valor Unitario
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge" id="total__badge">R$ 00,00</span>
+     
+                        <b>Total</b>
+                    </li>
+                </ul>
+                <form method="post" onsubmit="return pagamento();">
+                    {% csrf_token %}
+                    <button class="btn btn-primary">Comprar</button>
+                </form>
+            </div>            
+        </div>
+
+
+
+    </div>
+</div>
+
+<script>
+
+    
+
+    function atualizar_valor(){
+        let quantidade_input = document.getElementById('quantidade__input')
+
+        let valor = parseFloat(quantidade_input.value)
+
+        if (isNaN(valor) || valor < 0) {
+                alert("Por favor, insira um valor positivo.");
+                inputElement.value = 0;
+                return;
+        }
+
+        let valorMultiplicado = valor * 50
+
+        let = quantidade_badge = document.getElementById('quantidade__badge')
+        quantidade_badge.textContent = valor
+
+        let total_pagar_quantidade = document.getElementById('total_pagar_quantidade')
+
+        total_pagar_quantidade.textContent = valor
+
+        var valorFormatado = valorMultiplicado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        var resultadoSpan = document.getElementById("total__badge");
+
+        resultadoSpan.textContent = valorFormatado;
+
+        let total_pagar_final = document.getElementById('total_pagar_final')
+        total_pagar_final.textContent = valorFormatado
+    }
+
+    function alterarQuantidade(delta){
+        let quantidade_input = document.getElementById('quantidade__input')
+
+        let valor = parseInt(quantidade_input.value) + delta
+
+        if (valor < 1 ){
+            // alert('Quantidade nao pode ser negativa')
+            return;
+        }
+
+        quantidade_input.value = valor
+
+        atualizar_valor()
+    }
+
+    function mostraFinalizandoPix() {
+        
+        
+        let finalizandoPix = document.getElementById('finalizando-pix__div');
+        finalizandoPix.style.display = 'none';
+
+        // return false
+    }
+
+    function pagamento() {
+    // Lógica de pagamento, se necessário
+    let valorTotalText = document.getElementById('total__badge').textContent.trim();
+    let valorTotal = parseFloat(valorTotalText.replace('R$', '').replace(',', '.'));
+
+    if (!isNaN(valorTotal) && valorTotal > 0) {
+        // Troca para a div finalizandoPix
+        carregarFormadPagamento();
+    } else {
+        // Mostre uma mensagem ou tome a ação apropriada quando o valor total for 0 ou NaN
+        alert('Quantidade inválida');
+    }
+
+    return false
+
+    }
+
+    function carregarFormadPagamento() {
+        let formaPagamento = document.getElementById('forma-pagamento__div');
+        formaPagamento.style.display = 'block';
+        let resumoPagamento =  document.getElementById('resumo-pagamento__div')
+        resumoPagamento.style.display = 'none'
+
+    
+    
+    }
+        
+</script>
+
+{% endblock %}
+
+    
+    
+
+
+
+

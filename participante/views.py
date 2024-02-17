@@ -182,33 +182,35 @@ def checkout(request):
     return render(request, 'participante/checkout.html', context)
 
 def pagamento(request):
-    if request.method == "POST":
-        try:
-            usuario = request.user
-            nome_usuario = request.user.profile.nome
-            data = request.POST
-            print(data)
+
+    return render(request, 'participante/pagamento.html')
+    # if request.method == "POST":
+    #     try:
+    #         usuario = request.user
+    #         nome_usuario = request.user.profile.nome
+    #         data = request.POST
+    #         print(data)
             
 
            
 
-            transacao = Transacao(user=usuario, valor_total=valor_total)
+    #         # transacao = Transacao(user=usuario, valor_total)
 
-            transacao.save()
+    #         # transacao.save()
 
-            numero_transacao = transacao.id
+    #         # numero_transacao = transacao.id
 
-            print(numero_transacao)
-            print(nome_usuario)
-            print(valor_total)
+    #         # print(numero_transacao)
+    #         print(nome_usuario)
+    #         # print(valor_total)
 
-            processar_checkout_post(nome_usuario, valor_total, numero_transacao)
+    #         # processar_checkout_post(nome_usuario, valor_total, numero_transacao)
         
-            return JsonResponse({'numero_transacao': numero_transacao})
-        except Exception as e:
-           return JsonResponse({'error': str(e)}, status=400)
-    else:
-        return JsonResponse({'error': 'Método não permitido'}, status=405)
+    #         # return JsonResponse({'numero_transacao': numero_transacao})
+    #     except Exception as e:
+    #        return JsonResponse({'error': str(e)}, status=400)
+    # else:
+    #     return JsonResponse({'error': 'Método não permitido'}, status=405)
 
             
 
