@@ -206,7 +206,9 @@ def pagamento(request):
                     codigo_transacao = transacao.id
 
                     # Crie o diretório do usuário se não existir
-                    user_qrcode_dir = os.path.join(settings.QR_CODE_DIR, f'user_{usuario.id}', f'qr_code_transacao_{codigo_transacao}')
+                    AWS_LOCATION = settings.AWS_LOCATION_QRCODES
+                    user_qrcode_dir = os.path.join(AWS_LOCATION, f'user_{usuario.id}', f'qr_code_transacao_{codigo_transacao}')
+                    # user_qrcode_dir = os.path.join(settings.QR_CODE_DIR, f'user_{usuario.id}', f'qr_code_transacao_{codigo_transacao}')
                     os.makedirs(user_qrcode_dir, exist_ok=True)
 
                     qr_code_path = os.path.join(user_qrcode_dir)

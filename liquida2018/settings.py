@@ -163,6 +163,10 @@ AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 
+AWS_LOCATION_QRCODES = 'qrcodes'
+
+
+
 AWS_LOCATION = 'static'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
@@ -287,7 +291,7 @@ DEBUG_PROPAGATE_EXCEPTIONS = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-QR_CODE_DIR = os.path.join(BASE_DIR, 'qrcode')
+# QR_CODE_DIR = os.path.join(BASE_DIR, 'qrcode')
 
 django_heroku.settings(locals())
 

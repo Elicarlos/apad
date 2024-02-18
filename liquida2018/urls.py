@@ -28,7 +28,7 @@ urlpatterns = [
 #     urlpatterns += static(settings.STATIC_URL)
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 admin.site.site_header = "Administração Natal de Prêmios Teresina 2023"
 admin.site.site_title = "Natal de Prêmios Teresina"
