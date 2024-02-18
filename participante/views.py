@@ -209,19 +209,20 @@ def pagamento(request):
                     user_qrcode_dir = os.path.join(settings.QR_CODE_DIR, f'user_{usuario.id}', f'qr_code_transacao_{codigo_transacao}')
                     os.makedirs(user_qrcode_dir, exist_ok=True)
 
-                    qr_code_path = os.path.join(user_qrcode_dir, 'pixqrcodegen.png')
+                    qr_code_path = os.path.join(user_qrcode_dir)
 
                     payload = Payload(nome_usuario, 'ffc5effd-f33d-4959-b115-da3e9954c1a4', str(total_formatado), 'Teresina', str(codigo_transacao), qr_code_path)
                     payload.gerarQrCode(payload, qr_code_path)
                     payload.gerarPayload()
-
+                    qr_code_path = qr_code_path + f'pixqrcodegen.png'
+                    print(qr_code_path)
                     # Atualiza o caminho do QR code na transação
                     transacao.qrcode_path = qr_code_path
                     transacao.save()
 
                     print(qr_code_path)
 
-                    if os.path.exists(qr_code_path):
+                    if qr_code_path:
                         context = {
                             'payload': payload.payload,
                             'caminho_qrcode': qr_code_path,
@@ -231,8 +232,8 @@ def pagamento(request):
 
                         return render(request, 'participante/pagamento.html', context)
                     else:
-                        # Lógica para lidar com situações de erro específicas
-                        return HttpResponse("Erro ao gerar ou salvar o QR code. Por favor, tente novamente.")   
+                        # Lógica para lidar com caminho_qrcode sendo None, por exemplo, redirecionar ou exibir uma mensagem de erro
+                        return HttpResponse("Erro ao gerar QR code. Por favor, tente novamente.")   
 
                 return render(request, 'participante/pagamento.html', context)
 
@@ -240,6 +241,7 @@ def pagamento(request):
             print(e)
 
     return render(request, 'participante/pagamento.html')
+            
 
 
 
