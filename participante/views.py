@@ -1,12 +1,14 @@
 from calendar import month
 from datetime import datetime
 from decimal import Decimal
+from io import BytesIO
 import os
 import json
+from django.core.files import File
 from pydoc import Doc
 from unicodedata import decimal
 from unittest import result
-from django.http import HttpResponse, QueryDict
+from django.http import HttpResponse, HttpResponseBadRequest, QueryDict
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -32,8 +34,76 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-from pixqrcodegen import Payload
 
+
+import qrcode
+
+import crcmod
+import qrcode
+import os
+
+
+class Payload():
+    def __init__(self, nome, chavepix, valor, cidade, txtId, diretorio=''):
+        
+        self.nome = nome
+        self.chavepix = chavepix
+        self.valor = valor.replace(',', '.')
+        self.cidade = cidade
+        self.txtId = txtId
+        self.diretorioQrCode = diretorio
+
+        self.nome_tam = len(self.nome)
+        self.chavepix_tam = len(self.chavepix)
+        self.valor_tam = len(self.valor)
+        self.cidade_tam = len(self.cidade)
+        self.txtId_tam = len(self.txtId)
+
+        self.merchantAccount_tam = f'0014BR.GOV.BCB.PIX01{self.chavepix_tam:02}{self.chavepix}'
+        self.transactionAmount_tam = f'{self.valor_tam:02}{float(self.valor):.2f}'
+
+        self.addDataField_tam = f'05{self.txtId_tam:02}{self.txtId}'
+
+        self.nome_tam = f'{self.nome_tam:02}'
+
+        self.cidade_tam = f'{self.cidade_tam:02}'
+
+        self.payloadFormat = '000201'
+        self.merchantAccount = f'26{len(self.merchantAccount_tam):02}{self.merchantAccount_tam}'
+        self.merchantCategCode = '52040000'
+        self.transactionCurrency = '5303986'
+        self.transactionAmount = f'54{self.transactionAmount_tam}'
+        self.countryCode = '5802BR'
+        self.merchantName = f'59{self.nome_tam:02}{self.nome}'
+        self.merchantCity = f'60{self.cidade_tam:02}{self.cidade}'
+        self.addDataField = f'62{len(self.addDataField_tam):02}{self.addDataField_tam}'
+        self.crc16 = '6304'
+
+  
+    def gerarPayload(self):
+        self.payload = f'{self.payloadFormat}{self.merchantAccount}{self.merchantCategCode}{self.transactionCurrency}{self.transactionAmount}{self.countryCode}{self.merchantName}{self.merchantCity}{self.addDataField}{self.crc16}'
+
+        return self.gerarCrc16(self.payload)
+
+    
+    def gerarCrc16(self, payload):
+        crc16 = crcmod.mkCrcFun(poly=0x11021, initCrc=0xFFFF, rev=False, xorOut=0x0000)
+
+        self.crc16Code = hex(crc16(str(payload).encode('utf-8')))
+
+        self.crc16Code_formatado = str(self.crc16Code).replace('0x', '').upper().zfill(4)
+
+        self.payload_completa = f'{payload}{self.crc16Code_formatado}'
+
+        return self.payload_completa
+
+    
+    def gerarQrCode(self, payload, diretorio):
+        dir = os.path.expanduser(diretorio)
+        self.qrcode = qrcode.make(payload)
+        self.qrcode.save(os.path.join(dir, 'pixqrcodegen.png'))
+        
+        return print(payload)
 
 
 
@@ -177,71 +247,92 @@ def checkout(request):
 
 @login_required
 def pagamento(request):
-    if request.method == "POST": 
+    if request.method == "POST":
+        print('Estou dentro do post')
         try:
             usuario = request.user
             nome_usuario = request.user.profile.nome
             total = request.POST.get('total')
             quantidade = request.POST.get('quantidade')
 
-            if quantidade is not None:
-                quant = int(quantidade)
-                print(quant)
+            print("Total>>>>", total)
+            print("Quantidade>>>>", quantidade)
 
-            if total is not None:
-                total_convertido = float(total.replace('.', ','))
-                total_formatado = "{:.2f}".format(total_convertido)
+            
 
-                # Verifica se já existe uma transação não processada para o usuário
-                transacao_existente = Transacao.objects.filter(user=usuario, processada=False).first()
+            # # Valide os dados do formulário
+            # if total is None or quantidade is None:
+            #     raise ValueError("Campos de formulário ausentes")
 
-                if transacao_existente and transacao_existente.qrcode_path:
-                    # Se já existe um QR code associado à transação, reutiliza o mesmo
-                    caminho_qrcode = transacao_existente.qrcode_path
-                else:
-                    # Senão, cria uma nova transação e gera um novo QR code
-                    transacao = Transacao(user=usuario, valor_total=total_formatado)
-                    transacao.save()
+            total_convertido = float(total.replace('.', ','))
+            quantidade_convertida = int(quantidade)
 
-                    codigo_transacao = transacao.id
+            # Verifique se já existe uma transação não processada para o usuário
+            transacao_existente = Transacao.objects.filter(user=usuario, processada=False).first()
 
-                    # Crie o diretório do usuário se não existir dentro de static/qcodes
-                    user_qrcode_dir = os.path.join(settings.AWS_LOCATION, 'qcodes', f'user_{usuario.id}', f'qr_code_transacao_{codigo_transacao}')
-                    os.makedirs(user_qrcode_dir, exist_ok=True)
+            if transacao_existente:
+                # Atualiza a transação existente (se necessário)
+                transacao_existente.valor_total = "{:.2f}".format(total_convertido)
+                transacao_existente.save()
+            else:
+                # Senão, cria uma nova transação
+                transacao = Transacao(user=usuario, valor_total="{:.2f}".format(total_convertido), quantidade_cupons=quantidade_convertida)
+                transacao.save()
+                
+                codigo_transacao = transacao.id
 
-                    qr_code_path = os.path.join(user_qrcode_dir)
+                # Gere o QR code a partir do payload
+                payload = Payload(nome_usuario, 'ffc5effd-f33d-4959-b115-da3e9954c1a4', str(total_convertido), 'Teresina', str(codigo_transacao))
+                resultado_payload = payload.gerarPayload()
+                # print('Resulado', resultado_payload)
 
-                    payload = Payload(nome_usuario, 'ffc5effd-f33d-4959-b115-da3e9954c1a4', str(total_formatado), 'Teresina', str(codigo_transacao), qr_code_path)
-                    payload.gerarQrCode(payload, qr_code_path)
-                    payload.gerarPayload()
-                    qr_code_path = qr_code_path + f'/pixqrcodegen.png'
-                    print(qr_code_path)
-                    # Atualiza o caminho do QR code na transação
-                    transacao.qrcode_path = qr_code_path
-                    transacao.save()
+                transacao.payload = resultado_payload
+                transacao.save()
 
-                    print(qr_code_path)
+                qr_code_data = resultado_payload
 
-                    if qr_code_path:
-                        context = {
-                            'payload': payload.payload,
-                            'caminho_qrcode': qr_code_path,
-                            'total': total_formatado,
-                            'quantidade': quantidade,
-                        }
+                qr = qrcode.QRCode(
+                    version=1,
+                    error_correction=qrcode.constants.ERROR_CORRECT_L,
+                    box_size=10,
+                    border=4,
+                )
+                qr.add_data(qr_code_data)
+                qr.make(fit=True)
+                img = qr.make_image(fill_color="black", back_color="white")
 
-                        return render(request, 'participante/pagamento.html', context)
-                    else:
-                        # Lógica para lidar com caminho_qrcode sendo None, por exemplo, redirecionar ou exibir uma mensagem de erro
-                        return HttpResponse("Erro ao gerar QR code. Por favor, tente novamente.")   
+                img_io = BytesIO()
+                img.save(img_io)
+                transacao.qrcode.save(f'qrcode_{codigo_transacao}.png', File(img_io))
 
-                return render(request, 'participante/pagamento.html', context)
+               
+                # Redirecione para a página de confirmação
+                return redirect('participante:confirmacao_pagamento', transacao_id=transacao.id)
+
+        except ValueError as ve:
+            print(f"Erro de validação: {str(ve)}")
+            return HttpResponseBadRequest("Erro de validação: Campos de formulário ausentes ou inválidos")
 
         except Exception as e:
-            print(e)
+            print(f"Erro: {str(e)}")
 
-    return render(request, 'participante/pagamento.html')
+    # Se ocorrer um erro ou a requisição não for POST, você pode redirecionar para outra página ou retornar uma resposta adequada
+    return render(request, 'participante/pagina_de_erro.html')  # Substitua 'pagina_de_erro.html' pela página desejada
+                   
 
+                    
+                    
+
+               
+            
+
+def confirmacao_pagamento(request, transacao_id):
+    # Recupere a transação com base no ID fornecido
+    transacao = Transacao.objects.get(id=transacao_id)
+
+    # Renderize a página que mostra o QR Code e o payload
+    contexto = {'transacao': transacao}
+    return render(request, 'participante/confirmacao_pagamento.html', contexto)
 
 
    

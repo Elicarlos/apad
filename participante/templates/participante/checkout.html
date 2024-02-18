@@ -98,8 +98,8 @@
                                 <span>></span>
                                 <form method="post" action="{% url 'participante:pagamento' %}">
                                     {% csrf_token %}
-                                    <input type="text" name="total" id="total_input" value="0">
-                                    <input  type="text" name="quantidade" id="quantidade_input" value="0">
+                                    <input type="hidden" name="total" id="total_input" value="0">
+                                    <input  type="hidden" name="quantidade" id="quantidade_input" value="0">
                                     <button id="pagarButton"  onclick="prepararPagamento()">Finalizar Pagamento</button>
                                 </form>
                         </div>
@@ -196,7 +196,7 @@
         var total = document.getElementById('total__badge_resumo').textContent.trim();
         total = total.replace('R$', '').replace('.', '').replace(',', '.');
         let valorTotal = parseFloat(total);
-        alert(total)
+        
         
         let quantidade__badge_total = document.getElementById('quantidade__badge')
         let quant =  parseFloat(quantidade__badge_total.textContent);
@@ -208,7 +208,7 @@
         document.getElementById('quantidade_input').value = quant;
 
         // Envie o formulário
-        document.getElementById('formPagamento').submit();
+        // document.getElementById('formPagamento').submit();
     }
 
     function alterarQuantidade(delta){

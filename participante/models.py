@@ -124,12 +124,14 @@ class DocumentoFiscal(models.Model):
 class Transacao(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     valor_total = models.DecimalField(max_digits=15, decimal_places=2)
+    quantidade_cupons = models.PositiveIntegerField(default=1)
     data_transacao = models.DateTimeField(auto_now_add=True)
-    qrcode_path = models.CharField(max_length=255, blank=True, null=True)
+    payload = models.TextField(blank=True, null=True)
+    qrcode = models.ImageField(upload_to='qrcodes/%Y/%m/%d', blank=True, null=True, verbose_name='QR Code')
     processada = models.BooleanField(default=True)
 
     def __str__(self):
-        return f'Transacao de {self.user.username} em {self.data_transacao}'
+        return f'Transacao {self.id} - {self.user.username}'
 
 # class Ticket(models.Model):
 #     ticketUser =  models.ForeignKey(User, related_name='ticket_user_set', on_delete=models.PROTECT)
