@@ -214,7 +214,7 @@ def pagamento(request):
                     payload = Payload(nome_usuario, 'ffc5effd-f33d-4959-b115-da3e9954c1a4', str(total_formatado), 'Teresina', str(codigo_transacao), qr_code_path)
                     payload.gerarQrCode(payload, qr_code_path)
                     payload.gerarPayload()
-                    qr_code_path = qr_code_path + f'\pixqrcodegen.png'
+                    qr_code_path = qr_code_path + f'/pixqrcodegen.png'
                     print(qr_code_path)
                     # Atualiza o caminho do QR code na transação
                     transacao.qrcode_path = qr_code_path
