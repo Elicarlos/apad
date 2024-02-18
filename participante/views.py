@@ -1,6 +1,7 @@
 from calendar import month
 from datetime import datetime
 from decimal import Decimal
+import os
 import json
 from pydoc import Doc
 from unicodedata import decimal
@@ -26,11 +27,12 @@ from django.db import transaction
 from .forms import LoginForm, CepForm
 import requests
 from django.contrib.auth.models import Group
-from pixqrcodegen import Payload
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+
+from pixqrcodegen import Payload
 
 
 
@@ -153,66 +155,91 @@ def homepage(request):
     # return render(request, 'participante/coming_soon.html', {'section': 'homepage', 'lf': login_form})
     return render(request, 'participante/index.html', {'section': 'homepage', 'lf': login_form})
 
-
+@login_required
 def processar_checkout_post(nome_usuario, valor_total, codigo_transacao ):
     """
     Processa o checkout para o método POST.
     """
-    
+
     qr_code_path = settings.QR_CODE_DIR
     payload = Payload(nome_usuario, 'ffc5effd-f33d-4959-b115-da3e9954c1a4', valor_total, 'Teresina', codigo_transacao, qr_code_path)
     return payload.gerarPayload()
 
+@login_required
 def checkout(request):
-    """
-    View para processar o checkout.
-    """
-    context = {
-        'chave_pix': 'ffc5effd-f33d-4959-b115-da3e9954c1a4',
-        'payload': None
-    }
-
-    if request.method == 'POST':
+    if request.method == 'POST': 
         
-        
-        return render(request, 'participante/checkout.html', context)
+        return render(request, 'participante/checkout.html')
 
     # Se não for um método POST, trata-se de um GET
    
-    return render(request, 'participante/checkout.html', context)
+    return render(request, 'participante/checkout.html')
 
+@login_required
 def pagamento(request):
+    if request.method == "POST": 
+        try:
+            usuario = request.user
+            nome_usuario = request.user.profile.nome
+            total = request.POST.get('total')
+            quantidade = request.POST.get('quantidade')
+
+            if quantidade is not None:
+                quant = int(quantidade)
+                print(quant)
+
+            if total is not None:
+                total_convertido = float(total.replace('.', ','))
+                total_formatado = "{:.2f}".format(total_convertido)
+
+                # Verifica se já existe uma transação não processada para o usuário
+                transacao_existente = Transacao.objects.filter(user=usuario, processada=False).first()
+
+                if transacao_existente and transacao_existente.qrcode_path:
+                    # Se já existe um QR code associado à transação, reutiliza o mesmo
+                    caminho_qrcode = transacao_existente.qrcode_path
+                else:
+                    # Senão, cria uma nova transação e gera um novo QR code
+                    transacao = Transacao(user=usuario, valor_total=total_formatado)
+                    transacao.save()
+
+                    codigo_transacao = transacao.id
+
+                    # Crie o diretório do usuário se não existir
+                    user_qrcode_dir = os.path.join(settings.QR_CODE_DIR, f'user_{usuario.id}', f'qr_code_transacao_{codigo_transacao}')
+                    os.makedirs(user_qrcode_dir, exist_ok=True)
+
+                    qr_code_path = os.path.join(user_qrcode_dir, 'pixqrcodegen.png')
+
+                    payload = Payload(nome_usuario, 'ffc5effd-f33d-4959-b115-da3e9954c1a4', str(total_formatado), 'Teresina', str(codigo_transacao), qr_code_path)
+                    payload.gerarQrCode(payload, qr_code_path)
+                    payload.gerarPayload()
+
+                    # Atualiza o caminho do QR code na transação
+                    transacao.qrcode_path = qr_code_path
+                    transacao.save()
+
+                    print(qr_code_path)
+
+                    if os.path.exists(qr_code_path):
+                        context = {
+                            'payload': payload.payload,
+                            'caminho_qrcode': qr_code_path,
+                            'total': total_formatado,
+                            'quantidade': quantidade,
+                        }
+
+                        return render(request, 'participante/pagamento.html', context)
+                    else:
+                        # Lógica para lidar com situações de erro específicas
+                        return HttpResponse("Erro ao gerar ou salvar o QR code. Por favor, tente novamente.")   
+
+                return render(request, 'participante/pagamento.html', context)
+
+        except Exception as e:
+            print(e)
 
     return render(request, 'participante/pagamento.html')
-    # if request.method == "POST":
-    #     try:
-    #         usuario = request.user
-    #         nome_usuario = request.user.profile.nome
-    #         data = request.POST
-    #         print(data)
-            
-
-           
-
-    #         # transacao = Transacao(user=usuario, valor_total)
-
-    #         # transacao.save()
-
-    #         # numero_transacao = transacao.id
-
-    #         # print(numero_transacao)
-    #         print(nome_usuario)
-    #         # print(valor_total)
-
-    #         # processar_checkout_post(nome_usuario, valor_total, numero_transacao)
-        
-    #         # return JsonResponse({'numero_transacao': numero_transacao})
-    #     except Exception as e:
-    #        return JsonResponse({'error': str(e)}, status=400)
-    # else:
-    #     return JsonResponse({'error': 'Método não permitido'}, status=405)
-
-            
 
 
 

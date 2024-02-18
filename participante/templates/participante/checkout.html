@@ -28,14 +28,10 @@
     <div id="container_compra__div">
         <div class="col-xs-12 col-md-6" id="conteudo_dinamico_compra__div">             
             <div class="col-xs-12 col-md-6" id="conteudo_forma_pagamento__div">                
-                <div class="panel panel-default">
-                    
-                    <p>Criar um texto aqui</p>
-                    
-                    <div class="panel-body">        
-                        
-                        <p>POsso colocar uma imagem aqui</p>
-                          
+                <div class="panel panel-default">                    
+                    <p>Contanainer Compra</p>                    
+                    <div class="panel-body">                       
+                        <p>POsso colocar uma imagem aqui</p>                         
                     </div>
                 </div>      
             </div>          
@@ -49,15 +45,14 @@
                             <button class="btn btn-primary" 
                             id="diminui__button" type="button" onclick="alterarQuantidade(-1)" style="size: 15px;">-</button>
                         </span>
-                    <input class="form-control"  type="number" value="0"  name="quantidade" id="quantidade__input" min="0" step="1" oninput="atualizar_valor()">
+                        <input class="form-control"  type="number" value="0" readonly="true"  name="quantidade" id="quantidade__input" min="0" step="1" oninput="atualizar_valor()">
                         <span class="input-group-btn">
                             <button class="btn btn-primary" id="aumenta__button" onclick="alterarQuantidade(1)" type="button">+</button>
                         </span>    
                     </div>                    
                     <ul class="list-group">                    
                         <li class="list-group-item">
-                            <span class="badge" id="total__badge">R$ 00,00</span>
-         
+                            <span class="badge" id="total__badge">R$ 00,00</span>         
                             <b>Total</b>
                         </li>
                     </ul>
@@ -66,41 +61,16 @@
                         <button class="btn btn-primary">Pagar</button>
                     </form>
                 </div>            
-            </div>
-            <!-- Resumo de pagamento remover daqui-->
-            <!-- <div class="panel panel-default" id="resumo_pagamento__div" style="display: none;">     
-                <div class="panel-body">               
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <span class="badge" id="quantidade__badge">0</span>
-                            Quantidade
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge">50</span>
-                            Valor Unitario
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge" id="total__badge">R$ 00,00</span>
-         
-                            <b>Total</b>
-                        </li>
-                    </ul>
-                    <form method="post" onsubmit="return pagamento();">
-                        {% csrf_token %}
-                        <button class="btn btn-primary">Comprar</button>
-                    </form>
-                </div>            
-            </div> -->
-             <!-- Resumo de pagamento-->
+            </div>            
         </div>
     </div>
 
     <div id="container_pagamento__div" style="display: none;">
         <div class="col-xs-12 col-md-6">        
-            <!-- <div class="col-xs-12 col-md-6" id="finalizando-pix__div"> -->
-                <!-- <h1>Colocar uma foto aqui por exemplo</h1>
-                <p>Finalizando com: PIX <img src="{% static 'img/logo-pix.png' %}" alt="" style="width: 2rem;"></p>
-                <div class="panel panel-default">
+            <div id="finalizando-pix__div">
+                <!-- <h1>Container de Pagamento</h1>
+                <p>Finalizando com: PIX <img src="{% static 'img/logo-pix.png' %}" alt="" style="width: 2rem;"></p> -->
+                <div class="panel panel-default" style="display: none;">
                     <div class="panel-body">                       
                             <div class="card">                        
                                 <p>Seu codigo expira em </p>
@@ -113,31 +83,29 @@
                     </div>
         
                     <div class="panel-footer">
-                        <span><b>Total a pagar por <span id="total_pagar_quantidade"></span> cupons</b></span>
+                        <span><b>Total a pagar por <span id="total_pagar_quantidade"></span>Finalizar cupons</b></span>
                         <span id="total_pagar_final"></span>
                     </div>
-                </div>   -->
+                </div>
                 
                 <div class="col-xs-12 col-md-6" id="forma-pagamento__div">
                     <p>Forma de Pagamento</p>
                     <div class="panel panel-default">
                         
-                        <div class="panel-body">               
-                            
-                               
+                        <div class="panel-body">                             
                                 <img src="{% static 'img/logo-pix.png' %}" alt="" style="width: 3rem;">
                                 <span><b>PIXs</b></span>
                                 <span>></span>
-                                <form method="post" action="/checkout/pagamento/"  onsubmit="return pagamento();">
+                                <form method="post" action="{% url 'participante:pagamento' %}">
                                     {% csrf_token %}
-                                    <button id="pagarButton" onclick="mostraFinalizandoPix()">Escolher</button>
+                                    <input type="text" name="total" id="total_input" value="0">
+                                    <input  type="text" name="quantidade" id="quantidade_input" value="0">
+                                    <button id="pagarButton"  onclick="prepararPagamento()">Finalizar Pagamento</button>
                                 </form>
                         </div>
                     </div>      
                 </div>       
-        </div>
-            
-               
+            </div>              
         </div>
         <div class="col-xs-12 col-md-6" style="width: 45rem;">        
             <!-- <div class="panel panel-default" id="compre_cupons__div">     
@@ -177,7 +145,7 @@
                                 Valor Unitario
                             </li>
                             <li class="list-group-item">
-                                <span class="badge" id="total__badge">R$ 00,00</span>
+                                <span class="badge" id="total__badge_resumo">R$ 00,00</span>
              
                                 <b>Total</b>
                             </li>
@@ -190,10 +158,7 @@
 </div>
 
 <script>
-
-    
-
-    function atualizar_valor(){
+   function atualizar_valor(){
         let quantidade_input = document.getElementById('quantidade__input')
 
         let valor = parseFloat(quantidade_input.value)
@@ -211,6 +176,8 @@
 
         let total_pagar_quantidade = document.getElementById('total_pagar_quantidade')
 
+        let total__badge_resumo = document.getElementById('total__badge_resumo')
+
         total_pagar_quantidade.textContent = valor
 
         var valorFormatado = valorMultiplicado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -221,6 +188,27 @@
 
         let total_pagar_final = document.getElementById('total_pagar_final')
         total_pagar_final.textContent = valorFormatado
+
+        total__badge_resumo.textContent = valorFormatado
+    }
+
+    function prepararPagamento() {
+        var total = document.getElementById('total__badge_resumo').textContent.trim();
+        total = total.replace('R$', '').replace('.', '').replace(',', '.');
+        let valorTotal = parseFloat(total);
+        alert(total)
+        
+        let quantidade__badge_total = document.getElementById('quantidade__badge')
+        let quant =  parseFloat(quantidade__badge_total.textContent);
+        
+
+        
+        // Atualize o valor do campo oculto 'total_input'
+        document.getElementById('total_input').value = valorTotal;
+        document.getElementById('quantidade_input').value = quant;
+
+        // Envie o formulário
+        document.getElementById('formPagamento').submit();
     }
 
     function alterarQuantidade(delta){
