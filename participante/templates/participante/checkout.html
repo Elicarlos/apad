@@ -5,14 +5,15 @@
 {% block content %}
 <style>
     input[type=number]::-webkit-inner-spin-button,
-       input[type=number]::-webkit-outer-spin-button {
-           -webkit-appearance: none;
-           margin: 0;
-       }
-   </style>
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
 
 <!-- Adicione a div do spinner -->
-<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel" aria-hidden="true">
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
@@ -23,91 +24,98 @@
         </div>
     </div>
 </div>
-
-<div class="row" style=" margin: 200px;">
+<h1 style="margin-top: 100px;"></h1>
+<div class="row">
     <div id="container_compra__div">
-        <div class="col-xs-12 col-md-6" id="conteudo_dinamico_compra__div">             
-            <div class="col-xs-12 col-md-6" id="conteudo_forma_pagamento__div">                
-                <div class="panel panel-default">                    
-                    <p>Contanainer Compra</p>                    
-                    <div class="panel-body">                       
-                        <p>POsso colocar uma imagem aqui</p>                         
+        <div class="col-xs-12 col-md-6" id="conteudo_dinamico_compra__div">
+            <div class="col-xs-12 col-md-6" id="conteudo_forma_pagamento__div">
+                <div class="panel panel-default">
+                    <p>Contanainer Compra</p>
+                    <div class="panel-body">
+                        <p>POsso colocar uma imagem aqui</p>
                     </div>
-                </div>      
-            </div>          
+                </div>
+            </div>
         </div>
-        <div class="col-xs-12 col-md-6" style="width: 45rem;">        
-            <div class="panel panel-default" id="compre_cupons__div">     
+        <div class="col-xs-12 col-md-6">
+            <div class="panel panel-default" id="compre_cupons__div">
                 <div class="panel-body">
                     <p>Compre seus cupons</p>
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" 
-                            id="diminui__button" type="button" onclick="alterarQuantidade(-1)" style="size: 15px;">-</button>
-                        </span>
-                        <input class="form-control"  type="number" value="0" readonly="true"  name="quantidade" id="quantidade__input" min="0" step="1" oninput="atualizar_valor()">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" id="aumenta__button" onclick="alterarQuantidade(1)" type="button">+</button>
-                        </span>    
-                    </div>                    
-                    <ul class="list-group">                    
+                    <form class="navbar-form" method="post" onsubmit="return pagamento();" >
+                        {% csrf_token %}
+                        
+
+                        <button id="diminui__button" type="button" onclick="alterarQuantidade(-1)">-</button>   
+                        <div class="form-group">
+                            
+                            <input type="number" class="form-control" value="0" readonly="true" name="quantidade"
+                                id="quantidade__input" min="0" step="1" oninput="atualizar_valor()">
+                           
+                        </div>
+                        <button id="aumenta__button" onclick="alterarQuantidade(1)" type="button">+</button>
+
+
+                        
+                    </form>
+
+                    <ul class="list-group" style="margin-top: 2rem;">
                         <li class="list-group-item">
-                            <span class="badge" id="total__badge">R$ 00,00</span>         
+                            <span class="badge" id="total__badge">R$ 00,00</span>
                             <b>Total</b>
                         </li>
                     </ul>
-                    <form method="post" onsubmit="return pagamento();">
-                        {% csrf_token %}
-                        <button class="btn btn-primary">Pagar</button>
-                    </form>
-                </div>            
-            </div>            
+
+
+                    <button class="btn btn-primary" style="width: 100%;">Pagar</button>
+
+                </div>
+            </div>
         </div>
     </div>
 
     <div id="container_pagamento__div" style="display: none;">
-        <div class="col-xs-12 col-md-6">        
+        <div class="col-xs-12 col-md-6">
             <div id="finalizando-pix__div">
                 <!-- <h1>Container de Pagamento</h1>
                 <p>Finalizando com: PIX <img src="{% static 'img/logo-pix.png' %}" alt="" style="width: 2rem;"></p> -->
                 <div class="panel panel-default" style="display: none;">
-                    <div class="panel-body">                       
-                            <div class="card">                        
-                                <p>Seu codigo expira em </p>
-                                <p>00:00:15 </p>
-                                <p>
-                                    pix copiar colar
-                                </p>
-                                <button>COPIAR CODIGO</button>
-                            </div>
+                    <div class="panel-body">
+                        <div class="card">
+                            <p>Seu codigo expira em </p>
+                            <p>00:00:15 </p>
+                            <p>
+                                pix copiar colar
+                            </p>
+                            <button>COPIAR CODIGO</button>
+                        </div>
                     </div>
-        
+
                     <div class="panel-footer">
                         <span><b>Total a pagar por <span id="total_pagar_quantidade"></span>Finalizar cupons</b></span>
                         <span id="total_pagar_final"></span>
                     </div>
                 </div>
-                
+
                 <div class="col-xs-12 col-md-6" id="forma-pagamento__div">
                     <p>Forma de Pagamento</p>
                     <div class="panel panel-default">
-                        
-                        <div class="panel-body">                             
-                                <img src="{% static 'img/logo-pix.png' %}" alt="" style="width: 3rem;">
-                                <span><b>PIXs</b></span>
-                                <span>></span>
-                                <form method="post" action="{% url 'participante:pagamento' %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="total" id="total_input" value="0">
-                                    <input  type="hidden" name="quantidade" id="quantidade_input" value="0">
-                                    <button id="pagarButton"  onclick="prepararPagamento()">Finalizar Pagamento</button>
-                                </form>
+
+                        <div class="panel-body">
+                            <img src="{% static 'img/logo-pix.png' %}" alt="" style="width: 3rem;">
+                            <span><b>PIXs</b></span>
+                            <span>></span>
+                            <form method="post" action="{% url 'participante:pagamento' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="total" id="total_input" value="0">
+                                <input type="hidden" name="quantidade" id="quantidade_input" value="0">
+                                <button id="pagarButton" onclick="prepararPagamento()">Finalizar Pagamento</button>
+                            </form>
                         </div>
-                    </div>      
-                </div>       
-            </div>              
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-xs-12 col-md-6" style="width: 45rem;">        
+        <div class="col-xs-12 col-md-6" style="width: 45rem;">
             <!-- <div class="panel panel-default" id="compre_cupons__div">     
                 <div class="panel-body">
                     <p>Compre seus cupons</p>
@@ -133,40 +141,40 @@
                         <button class="btn btn-primary">Pagar</button>
                     </form>
                 </div> -->
-                <div class="panel panel-default" id="resumo_pagamento__div">     
-                    <div class="panel-body">               
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <span class="badge" id="quantidade__badge">0</span>
-                                Quantidade
-                            </li>
-                            <li class="list-group-item">
-                                <span class="badge">50</span>
-                                Valor Unitario
-                            </li>
-                            <li class="list-group-item">
-                                <span class="badge" id="total__badge_resumo">R$ 00,00</span>
-             
-                                <b>Total</b>
-                            </li>
-                        </ul>                    
-                    </div>            
-                </div>          
-            </div>            
+            <div class="panel panel-default" id="resumo_pagamento__div">
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <span class="badge" id="quantidade__badge">0</span>
+                            Quantidade
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">50</span>
+                            Valor Unitario
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge" id="total__badge_resumo">R$ 00,00</span>
+
+                            <b>Total</b>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </div>   
+    </div>
+</div>
 </div>
 
 <script>
-   function atualizar_valor(){
+    function atualizar_valor() {
         let quantidade_input = document.getElementById('quantidade__input')
 
         let valor = parseFloat(quantidade_input.value)
 
         if (isNaN(valor) || valor < 0) {
-                alert("Por favor, insira um valor positivo.");
-                quantidade_input.value = 0;
-                return;
+            alert("Por favor, insira um valor positivo.");
+            quantidade_input.value = 0;
+            return;
         }
 
         let valorMultiplicado = valor * 50
@@ -196,13 +204,13 @@
         var total = document.getElementById('total__badge_resumo').textContent.trim();
         total = total.replace('R$', '').replace('.', '').replace(',', '.');
         let valorTotal = parseFloat(total);
-        
-        
-        let quantidade__badge_total = document.getElementById('quantidade__badge')
-        let quant =  parseFloat(quantidade__badge_total.textContent);
-        
 
-        
+
+        let quantidade__badge_total = document.getElementById('quantidade__badge')
+        let quant = parseFloat(quantidade__badge_total.textContent);
+
+
+
         // Atualize o valor do campo oculto 'total_input'
         document.getElementById('total_input').value = valorTotal;
         document.getElementById('quantidade_input').value = quant;
@@ -211,12 +219,12 @@
         // document.getElementById('formPagamento').submit();
     }
 
-    function alterarQuantidade(delta){
+    function alterarQuantidade(delta) {
         let quantidade_input = document.getElementById('quantidade__input')
 
         let valor = parseInt(quantidade_input.value) + delta
 
-        if (valor < 1 ){
+        if (valor < 1) {
             // alert('Quantidade nao pode ser negativa')
             return;
         }
@@ -227,8 +235,8 @@
     }
 
     function mostraFinalizandoPix() {
-        
-        
+
+
         let finalizandoPix = document.getElementById('finalizando-pix__div');
         finalizandoPix.style.display = 'none';
 
@@ -236,39 +244,32 @@
     }
 
     function pagamento() {
-    // Lógica de pagamento, se necessário
-    let valorTotalText = document.getElementById('total__badge').textContent.trim();
-    let valorTotal = parseFloat(valorTotalText.replace('R$', '').replace(',', '.'));
+        // Lógica de pagamento, se necessário
+        let valorTotalText = document.getElementById('total__badge').textContent.trim();
+        let valorTotal = parseFloat(valorTotalText.replace('R$', '').replace(',', '.'));
 
-    if (!isNaN(valorTotal) && valorTotal > 0) {
-        // Troca para a div finalizandoPix
-        carregarFormaPagamento();
-    } else {
-        // Mostre uma mensagem ou tome a ação apropriada quando o valor total for 0 ou NaN
-        alert('Quantidade inválida');
-    }
+        if (!isNaN(valorTotal) && valorTotal > 0) {
+            // Troca para a div finalizandoPix
+            carregarFormaPagamento();
+        } else {
+            // Mostre uma mensagem ou tome a ação apropriada quando o valor total for 0 ou NaN
+            alert('Quantidade inválida');
+        }
 
-    return false
+        return false
 
     }
 
     function carregarFormaPagamento() {
         let container_pagamento = document.getElementById('container_pagamento__div');
         container_pagamento.style.display = 'block';
-        let container_compra =  document.getElementById('container_compra__div')
+        let container_compra = document.getElementById('container_compra__div')
         container_compra.style.display = 'none'
 
-    
-    
+
+
     }
-        
+
 </script>
 
 {% endblock %}
-
-    
-    
-
-
-
-
