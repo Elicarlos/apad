@@ -6,11 +6,13 @@
     <h1 style="margin-top: 100px;"></h1>
     <p>Bem vindo a sua conta. Você pode <a href="{% url 'participante:edit' %}">editar o seu perfil</a> ou <a href="{% url 'participante:password_change' %}">mudar a sua senha</a>.</p>
   
+    <a type="button" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url 'participante:checkout' %}">
+      Comprar Cupons</a>
+      
     <a type="button" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url 'participante:adddocfiscal' %}">
       enviar foto do comprovante</a>
 
-    <a type="button" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url 'participante:checkout' %}">
-        Comprar Cupons</a>
+    
 <!-- <span style="color: red">O envio de documentos já foi encerrado! Te desejamos boa sorte!</span> -->
 <br>
 

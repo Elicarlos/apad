@@ -12,8 +12,8 @@
 </style>
 
 <!-- Adicione a div do spinner -->
-<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel"
-    aria-hidden="true">
+
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel"  aria-hidden="true" style="display: none">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
@@ -24,50 +24,48 @@
         </div>
     </div>
 </div>
+
 <h1 style="margin-top: 100px;"></h1>
+
 <div class="row">
+    
     <div id="container_compra__div">
         <div class="col-xs-12 col-md-6" id="conteudo_dinamico_compra__div">
-            <div class="col-xs-12 col-md-6" id="conteudo_forma_pagamento__div">
+            <div id="conteudo_forma_pagamento__div">
+                <a href="{% url "participante:dashboard" %}">Voltar</a>
                 <div class="panel panel-default">
-                    <p>Contanainer Compra</p>
-                    <div class="panel-body">
-                        <p>POsso colocar uma imagem aqui</p>
-                    </div>
+                    
+                    
+                        <img src="{% static 'img/premios-card.png'%}" alt="" style="width: 100%;">
+                    
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 col-md-4">
             <div class="panel panel-default" id="compre_cupons__div">
                 <div class="panel-body">
-                    <p>Compre seus cupons</p>
-                    <form class="navbar-form" method="post" onsubmit="return pagamento();" >
+                    <form class="navbar-form" method="post" onsubmit="return pagamento();">
+                        <p>Compre seus cupons</p>
                         {% csrf_token %}
-                        
 
-                        <button id="diminui__button" type="button" onclick="alterarQuantidade(-1)">-</button>   
-                        <div class="form-group">
-                            
-                            <input type="number" class="form-control" value="0" readonly="true" name="quantidade"
-                                id="quantidade__input" min="0" step="1" oninput="atualizar_valor()">
-                           
+                        <div>                           
+                            <div class="form-group" style="width: 100%;">                                   
+                                <input type="number" class="form-control" style="width: 100%; text-align: center; padding: 2rem; font-size: 2rem;" value="0" readonly="true" name="quantidade" id="quantidade__input" min="0" step="1" oninput="atualizar_valor()">
+                                                              
+                            </div>
+                            <div style="width: 100%; display: flex; justify-content: space-between;">
+                                <button class="btn btn-primary" id="diminui__button" type="button" onclick="alterarQuantidade(-1)">-</button>
+                                <button class="btn btn-primary" id="aumenta__button" onclick="alterarQuantidade(1)" type="button">+</button>
+                            </div>                          
                         </div>
-                        <button id="aumenta__button" onclick="alterarQuantidade(1)" type="button">+</button>
-
-
-                        
+                        <ul class="list-group" style="margin-top: 2rem;">
+                            <li class="list-group-item">
+                                <span class="badge" id="total__badge" style="font-size: 2rem; ">R$ 00,00</span>
+                                <b>Total</b>
+                            </li>
+                        </ul>
+                        <button class="btn btn-primary col-xs-12" style="width: 100%;">Pagar</button>
                     </form>
-
-                    <ul class="list-group" style="margin-top: 2rem;">
-                        <li class="list-group-item">
-                            <span class="badge" id="total__badge">R$ 00,00</span>
-                            <b>Total</b>
-                        </li>
-                    </ul>
-
-
-                    <button class="btn btn-primary" style="width: 100%;">Pagar</button>
-
                 </div>
             </div>
         </div>
@@ -96,26 +94,30 @@
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-md-6" id="forma-pagamento__div">
-                    <p>Forma de Pagamento</p>
+                <div id="forma-pagamento__div">
+                    <span style="margin-right: 1rem;"><a href="{% url "participante:checkout" %}">Voltar</a></span>Forma de Pagamento</span>
                     <div class="panel panel-default">
 
                         <div class="panel-body">
-                            <img src="{% static 'img/logo-pix.png' %}" alt="" style="width: 3rem;">
-                            <span><b>PIXs</b></span>
-                            <span>></span>
-                            <form method="post" action="{% url 'participante:pagamento' %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="total" id="total_input" value="0">
-                                <input type="hidden" name="quantidade" id="quantidade_input" value="0">
-                                <button id="pagarButton" onclick="prepararPagamento()">Finalizar Pagamento</button>
-                            </form>
+                            <div class="row" style="width: 100%; display: flex; justify-content: space-between;">
+                                <div style="margin: 0;">
+                                    <img src="{% static 'img/logo-pix.png' %}" alt="" style="width: 3rem; margin-right:1rem;" >
+                                    <span>PIX</span>
+                                </div>       
+                            
+                                <form method="post" action="{% url 'participante:pagamento' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="total" id="total_input" value="0">
+                                    <input type="hidden" name="quantidade" id="quantidade_input" value="0">
+                                    <button id="pagarButton" onclick="prepararPagamento()">Finalizar Pagamento</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-md-6" style="width: 45rem;">
+        <div class="col-xs-12 col-md-4">
             <!-- <div class="panel panel-default" id="compre_cupons__div">     
                 <div class="panel-body">
                     <p>Compre seus cupons</p>
