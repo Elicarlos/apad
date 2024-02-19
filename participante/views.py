@@ -255,8 +255,8 @@ def pagamento(request):
             total = request.POST.get('total')
             quantidade = request.POST.get('quantidade')
 
-            print("Total>>>>", total)
-            print("Quantidade>>>>", quantidade)
+            # print("Total>>>>", total)
+            # print("Quantidade>>>>", quantidade)
 
             
 

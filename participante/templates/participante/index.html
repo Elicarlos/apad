@@ -42,6 +42,25 @@
 {% block css %}
 	
 <style>
+
+
+    @media only screen and (max-width: 767px) {
+        #carousel-example-generic .item.active img {
+            display: none; /* Esconde a imagem em telas pequenas */
+        }
+
+        #carousel-example-generic .item.active::before {
+            content: url("{% static 'img/premios-smart.png' %}"); 
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-size: cover;
+        }
+    }
+
 	#maquineta {
 		margin-top: 0px;
 		margin-left: auto;
@@ -207,9 +226,23 @@
 
 <div id="carousel-example-generic" style="margin-top: 3rem;">
     <div class="carousel-inner">
-        <div class="item active">
-            <img class="img-premios-mobile2 img-responsive" src="{% static 'img/premios.png' %}" alt="Prêmios" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
+		<img class="img-premios-mobile2 img-fluid" src="{% static 'img/premios.jpg' %}" alt="Prêmios" style="object-fit: cover; width: 100%; height: 100%;">
+
+		<!-- Imagem para smartphones -->
+		<img class="img-premios-mobile2 img-fluid" src="{% static 'img/premios-smart.png' %}" alt="Prêmios" style="object-fit: cover; width: 100%; height: 100%; display: none;">
+
+		<!-- Estilos inline para esconder imagem em smartphones -->
+		<style>
+			@media only screen and (max-width: 767px) {
+				#carousel-example-generic .item.active img.img-premios-mobile2 {
+					display: block; /* Exibe a imagem em smartphones */
+				}
+
+				#carousel-example-generic .item.active img.img-premios-mobile2:first-child {
+					display: none; /* Oculta a imagem para telas grandes */
+				}
+			}
+		</style>
     </div>
 </div>
 <br/>
@@ -424,7 +457,23 @@
 {% comment %} <div class="background-orange">
 	<div class="row no-gutter">
 		<div class="col-12 text-center">
-		  <img class="img-premios-mobile2" src="{% static 'img/premios.jpg' %}" id="portfolio" class="img-responsive" style="display: inline-block;">
+			<img class="img-premios-mobile2 img-fluid" src="{% static 'img/premios.jpg' %}" alt="Prêmios" style="object-fit: cover; width: 100%; height: 100%;">
+
+            <!-- Imagem para smartphones -->
+            <img class="img-premios-mobile2 img-fluid" src="{% static 'img/premios-smart.jpg' %}" alt="Prêmios" style="object-fit: cover; width: 100%; height: 100%; display: none;">
+
+            <!-- Estilos inline para esconder imagem em smartphones -->
+            <style>
+                @media only screen and (max-width: 767px) {
+                    #carousel-example-generic .item.active img.img-premios-mobile2 {
+                        display: block; /* Exibe a imagem em smartphones */
+                    }
+
+                    #carousel-example-generic .item.active img.img-premios-mobile2:first-child {
+                        display: none; /* Oculta a imagem para telas grandes */
+                    }
+                }
+            </style>
 		</div>
 	  </div>
 </div> {% endcomment %}
