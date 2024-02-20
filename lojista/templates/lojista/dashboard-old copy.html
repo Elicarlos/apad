@@ -1,12 +1,12 @@
 {% extends "mobile.html" %}
 {% load auth_extras %}
-{% block title %}Liquida Teresina 2023{% endblock %}
+{% block title %}Sorteio Apad{% endblock %}
 
 {% block content %}
 <h1></h1>
-<h1 style="margin-top: 70px;">Liquida Teresina 2023</h1>
+<h1 style="margin-top: 70px;">Sorteio Apad</h1>
 
- <p>Bem vindo a sua conta do Liquida Teresina 2023 Colaborador. Agora você pode <a href="{% url 'participante:password_change' %}">mudar a sua senha</a>.</p>
+ <p>Bem vindo a sua conta do Sorteio Apad Colaborador. Agora você pode <a href="{% url 'participante:password_change' %}">mudar a sua senha</a>.</p>
     <h1>Participantes</h1>
     <p>
       <a type="button" id="mymodal" class="btn btn-primary btn-lg" data-toggle="modal" href="{% url "participante:register-op" %}">

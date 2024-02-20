@@ -60,7 +60,7 @@ class DocumentoFiscal(models.Model):
     vendedor = models.CharField(verbose_name=u'Nome do Vendedor', max_length=50, blank=True, null=True)
     numeroDocumento = models.CharField(verbose_name=u'Número do Documento', max_length=50, blank=False, null=False, unique=False)
     dataDocumento = models.DateField(verbose_name=u'Data do Documento', null=False, blank=False)
-    valorDocumento = models.DecimalField(verbose_name=u'Valor do Documento', max_digits=15, decimal_places=2, blank=False, default=0, validators=[validators.MinValueValidator(50,message='O valor do documento deve ser maior que R$ 50,00 reais!')])
+    valorDocumento = models.DecimalField(verbose_name=u'Valor do Documento', max_digits=15, decimal_places=2, blank=False, default=0, validators=[validators.MinValueValidator(50,message='Insira um valor igual ou superior a R$ 50,00')])
     compradoREDE = models.BooleanField(verbose_name=u'Comprou na maquininha da Rede?', default=False)
     compradoMASTERCARD = models.BooleanField(verbose_name=u'Comprou com Mastercard?', default=False)
     valorREDE = models.DecimalField(verbose_name=u'Valor na REDE', max_digits=7, decimal_places=2, editable=False, blank=True, default=0)   #depois posso nao mostrar
@@ -106,17 +106,17 @@ class DocumentoFiscal(models.Model):
 
     def get_cupons(self):
         cupons = 0
-        if self.valorDocumento > 99.99:
-            valor = self.valorDocumento // 100
+        if self.valorDocumento > 49.99:
+            valor = self.valorDocumento // 50
             if self.compradoREDE:
-                valor = valor * 3
+                valor = valor * 1
             cupons = valor
 
         return cupons
 
     def send_email(self):
-        body = "Estamos chegando no ultimo dia de campanha do Liquida Teresina 2023. \nPedimos que você cheque os seus documentos para verificar se está tudo certo, se não falta nenhuma foto dos seus cupons fiscal para que seus documentos sejam validados com sucesso e você possa concorrer para ganhar prêmios incriveis. \n \n Atenciosamente, \n \n Organização Liquida Teresina.\n www.liquidateresina.com.br"
-        subject = "Liquida Teresina 2023 - Estamos chegando no último dia"
+        body = "Estamos chegando no ultimo dia de campanha do \nPedimos que você cheque os seus documentos para verificar se está tudo certo, se não falta nenhuma foto dos seus cupons fiscal para que seus documentos sejam validados com sucesso e você possa concorrer para ganhar prêmios incriveis. \n \n Atenciosamente, \n \n Organização.\n"
+        subject = "Estamos chegando no último dia"
         email = EmailMessage(subject, body, to=[self.user.email])
         email.send()
 

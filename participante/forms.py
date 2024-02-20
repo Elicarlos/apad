@@ -209,7 +209,7 @@ class ProfileEditForm(forms.ModelForm):
     cidade = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder':'Cidade*'}))
     estado = forms.ChoiceField(required=True, choices=STATE_CHOICES, widget=forms.Select(attrs={'id' : 'estados'}))
     CEP = BRZipCodeField(required=False, label='Cep*' , widget=forms.TextInput(attrs={'class':'cep', 'placeholder':'CEP*'}))
-    pergunta = forms.CharField( required=False, widget=forms.TextInput(attrs={'placeholder':'Liquida Teresina'}))
+    pergunta = forms.CharField( required=False, widget=forms.TextInput(attrs={'placeholder':''}))
     class Meta:
         model = Profile
         fields = ('nome', 'RG', 'CPF', 'sexo', 'foneFixo', 'foneCelular1', 'foneCelular2', 'foneCelular3',
