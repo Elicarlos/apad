@@ -30,6 +30,6 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-admin.site.site_header = "Administração Natal de Prêmios Teresina 2023"
-admin.site.site_title = "Natal de Prêmios Teresina"
-admin.site.index_title = "Bem vindo a administração do Natal de Prêmios Teresina"
+admin.site.site_header = "Administração Sorteio"
+admin.site.site_title = "Sorteio"
+admin.site.index_title = "Bem vindo a administração do Sorteio"

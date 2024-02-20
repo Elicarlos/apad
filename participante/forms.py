@@ -128,11 +128,11 @@ class UserAddCoupom(forms.ModelForm):
 
 
 class UserAddFiscalDocForm(forms.ModelForm):
-    lojista_cnpj = BRCNPJField(label='CNPJ', initial='10.570.679/0001-08', required=True, max_length=18, widget=forms.TextInput(attrs={'class':'cnpj', 'autocomplete':'off'}))
-    dataDocumento = forms.DateField(label='Data*',widget=forms.TextInput(attrs={ 'class':'date', 'autocomplete':'off'}))
-    valorDocumento = forms.DecimalField(max_digits=8, decimal_places=2, localize=True, label='Valor*', widget=forms.TextInput(attrs={'autocomplete':'off', 'id': 'id_add_doc'}))
+    lojista_cnpj = BRCNPJField(label='CNPJ', initial='10.570.679/0001-08',  required=True, max_length=18, widget=forms.HiddenInput(attrs={'class':'cnpj', 'autocomplete':'off'}))
+    dataDocumento = forms.DateField(label='Data do pagamento',widget=forms.TextInput(attrs={ 'class':'date', 'autocomplete':'off'}))
+    valorDocumento = forms.DecimalField(max_digits=8, decimal_places=2, localize=True, label='Valor', widget=forms.TextInput(attrs={'autocomplete':'off', 'id': 'id_add_doc'}))
     
-    numeroDocumento = forms.CharField(label='Identificador*', widget=forms.TextInput(attrs={ 'autocomplete':'off'}))
+    numeroDocumento = forms.CharField(label='Nº Comprovante', widget=forms.TextInput(attrs={ 'autocomplete':'off'}))
     photo = forms.FileField(label='Comprovante PIX', required=True)
   
     class Meta:
