@@ -44,7 +44,7 @@
     <div id="container_pagamento__div" style="width: 100%;">
         <div class="col-xs-12 col-md-6"> 
             <a href="{% url "participante:dashboard" %}">Voltar</a> <p>Após o pagamento, envie o comprovante de pagamento! <a href="{% url "participante:adddocfiscal" %}">Aqui</a></p>
-
+            <p>Numero do comprovante de pagamento: {{transacao.id}}</p>
             <div id="finalizando-pix__div" >
                 <!-- <h1>Container de Pagamento</h1>
                 <p>Finalizando com: PIX <img src="{% static 'img/logo-pix.png' %}" alt="" style="width: 2rem;"></p> -->
