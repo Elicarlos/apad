@@ -16,11 +16,11 @@
 <!-- <span style="color: red">O envio de documentos já foi encerrado! Te desejamos boa sorte!</span> -->
 
 
-{% regroup cupons_por_documento by documentoFiscal as documentos_fiscais %}
+<!-- {% regroup cupons_por_documento by documentoFiscal as documentos_fiscais %}
 
 {% for documento_fiscal in documentos_fiscais %}
 
-<div">
+<div>
   <p>Comprovante {{ documento_fiscal.grouper.numeroDocumento }}</p>
   <ul class="list-group" style="display: flex;  flex-wrap: wrap;">
       {% for cupom in documento_fiscal.list %}
@@ -28,7 +28,7 @@
       {% endfor %}
   </ul>
 {% endfor %}
-</div>
+</div> -->
 <br>
 
 
