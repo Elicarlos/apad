@@ -675,7 +675,11 @@ def validadocfiscal(request, id):
 def dashboard(request):
     if request.user.is_superuser: return render(request, 'lojista/dashboard.html', {'section': 'lojista'})
     docs = DocumentoFiscal.objects.filter(user=request.user)
-    return render(request, 'participante/dashboard.html', {'section': 'dashboard','docs': docs})
+    cupons_por_documento = Cupom.objects.filter(user=request.user).order_by('documentoFiscal')
+
+        
+   
+    return render(request, 'participante/dashboard.html', {'section': 'dashboard','docs': docs, 'cupons_por_documento': cupons_por_documento,})
 
 @login_required
 def lojista(request):

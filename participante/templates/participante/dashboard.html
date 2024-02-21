@@ -14,7 +14,21 @@
 
     
 <!-- <span style="color: red">O envio de documentos já foi encerrado! Te desejamos boa sorte!</span> -->
+
+
+{% regroup cupons_por_documento by documentoFiscal as documentos_fiscais %}
+
+{% for documento_fiscal in documentos_fiscais %}
+    
+    <p>Comprovante {{ documento_fiscal.grouper.numeroDocumento }}</p>
+    <ul class="list-group" style="display: flex; margin-right: 5rem; max-width: 100%;">
+        {% for cupom in documento_fiscal.list %}
+            <li class="list-group-item" >{{ cupom.id }}</li>
+        {% endfor %}
+    </ul>
+{% endfor %}
 <br>
+
 
 
   <h1>Comprovantes enviados</h1>
