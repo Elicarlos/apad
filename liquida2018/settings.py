@@ -21,8 +21,8 @@ SECRET_KEY = '-ocvjf&p1d%!))e)dpp_uu39s-+=)w&!*oc$vl48o@n*_1fh%2'
 DEBUG = False
 
 # Teste
-# ALLOWED_HOSTS = ['127.0.0.1', 'www.liquidateresina.com.br', '.liquidateresina.com.br']
-ALLOWED_HOSTS = ['127.0.0.1', 'https://apad-a3824e4005be.herokuapp.com/', '.apad-a3824e4005be.herokuapp.com/']
+ALLOWED_HOSTS = ['127.0.0.1', 'www.sorteioapadsocial.com.br', '.sorteioapadsocial.com.br']
+# ALLOWED_HOSTS = ['127.0.0.1', 'https://apad-a3824e4005be.herokuapp.com/', '.apad-a3824e4005be.herokuapp.com/']
 # ALLOWED_HOSTS = ['*']
 
 # SECURE_SSL_REDIRECT = True
