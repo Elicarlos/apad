@@ -45,14 +45,14 @@
       <table class="table table-hover table-bordered text-center">
         <thead>
           <tr>
-            <th style="text-align: center; vertical-align:middle !important">Loja</th>
+            <!-- <th style="text-align: center; vertical-align:middle !important">Loja</th> -->
             <th style="text-align: center; vertical-align:middle !important">Documentos</th>
             <th style="text-align: center; vertical-align:middle !important">Data Compra</th>
             <th style="text-align: center; vertical-align:middle !important">Valor</th>
             <th style="text-align: center; vertical-align:middle !important">Doc fiscal</th>
-            <th style="text-align: center; vertical-align:middle !important">Comprov. Cartão</th>
+            <!-- <th style="text-align: center; vertical-align:middle !important">Comprov. Cartão</th>
             <th style="text-align: center; vertical-align:middle !important">Master</th>
-            <th style="text-align: center; vertical-align:middle !important">Rede</th>
+            <th style="text-align: center; vertical-align:middle !important">Rede</th> -->
             <th style="text-align: center; vertical-align:middle !important">Verificação</th>
             <th style="text-align: center; vertical-align:middle !important">Pendencias</th>
           </tr>
@@ -63,7 +63,7 @@
             {% if doc.photo or doc.photo2 %}
             {% if doc.observacao == "Nenhuma" %}
               <tr>
-                <td style="text-align: center; vertical-align:middle !important">{{ doc.lojista }}</td>
+                <!-- <td style="text-align: center; vertical-align:middle !important">{{ doc.lojista }}</td> -->
                 <td style="text-align: center; vertical-align:middle !important"><a href="{{ doc.get_absolute_url_byop }}">{{ doc.numeroDocumento }}</a></td>
                 <td style="text-align: center; vertical-align:middle !important">{{ doc.dataDocumento|date:"d/m/Y" }}</td>
                 <td style="text-align: center; vertical-align:middle !important">{{ doc.valorDocumento }}</td>
@@ -78,7 +78,7 @@
                   <span><strong>Ver</strong></span> </a>
                 {% endif %}
               </td>
-                <td style="text-align: center; vertical-align:middle !important">
+                <!-- <td style="text-align: center; vertical-align:middle !important">
                   {% if not doc.photo2 %}
                   <a style="pointer-events:none; background-color:gray" data-toggle="modal" href="#{{ doc.id }}cartao"class="btn btn-primary a-btn-slide-text btn-sm">
                     <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
@@ -102,7 +102,7 @@
                     {% else %}
                     <span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true">
                     {% endif %}
-                  </td>
+                  </td> -->
 
                 <td style="text-align: center; vertical-align:middle !important">
                   {% if not doc.pendente %}

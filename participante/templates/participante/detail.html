@@ -21,14 +21,14 @@
       <table class="table table-hover table-bordered text-center">
         <thead>
           <tr>
-            <th style="text-align: center; vertical-align:middle !important">Loja</th>
+            <!-- <th style="text-align: center; vertical-align:middle !important">Loja</th> -->
             <th style="text-align: center; vertical-align:middle !important">Documentos</th>
             <th style="text-align: center; vertical-align:middle !important">Data Compra</th>
             <th style="text-align: center; vertical-align:middle !important">Valor</th>
             <th style="text-align: center; vertical-align:middle !important">Doc fiscal</th>
-            <th style="text-align: center; vertical-align:middle !important">Comprov. Cartão</th>
+            <!-- <th style="text-align: center; vertical-align:middle !important">Comprov. Cartão</th> -->
             {% comment %} <th style="text-align: center; vertical-align:middle !important">Mastercard</th> {% endcomment %}
-            <th style="text-align: center; vertical-align:middle !important">Rede</th>
+            <!-- <th style="text-align: center; vertical-align:middle !important">Rede</th> -->
             <th style="text-align: center; vertical-align:middle !important">Validação</th>
             <th style="text-align: center; vertical-align:middle !important">Pendencias</th>
             <th style="text-align: center; vertical-align:middle !important">Cupons</th>
@@ -39,7 +39,7 @@
           {% for doc in docs %}
 
               <tr>
-                <td style="text-align: center; vertical-align:middle !important">{{ doc.lojista }}</td>
+                <!-- <td style="text-align: center; vertical-align:middle !important">{{ doc.lojista }}</td> -->
                 {% if not doc.status %}
                   <td style="text-align: center; vertical-align:middle !important">{{ doc.numeroDocumento }}</a></td>                  
                   {% else %}
@@ -59,7 +59,7 @@
                   <span><strong>Ver</strong></span> </a>
                 {% endif %}
               </td>
-                <td style="text-align: center; vertical-align:middle !important">
+                <!-- <td style="text-align: center; vertical-align:middle !important">
                   {% if not doc.photo2 %}
                   <a style="pointer-events:none; background-color:gray" data-toggle="modal" href="#{{ doc.numeroDocumento }}cartao"class="btn btn-primary a-btn-slide-text btn-sm">
                     <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
@@ -70,7 +70,7 @@
                     <span><strong>Ver</strong></span> </a>
                   {% endif %}
 
-            </td>
+                  </td>
                 {% comment %} <td style="text-align: center; vertical-align:middle !important">
                   {% if doc.compradoMASTERCARD %}
                     <span style="color:lightgreen" class="glyphicon glyphicon-ok" aria-hidden="true">
@@ -83,7 +83,7 @@
                     {% else %}
                     <span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true">
                     {% endif %}
-                  </td>
+                  </td> -->
 
                 <td style="text-align: center; vertical-align:middle !important">
                   {% if not doc.pendente %}
