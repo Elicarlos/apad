@@ -9,9 +9,10 @@ from .models import Cupom
 from bcp.views import print_qrcode
 from participante.models import DocumentoFiscal
 from django.db import transaction
+import threading
 
 
-
+gerarcupons_sem = threading.Semaphore()
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
@@ -36,17 +37,24 @@ def addcupom(request, numerodocumento):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def gerarcupons(request, numerodocumento):
-    if request.method == 'POST':
-        doc = get_object_or_404(DocumentoFiscal, numeroDocumento=numerodocumento)
-        qtde = int(doc.get_cupons())
-        # for c in range(qtde):
-        #     addcupom(request, numerodocumento)
-        with transaction.atomic():
-            for c in range(qtde):
-                addcupom(request, numerodocumento)
+    with gerarcupons_sem:       
+        if request.method == 'POST':
+            doc = get_object_or_404(DocumentoFiscal, numeroDocumento=numerodocumento)
+            qtde = int(doc.get_cupons())
 
-        messages.success(request, 'Cupons gerados com sucesso!')
-    
+            cupons_gerados = []
+
+            with transaction.atomic():
+                for c in range(qtde):
+                    novo_cupom = addcupom(request, numerodocumento)
+                    if novo_cupom:
+                        cupons_gerados.append(novo_cupom)
+
+            if len(cupons_gerados) == qtde:
+                messages.success(request, f'{qtde} cupons gerados com sucesso!')
+            else:
+                messages.error(request, 'Erro ao gerar cupons')
+
     return HttpResponse('/')
     
 
