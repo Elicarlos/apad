@@ -43,7 +43,23 @@
 
     <div id="container_pagamento__div" style="width: 100%;">
         <div class="col-xs-12 col-md-6"> 
-            <a href="{% url "participante:dashboard" %}">Voltar</a> <p>Após o pagamento, envie o comprovante de pagamento! <a href="{% url "participante:adddocfiscal" %}">Aqui</a></p>
+            <!-- <a href="{% url "participante:dashboard" %}">Voltar</a> <p>Após o pagamento, envie o comprovante de pagamento! <a class="btn btn-primary" href="{% url "participante:adddocfiscal" %}">Aqui</a></p> -->
+            <form method="get" action="{% url 'participante:adddocfiscal' %}">
+                {% csrf_token %}
+                <input type="hidden" name="username" value="{{ transacao.user.username }}">
+                <input type="hidden" name="transacao_id" value="{{ transacao.id }}">
+                <input type="hidden" name="quantidade" value="{{ transacao.quantidade_cupons }}">
+                <input type="hidden" name="valor" value="{{ transacao.valor_total }}">
+                <input type="hidden" name="dataTransacao" value="{{ transacao.data_transacao|date:"d/m/Y" }}  ">
+                <button type="submit" class="btn btn-primary">Aqui</button>
+              </form>
+
+
+
+
+
+            
+            
             <p>Numero do comprovante de pagamento: {{transacao.id}}</p>
             <div id="finalizando-pix__div" >
                 <!-- <h1>Container de Pagamento</h1>
@@ -51,7 +67,8 @@
                 <div class="panel panel-default">
                     <img src="{{ transacao.qrcode.url }}" alt="QR Code" width="350" class="img-fluid" style="max-width: 100%; height: auto;">
                     <div class="panel-body" style="width: 100%;">                       
-                            <div class="card">                        
+                            <div class="card">   
+                                  
                                 <!-- <p>Seu codigo expira em </p>
                                 <p>00:00:15 </p> -->
                                 <p id="codigoPix" style="word-wrap: break-word;">
@@ -234,6 +251,23 @@
     
     
     }
+
+
+
+
+    function redirecionarComDados(username, transacaoId, quantidadeCupons, valorTotal, dataTransacao) {
+    // Use os dados como necessário
+    console.log("Username:", username);
+    console.log("ID da Transação:", transacaoId);
+    console.log("Quantidade de Cupons:", quantidadeCupons);
+    console.log("Valor Total:", valorTotal);
+    console.log("Data da Transação:", dataTransacao);
+
+    // Redirecione para a página desejada, passando os dados como parâmetros de consulta
+    window.location.href = "{% url 'participante:adddocfiscal' %}?username=" + username + "&transacao_id=" + transacaoId + "&quantidade=" + quantidadeCupons + "&valor=" + valorTotal + "&dataTransacao=" + dataTransacao;
+}
+
+
         
 </script>
 

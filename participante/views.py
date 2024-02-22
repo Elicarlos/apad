@@ -460,8 +460,20 @@ def user_edit(request, id):
 @transaction.atomic
 def adddocfiscal(request):
     if request.method == 'POST':
+        user = request.user
+        transacoes = Transacao.objects.filter(user=user)
+
+        print(transacoes)
+        if not transacoes.exists():
+            messages.error(request, 'Você não possui transações para associar documentos fiscais.')
+            return redirect('participante:adddocfiscal')       
+
         documentoFiscal_form = UserAddFiscalDocForm(request.POST,
                                                     files=request.FILES)        
+        
+        
+        
+
         
         # cnpj = documentoFiscal_form['lojista_cnpj'].value()
         lojista = Lojista.objects.get(pk=1)
@@ -473,6 +485,11 @@ def adddocfiscal(request):
             if lojista:
                 if documentoFiscal_form.is_valid():
                     # Create a new document object but avoid saving it yet
+                    transacao_id = documentoFiscal_form.cleaned_data.get('numeroDocumento')
+                    if not Transacao.objects.filter(id=transacao_id, user=user).exists():
+                        messages.error(request, 'Verifique o numero de indentificador no seu comprovante de pagamento')
+                        return redirect('participante:adddocfiscal')
+
                     new_documentoFiscal = documentoFiscal_form.save(commit=False)
                     # Set the user
                     new_documentoFiscal.user = user
@@ -489,7 +506,19 @@ def adddocfiscal(request):
             documentoFiscal_form = UserAddFiscalDocForm()
             return render(request, 'participante/doc_fiscal_add.html', {'documentoFiscal_form': documentoFiscal_form})
     else:
-        documentoFiscal_form = UserAddFiscalDocForm()
+        username = request.GET.get('username')
+        transacao_id = request.GET.get('transacao_id')
+        quantidade = request.GET.get('quantidade')
+        valor = request.GET.get('valor')
+        data_transacao = request.GET.get('dataTransacao')
+
+        # Inicializar o formulário com os valores da transação
+        documentoFiscal_form = UserAddFiscalDocForm(initial={            
+            'numeroDocumento': transacao_id,          
+            'valorDocumento': valor,
+            'dataDocumento': data_transacao
+        })
+
     return render(request, 'participante/doc_fiscal_add.html', {'documentoFiscal_form': documentoFiscal_form})
 
 
