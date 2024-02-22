@@ -248,7 +248,7 @@ def checkout(request):
 @login_required
 def pagamento(request):
     if request.method == "POST":
-        print('Estou dentro do post')
+        # print('Estou dentro do post')
         try:
             usuario = request.user
             nome_usuario = request.user.profile.nome
@@ -282,7 +282,7 @@ def pagamento(request):
                 codigo_transacao = transacao.id
 
                 # Gere o QR code a partir do payload
-                payload = Payload(nome_usuario, 'ffc5effd-f33d-4959-b115-da3e9954c1a4', "{:.2f}".format(total_convertido), 'Teresina', str(codigo_transacao))
+                payload = Payload(nome_usuario, '52472827000100', "{:.2f}".format(total_convertido), 'Teresina', str(codigo_transacao))
                 resultado_payload = payload.gerarPayload()
                 # print('Resulado', resultado_payload)
 
