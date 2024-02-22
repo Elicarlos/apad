@@ -62,7 +62,7 @@
           <!-- <th style="text-align: center; vertical-align:middle !important">Loja</th> -->
           <th style="text-align: center; vertical-align:middle !important">Data Pagamento</th>
           <th style="text-align: center; vertical-align:middle !important">Valor</th>
-          <!-- <th style="text-align: center; vertical-align:middle !important">Observação</th> -->
+          <th style="text-align: center; vertical-align:middle !important">Observação</th>
           <th style="text-align: center; vertical-align:middle !important">Status</th>
           <th style="text-align: center; vertical-align:middle !important">
           {% if not doc.pendente %}
@@ -83,7 +83,7 @@
               <!-- <td style="text-align: center; vertical-align:middle !important">{{ doc.lojista }}</td> -->
               <td style="text-align: center; vertical-align:middle !important">{{ doc.dataDocumento|date:"d/m/Y" }}</td>
               <td style="text-align: center; vertical-align:middle !important">{{ doc.valorDocumento }}</td>
-              <!-- <td style="text-align: center; vertical-align:middle !important">{{ doc.observacao}}</td> -->
+              <td style="text-align: center; vertical-align:middle !important">{{ doc.observacao}}</td>
               <td style="text-align: center; vertical-align:middle !important">
                 {% if not doc.pendente %}
                   <span style="color:lightgreen" class="glyphicon glyphicon-ok" aria-hidden="true"> <p> validado </p> </span>

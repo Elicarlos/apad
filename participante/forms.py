@@ -126,7 +126,7 @@ class UserAddCoupom(forms.ModelForm):
     numeroDoCupom = forms.CharField(label='Numero do cupom')
     valorDoCupom = forms.DecimalField(label='Valor do cupom')
 
-
+from datetime import date
 class UserAddFiscalDocForm(forms.ModelForm):
     lojista_cnpj = BRCNPJField(label='CNPJ', initial='52.472.827/0001-00',  required=True, max_length=18, widget=forms.HiddenInput(attrs={'class':'cnpj', 'autocomplete':'off'}))
     dataDocumento = forms.DateField(label='Data do pagamento',widget=forms.TextInput(attrs={ 'class':'date', 'autocomplete':'off'}))
@@ -173,7 +173,7 @@ class DocumentoFiscalEditFormOp(forms.ModelForm):
 class DocumentoFiscalEditForm(forms.ModelForm):
     class Meta:
         model = DocumentoFiscal
-        exclude = ('vendedor','compradoREDE', 'compradoMASTERCARD', 'photo2','pendente','user', 'lojista', 'observacao')
+        exclude = ('vendedor','compradoREDE', 'compradoMASTERCARD', 'photo2','pendente','user', 'lojista')
         fields = '__all__'
 
 class DocumentoFiscalValidaForm(forms.ModelForm):
