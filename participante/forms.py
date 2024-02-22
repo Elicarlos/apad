@@ -128,7 +128,7 @@ class UserAddCoupom(forms.ModelForm):
 
 
 class UserAddFiscalDocForm(forms.ModelForm):
-    lojista_cnpj = BRCNPJField(label='CNPJ', initial='10.570.679/0001-08',  required=True, max_length=18, widget=forms.HiddenInput(attrs={'class':'cnpj', 'autocomplete':'off'}))
+    lojista_cnpj = BRCNPJField(label='CNPJ', initial='52.472.827/0001-00',  required=True, max_length=18, widget=forms.HiddenInput(attrs={'class':'cnpj', 'autocomplete':'off'}))
     dataDocumento = forms.DateField(label='Data do pagamento',widget=forms.TextInput(attrs={ 'class':'date', 'autocomplete':'off'}))
     valorDocumento = forms.DecimalField(max_digits=8, decimal_places=2, localize=True, label='Valor', widget=forms.TextInput(attrs={'autocomplete':'off', 'id': 'id_add_doc'}))
     
