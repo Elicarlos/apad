@@ -156,7 +156,7 @@ class UserAddFiscalDocForm(forms.ModelForm):
         lojista_cnpj = self.cleaned_data.get('lojista_cnpj')
         lojista = Lojista.objects.get(CNPJLojista=lojista_cnpj)
         if numeroDocumento and DocumentoFiscal.objects.filter(lojista=lojista, numeroDocumento=numeroDocumento).exists():
-            raise forms.ValidationError(u'Um documento com este número já foi lançado para esse participante!')
+            raise forms.ValidationError(u'Um documento com este número já foi lançado')
         return numeroDocumento
 
 class UserAddFiscalDocFormSuperuser(UserAddFiscalDocForm):
@@ -173,7 +173,7 @@ class DocumentoFiscalEditFormOp(forms.ModelForm):
 class DocumentoFiscalEditForm(forms.ModelForm):
     class Meta:
         model = DocumentoFiscal
-        exclude = ('vendedor','compradoREDE', 'compradoMASTERCARD', 'foto2','pendente','user', 'lojista', 'observacao')
+        exclude = ('vendedor','compradoREDE', 'compradoMASTERCARD', 'photo2','pendente','user', 'lojista', 'observacao')
         fields = '__all__'
 
 class DocumentoFiscalValidaForm(forms.ModelForm):

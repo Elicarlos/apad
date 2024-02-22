@@ -15,6 +15,26 @@
     
 <!-- <span style="color: red">O envio de documentos já foi encerrado! Te desejamos boa sorte!</span> -->
 
+<style>
+  .circle-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .circle-item {
+    width: 50px; 
+    height: 50px; 
+    background-color: #F5F5F5; 
+    color: black; 
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem;
+    font-weight: bold;
+  }
+</style>
 
 {% regroup cupons_por_documento by documentoFiscal as documentos_fiscais %}
 
@@ -24,7 +44,7 @@
   <p>Comprovante {{ documento_fiscal.grouper.numeroDocumento }}</p>
   <ul class="list-group" style="display: flex;  flex-wrap: wrap;">
       {% for cupom in documento_fiscal.list %}
-          <li class="list-group-item" style="margin: 0.5rem;" >{{ cupom.id }}</li>
+        <div class="circle-item">{{ cupom.id }}</div>
       {% endfor %}
   </ul>
 {% endfor %}

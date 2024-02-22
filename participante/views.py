@@ -318,13 +318,7 @@ def pagamento(request):
 
     # Se ocorrer um erro ou a requisição não for POST, você pode redirecionar para outra página ou retornar uma resposta adequada
     return render(request, 'participante/pagina_de_erro.html')  # Substitua 'pagina_de_erro.html' pela página desejada
-                   
-
-                    
-                    
-
-               
-            
+                         
 
 def confirmacao_pagamento(request, transacao_id):
     # Recupere a transação com base no ID fornecido
@@ -333,10 +327,7 @@ def confirmacao_pagamento(request, transacao_id):
     # Renderize a página que mostra o QR Code e o payload
     contexto = {'transacao': transacao}
     return render(request, 'participante/confirmacao_pagamento.html', contexto)
-
-
-   
-   
+ 
 
 def user_login(request):
     if request.method == 'POST':
@@ -468,15 +459,13 @@ def user_edit(request, id):
 @login_required
 @transaction.atomic
 def adddocfiscal(request):
-    
-
     if request.method == 'POST':
         documentoFiscal_form = UserAddFiscalDocForm(request.POST,
                                                     files=request.FILES)        
         
         # cnpj = documentoFiscal_form['lojista_cnpj'].value()
-        cnpj = '10.570.679/0001-08'
-               
+        lojista = Lojista.objects.get(pk=1)
+        cnpj = lojista.CNPJLojista              
 
         try:
             lojista = Lojista.objects.get(CNPJLojista=cnpj)
@@ -639,6 +628,7 @@ def validadocfiscal(request, id):
         profile = get_object_or_404(Profile, user= instance.user)
         docs = DocumentoFiscal.objects.filter(user=instance.user)
         pendente = documentofiscal_form['pendente'].value()
+        
         if documentofiscal_form.is_valid() and not pendente:
             new_doc = documentofiscal_form.save(commit=False)
             new_doc.qtde = int(new_doc.get_cupons())
@@ -654,15 +644,18 @@ def validadocfiscal(request, id):
             # body = "Seus cupons já foram validados e impressos agora é só aguardar o sorteio"
             # email = EmailMessage(subject, body, to=[new_doc.user.email])
             # email.send()
-            # messages.success(request, 'Documento Fiscal validado com sucesso, agora você pode Imprimir os cupons')
-            return render(request, 'participante/detail.html', {'section': 'people','user': profile, 'docs': docs})
+            messages.success(request, 'Documento Fiscal validado com sucesso, agora você pode Imprimir os cupons')
+            # return render(request, 'participante/detail.html', {'section': 'people','user': profile, 'docs': docs})
+            return redirect('participante:user_detail', id=profile.user.id)
+        
         elif documentofiscal_form.is_valid() and pendente:
             new_doc = documentofiscal_form.save(commit=False)
             # new_doc.status = False
             new_doc.save()
 
             messages.info(request, 'O documento fiscal {} não foi validado por pendencias. Se está tudo certo com o documento, por favor repita novamente o procedimento de validação e desmarque a opção de pendente para que o mesmo seja validado! Se você encontrou pendêcias no documento em questão por favor não esqueça de descriminar a pendência no campo obsevações!'.format(new_doc.numeroDocumento))
-            return render(request, 'participante/detail.html', {'section': 'people','user': profile, 'docs': docs})
+            #return render(request, 'participante/detail.html', {'section': 'people','user': profile, 'docs': docs})
+            return redirect('participante:user_detail', id=profile.user.id)
         else:
             messages.error(request, 'Ocorreu um erro durante o processo de validação verifique se não há algum dado incoerênte no formulario!')
     else:

@@ -106,7 +106,7 @@ class DocumentoFiscal(models.Model):
 
     def get_cupons(self):
         cupons = 0
-        if self.valorDocumento > 49.99:
+        if self.valorDocumento > 49.99 and not self.pendente:
             valor = self.valorDocumento // 50
             if self.compradoREDE:
                 valor = valor * 1

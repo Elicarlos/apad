@@ -15,10 +15,7 @@ from .views import consulta_cep
 urlpatterns = [
     # url(r'^login/$', views.user_login, name='login'),
     path('login/', views.homepage, name='login'),
-
     path('logout/', LogoutView.as_view(next_page='participante:homepage'), name='logout'),
-
-
     #Relatorios
     path('dados_campanha/', views.dados_campanha, name="dados_campanha"),
     path('checkout/', views.checkout, name="checkout"),
