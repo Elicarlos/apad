@@ -42,17 +42,21 @@
     </div>
 
     <div id="container_pagamento__div" style="width: 100%;">
+        <span>Após o pagamente envie o </span>
         <div class="col-xs-12 col-md-6"> 
             <!-- <a href="{% url "participante:dashboard" %}">Voltar</a> <p>Após o pagamento, envie o comprovante de pagamento! <a class="btn btn-primary" href="{% url "participante:adddocfiscal" %}">Aqui</a></p> -->
-            <form method="get" action="{% url 'participante:adddocfiscal' %}">
-                {% csrf_token %}
-                <input type="hidden" name="username" value="{{ transacao.user.username }}">
-                <input type="hidden" name="transacao_id" value="{{ transacao.id }}">
-                <input type="hidden" name="quantidade" value="{{ transacao.quantidade_cupons }}">
-                <input type="hidden" name="valor" value="{{ transacao.valor_total }}">
-                <input type="hidden" name="dataTransacao" value="{{ transacao.data_transacao|date:"d/m/Y" }}  ">
-                <button type="submit" class="btn btn-primary">Aqui</button>
-              </form>
+            <div style="display: flex; align-items: center;">
+                <p>Após o pagamento envie aqui o: </p>
+                <form method="get" action="{% url 'participante:adddocfiscal' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="username" value="{{ transacao.user.username }}">
+                    <input type="hidden" name="transacao_id" value="{{ transacao.id }}">
+                    <input type="hidden" name="quantidade" value="{{ transacao.quantidade_cupons }}">
+                    <input type="hidden" name="valor" value="{{ transacao.valor_total }}">
+                    <input type="hidden" name="dataTransacao" value="{{ transacao.data_transacao|date:"d/m/Y" }}  ">
+                    <button type="submit" class="btn btn-primary">Comprovante de Pagamento</button>
+                  </form>
+            </div>
 
 
 
