@@ -4,6 +4,7 @@ from decimal import Decimal
 from io import BytesIO
 import os
 import json
+import secrets
 from django.core.files import File
 from pydoc import Doc
 from unicodedata import decimal
@@ -646,6 +647,16 @@ def editdocfiscalbyop(request, id):
         documentofiscal_form = DocumentoFiscalEditFormOp(instance=instance)
     return render(request, 'participante/doc_fiscal_edit.html', {'documentofiscal_form': documentofiscal_form})
 
+from django.views.decorators.csrf import csrf_protect
+
+def get_unique_token():
+    return secrets.token_urlsafe(16)
+
+
+
+from django.views.decorators.cache import never_cache
+
+@never_cache
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 @transaction.atomic
