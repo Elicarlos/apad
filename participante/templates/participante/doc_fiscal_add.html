@@ -3,6 +3,7 @@
 {% block title %}Adicionar comprovante{% endblock %}
 
 {% block content %}
+
     <h1 style="margin-top: 100px;">Novo Comprovante</h1>
     <p>Você precisa preencher as seguinter informações referentes ao seu pagamento:</p>
     <form action="." method="post" enctype="multipart/form-data" class="form-group">
@@ -14,5 +15,6 @@
         <p><input type="submit" class="btn btn-primary btn-lg" value="Enviar">
         <a type="button" class="btn" href="{% url 'participante:dashboard' %}">Cancelar</button></p>
     </form>
+ 
     
 {% endblock %}

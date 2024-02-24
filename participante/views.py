@@ -470,12 +470,8 @@ def adddocfiscal(request):
             return redirect('participante:adddocfiscal')       
 
         documentoFiscal_form = UserAddFiscalDocForm(request.POST,
-                                                    files=request.FILES)        
-        
-        
-        
-
-        
+                                                    files=request.FILES)
+                
         # cnpj = documentoFiscal_form['lojista_cnpj'].value()
         lojista = Lojista.objects.get(pk=1)
         cnpj = lojista.CNPJLojista              
