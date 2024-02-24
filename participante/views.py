@@ -283,7 +283,7 @@ def pagamento(request):
                 codigo_transacao = transacao.id
 
                 # Gere o QR code a partir do payload
-                payload = Payload(nome_usuario, '52472827000100', "{:.2f}".format(total_convertido), 'Teresina', str(codigo_transacao))
+                payload = Payload(nome_usuario, 'apadpiaui@gmail.com', "{:.2f}".format(total_convertido), 'Teresina', str(codigo_transacao))
                 resultado_payload = payload.gerarPayload()
                 # print('Resulado', resultado_payload)
 
