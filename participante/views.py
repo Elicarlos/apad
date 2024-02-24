@@ -654,9 +654,7 @@ def get_unique_token():
 
 
 
-from django.views.decorators.cache import never_cache
 
-@never_cache
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 @transaction.atomic

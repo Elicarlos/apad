@@ -3,7 +3,6 @@ from participante.models import DocumentoFiscal, Profile
 from django.http import HttpResponse
 from django.http import HttpResponseBadRequest
 from django.urls import reverse
-from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -119,10 +118,10 @@ def generate(request, id_,  barcode_type='Standard39', auto_print=True):
     # Set JS to Autoprint document
     if auto_print:
         pdfdoc.PDFCatalog.OpenAction = '<</S/JavaScript/JS(this.print\({bUI:false,bSilent:true,bShrinkToFit:true}\);)>>'
-        pdfdoc.PDFInfo.title = 'Liquida Teresina 2023' # nicety :)
+        pdfdoc.PDFInfo.title = 'Sorteio Beneficiente' # nicety :)
 
     # lineUp = String(105, 212, "_______________________________________________________", textAnchor='middle', fontSize=font_size)
-    # title = String(105, 196, "** LIQUIDA TERESINA 2018 **", textAnchor='middle', fontSize=12)
+    # title = String(105, 196, "** Sorteio Beneficiente **", textAnchor='middle', fontSize=12)
     # lineTop = String(105, 190, "_______________________________________", textAnchor='middle', fontName=font_name, fontSize=font_size)
     # lineTitle = String(105, 171, "_______________________________________", textAnchor='middle', fontName=font_name, fontSize=font_size)
     # dadosParticipante = String(105, 177, "Dados do Participante", textAnchor='middle', fontSize=font_size)
@@ -157,6 +156,21 @@ def generate(request, id_,  barcode_type='Standard39', auto_print=True):
 
     # c.add(lineBottom)
 
+    def esconde_cpf(cpf):
+        fatia_1 = cpf[:3]
+        fatia_2 = cpf[4:7]
+        fatia_3 = cpf[8:11]
+        fatia_4 = cpf[12:14]
+        return f'***.{fatia_2}.{fatia_3}-**'
+
+    def esconde_telefone(tel):
+        fatia_1 = tel[1:3]
+        fatia_2 = tel[5:10]
+        fatia_3 = tel[11:15]
+
+        return f'({fatia_1}) *****-{fatia_3}'
+
+
 
     buffer = BytesIO() # buffer for the output
 
@@ -173,11 +187,11 @@ def generate(request, id_,  barcode_type='Standard39', auto_print=True):
         d = Drawing(100, 100, transform=[240./width, 0, 0, 240./height, 0, 0])
         d.add(qr_code)
         c.setFont(font_name, 30)
-        c.drawImage(image_path, 200, 683, mask='auto') 
-        c.drawImage(image_rede, 35, 750, mask='auto')
+        c.drawImage(image_path, 35, 683, mask='auto') 
+        #c.drawImage(image_rede, 35, 750, mask='auto')
         # c.drawImage(image_pop, 450, 670, mask='auto')
-        c.drawImage(image_master, 400, 730, mask='auto')
-        c.drawImage(image_cdl, 70, 90, mask='auto')
+        c.drawImage(image_master, 400, 670, mask='auto')
+        #c.drawImage(image_cdl, 70, 90, mask='auto')
 
         #c.drawImage(image_marko, 40, 50, mask='auto')
         c.setFont(font_name, 20)
@@ -193,7 +207,7 @@ def generate(request, id_,  barcode_type='Standard39', auto_print=True):
         c.setFont(font_name, 20)
         c.drawString(40, 580, "CPF:")
         c.setFont(font_name_bold, 20)
-        c.drawString(95, 580, '{}'.format(profile.CPF))
+        c.drawString(95, 580, '{}'.format(esconde_cpf(profile.CPF)))
         c.setFont(font_name, 20)
         c.drawString(40, 520, "Cidade:")
         c.setFont(font_name_bold, 20)
@@ -203,25 +217,25 @@ def generate(request, id_,  barcode_type='Standard39', auto_print=True):
         c.setFont(font_name_bold, 20)
         c.drawString(410, 520, '{}'.format(profile.estado))
         c.setFont(font_name, 20)
-        c.drawString(40, 490, "Bairro:")
+        #c.drawString(40, 490, "Bairro:")
         c.setFont(font_name_bold, 20)
-        c.drawString(115, 490, '{}'.format(profile.bairro))
+        #c.drawString(115, 490, '{}'.format(profile.bairro))
         c.setFont(font_name, 20)
         c.drawString(330, 490, "Fone:")
         c.setFont(font_name_bold, 20)
-        c.drawString(390, 490, '{}'.format(profile.foneCelular1))
+        c.drawString(390, 490, '{}'.format(esconde_telefone(profile.foneCelular1)))
         c.setFont(font_name, 20)
-        c.drawString(40, 460 , "Comprou na loja?")
+        #c.drawString(40, 460 , "Comprou na loja?")
         c.setFont(font_name_bold, 20)
-        c.drawString(40, 430, '{}'.format(cupom.documentoFiscal.lojista))
+        #c.drawString(40, 430, '{}'.format(cupom.documentoFiscal.lojista))
         c.setFont(font_name, 20)
-        c.drawString(330, 460, "Vendedor:")
+        #c.drawString(330, 460, "Vendedor:")
         c.setFont(font_name_bold, 20)
-        c.drawString(330, 430, '{}'.format(cupom.documentoFiscal.vendedor))
+        #c.drawString(330, 430, '{}'.format(cupom.documentoFiscal.vendedor))
+        c.setFont(font_name_bold, 35)
+        c.drawString(100, 390, "Sorteio Beneficiente")
         c.setFont(font_name, 20)
-        c.drawString(100, 390, "Qual a maior campanha de premios do Piauí?")
-        c.setFont(font_name_bold, 20)
-        c.drawString(100, 360, "(X) Liquida Teresina 2023")
+        c.drawString(100, 360, "    Em prol da Aurora de Esperança")
         # c.drawString(340, 360, "( ) Outra")
         c.setFont(font_name, 20)
         c.drawString(40, 320, "Data:")
@@ -229,12 +243,12 @@ def generate(request, id_,  barcode_type='Standard39', auto_print=True):
         df = DateFormat(cupom.documentoFiscal.dataDocumento)
         c.drawString(100, 320, '{}'.format(df.format('d/m/Y')))
         c.setFont(font_name, 40)
-        c.drawString(80, 250, "CUPOM")
+        c.drawString(80, 200, "CUPOM")
         c.setFont(font_name_bold, 45)
-        c.drawString(100, 200, '{}'.format(cupom.id))
+        c.drawString(100, 150, '{}'.format(cupom.id))
         c.drawString(20, 7  , "_____________________________________________________")
         c.setFont(font_name_bold, 20)
-        c.drawString(150, 15, "SRE/ME N° 06.028066/2023")
+        #c.drawString(150, 15, "SRE/ME N° 06.028066/2023")
         renderPDF.draw(d, c, 320, 80)
         c.showPage()
 

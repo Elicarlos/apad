@@ -9,6 +9,19 @@
         -webkit-appearance: none;
         margin: 0;
     }
+
+    .destaque {
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .panel {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin: 20px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
 </style>
 
 <!-- Adicione a div do spinner -->
@@ -45,7 +58,7 @@
             <div class="panel panel-default" id="compre_cupons__div">
                 <div class="panel-body">
                     <form class="navbar-form" method="post" onsubmit="return pagamento();">
-                        <p>Compre seus cupons</p>
+                        <p class="destaque">Compre seus cupons</p>
                         {% csrf_token %}
 
                         <div>                           
@@ -61,7 +74,7 @@
                         <ul class="list-group" style="margin-top: 2rem;">
                             <li class="list-group-item">
                                 <span class="badge" id="total__badge" style="font-size: 2rem; ">R$ 00,00</span>
-                                <b>Total</b>
+                                <b class="destaque">Total</b>
                             </li>
                         </ul>
                         <button class="btn btn-primary col-xs-12" style="width: 100%;">Pagar</button>
@@ -95,7 +108,9 @@
                 </div>
 
                 <div id="forma-pagamento__div">
-                    <span style="margin-right: 1rem;"><a href="{% url "participante:checkout" %}">Voltar</a></span>Forma de Pagamento</span>
+                    <span style="margin-right: 1rem;"><a href="{% url 'participante:checkout' %}">Voltar</a></span><span class="destaque">Forma de Pagamento</span>
+
+
                     <div class="panel panel-default">
 
                         <div class="panel-body">
@@ -157,7 +172,7 @@
                         <li class="list-group-item">
                             <span class="badge" id="total__badge_resumo">R$ 00,00</span>
 
-                            <b>Total</b>
+                            <b class="destaque">Total</b>
                         </li>
                     </ul>
                 </div>

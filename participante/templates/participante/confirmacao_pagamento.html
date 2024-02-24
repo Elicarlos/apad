@@ -9,6 +9,27 @@
            -webkit-appearance: none;
            margin: 0;
        }
+
+
+      
+        #finalizando-pix__div {
+            margin-top: 20px;
+        }
+        
+        .destaque {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .panel {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+    
+
    </style>
 
 <!-- Adicione a div do spinner -->
@@ -31,7 +52,7 @@
                 <div class="panel panel-default">                    
                     <p>Contanainer Compra</p>                    
                     <div class="panel-body">                       
-                        <p>POsso colocar uma imagem aqui</p>                         
+                        <p>Posso colocar uma imagem aqui</p>                         
                     </div>
                 </div>      
             </div>          
@@ -42,11 +63,13 @@
     </div>
 
     <div id="container_pagamento__div" style="width: 100%;">
-        <span>Após o pagamente envie o </span>
+        
         <div class="col-xs-12 col-md-6"> 
             <!-- <a href="{% url "participante:dashboard" %}">Voltar</a> <p>Após o pagamento, envie o comprovante de pagamento! <a class="btn btn-primary" href="{% url "participante:adddocfiscal" %}">Aqui</a></p> -->
-            <div style="display: flex; align-items: center;">
-                <p>Após o pagamento envie aqui o: </p>
+            <div class="panel panel-default" style="padding:20px;">
+                <p style="font-weight: bold">Após o pagamento via Pix, envie o comprovante clicando no botão abaixo:</p>
+            
+                
                 <form method="get" action="{% url 'participante:adddocfiscal' %}">
                     {% csrf_token %}
                     <input type="hidden" name="username" value="{{ transacao.user.username }}">
@@ -54,21 +77,22 @@
                     <input type="hidden" name="quantidade" value="{{ transacao.quantidade_cupons }}">
                     <input type="hidden" name="valor" value="{{ transacao.valor_total }}">
                     <input type="hidden" name="dataTransacao" value="{{ transacao.data_transacao|date:"d/m/Y" }}  ">
-                    <button type="submit" class="btn btn-primary">Comprovante de Pagamento</button>
+                    <button type="submit" class="btn btn-primary">Enviar Comprovante</button>
                   </form>
+                  
+            <p class="destaque" style="margin-top: 2rem;">Numero do comprovante de pagamento: {{transacao.id}}</p>
+            <p style="margin-top: 2rem;">Certifique-se de que o comprovante esteja legível e contenha todas as informações necessárias.</p>
+            
             </div>
 
-
-
-
-
+                        
             
-            
-            <p>Numero do comprovante de pagamento: {{transacao.id}}</p>
             <div id="finalizando-pix__div" >
                 <!-- <h1>Container de Pagamento</h1>
                 <p>Finalizando com: PIX <img src="{% static 'img/logo-pix.png' %}" alt="" style="width: 2rem;"></p> -->
                 <div class="panel panel-default">
+                    <p style="margin-left: 2rem; margin-top: 2rem;">Copie o código PIX abaixo e efetue o pagamento usando seu aplicativo bancário ou leitor de QR Code.</p>
+
                     <img src="{{ transacao.qrcode.url }}" alt="QR Code" width="350" class="img-fluid" style="max-width: 100%; height: auto;">
                     <div class="panel-body" style="width: 100%;">                       
                             <div class="card">   
@@ -83,8 +107,8 @@
                     </div>
         
                     <div class="panel-footer">
-                        <span><b>Total a pagar por <span>{{ transacao.quantidade_cupons }}</span> cupons</b></span>
-                        <span id="total_pagar_final">R$ {{transacao.valor_total}}</span>
+                        <span class="destaque"><b>Total a pagar por <span>{{ transacao.quantidade_cupons }}</span> cupons</b></span>
+                        <span id="total_pagar_final" class="destaque">R$ {{transacao.valor_total}}</span>
                     </div>
                 </div>        
                  
