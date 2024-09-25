@@ -474,7 +474,8 @@ def adddocfiscal(request):
                 
         # cnpj = documentoFiscal_form['lojista_cnpj'].value()
         lojista = Lojista.objects.get(pk=1)
-        cnpj = lojista.CNPJLojista              
+        cnpj = lojista.CNPJLojista
+        print(cnpj)      
 
         try:
             lojista = Lojista.objects.get(CNPJLojista=cnpj)
