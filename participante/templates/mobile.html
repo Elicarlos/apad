@@ -68,7 +68,7 @@
           {% if is_gerente %}
           <li class="page-scroll" {% if section == "lojista" %}class="selected"{% endif %}><a href="{% url "participante:dados_campanha" %}">Dashboard</a></li>
           {% endif %}
-          <li class="page-scroll" {% if section == "lojistas" %}class="selected"{% endif %}><a href="{% url "lojista:search" %}">Lojistas</a></li>
+          <!-- <li class="page-scroll" {% if section == "lojistas" %}class="selected"{% endif %}><a href="{% url "lojista:search" %}">Lojistas</a></li> -->
 
           {% if is_backoffice %}
           <li class="page-scroll" {% if section == "participantes" %}class="selected"{% endif %}><a href="{% url "participante:backoffice" %}">Backoffice</a></li>
