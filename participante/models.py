@@ -154,3 +154,5 @@ class Transacao(models.Model):
     #     return 'Participante: {} CPF:{} Celular {} Documento Fiscal: {} Operador: {} Data de impressão: {} Data da compra: {} vendedor: {} '.format(
     #                                                                                                           self.user.profile.nome,
     #                                                                                                           self.user.profile.CPF,
+    
+    

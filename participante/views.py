@@ -254,18 +254,15 @@ def pagamento(request):
             usuario = request.user
             nome_usuario = request.user.profile.nome
             total = request.POST.get('total')
-            quantidade = request.POST.get('quantidade')
-
-            # print("Total>>>>", total)
-            # print("Quantidade>>>>", quantidade)
-
-            
+            quantidade = request.POST.get('quantidade')            
 
             # # Valide os dados do formulário
             # if total is None or quantidade is None:
             #     raise ValueError("Campos de formulário ausentes")
 
             total_convertido = float(total.replace('.', ','))
+            
+            
             quantidade_convertida = int(quantidade)
 
             # Verifique se já existe uma transação não processada para o usuário
@@ -304,8 +301,10 @@ def pagamento(request):
 
                 img_io = BytesIO()
                 img.save(img_io)
+                
                 transacao.qrcode.save(f'qrcode_{codigo_transacao}.png', File(img_io))
 
+                print("antes de redirectionar")
                
                 # Redirecione para a página de confirmação
                 return redirect('participante:confirmacao_pagamento', transacao_id=transacao.id)
@@ -324,6 +323,7 @@ def pagamento(request):
 def confirmacao_pagamento(request, transacao_id):
     # Recupere a transação com base no ID fornecido
     transacao = Transacao.objects.get(id=transacao_id)
+    
 
     # Renderize a página que mostra o QR Code e o payload
     contexto = {'transacao': transacao}
@@ -464,7 +464,7 @@ def adddocfiscal(request):
         user = request.user
         transacoes = Transacao.objects.filter(user=user)
 
-        print(transacoes)
+        
         if not transacoes.exists():
             messages.error(request, 'Você não possui transações para associar documentos fiscais.')
             return redirect('participante:adddocfiscal')       
@@ -475,7 +475,7 @@ def adddocfiscal(request):
         # cnpj = documentoFiscal_form['lojista_cnpj'].value()
         lojista = Lojista.objects.get(pk=1)
         cnpj = lojista.CNPJLojista
-        print(cnpj)      
+             
 
         try:
             lojista = Lojista.objects.get(CNPJLojista=cnpj)
@@ -951,7 +951,7 @@ def graficos(request):
 
     
     
-    print(operadores_info)
+    
     
 
     context = {        

@@ -10,6 +10,7 @@ from django.utils.safestring import mark_safe
 from django.urls import reverse
 from import_export.admin import ImportExportActionModelAdmin
 
+
 admin.site.register(Transacao)
 
 class UserResource(resources.ModelResource):
@@ -90,3 +91,4 @@ admin.site.register(User, MyUserAdmin)
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(DocumentoFiscal, DocumentoFiscalAdmin)
+

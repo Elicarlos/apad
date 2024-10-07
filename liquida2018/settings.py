@@ -18,7 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-ocvjf&p1d%!))e)dpp_uu39s-+=)w&!*oc$vl48o@n*_1fh%2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Teste
 ALLOWED_HOSTS = ['127.0.0.1', 'www.sorteioapadpisocial.com.br', '.sorteioapadpisocial.com.br']
@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'www.sorteioapadpisocial.com.br', '.sorteioapadpis
 
 # Ajuda a abrir cupons na no firefox Importante
 SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'ALLOW-FROM https://apad-a3824e4005be.herokuapp.com/'
+X_FRAME_OPTIONS = 'ALLOW-FROM https://apad-cb4140588c0b.herokuapp.com/'
 
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -156,7 +156,7 @@ STATICFILES_DIRS = [
 
 AWS_ACCESS_KEY_ID = 'AKIASJX2S5JMTWNNNJHQ'
 AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'liquida2023'
+AWS_STORAGE_BUCKET_NAME = 'django-s3-apad'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 AWS_S3_OBJECT_PARAMETERS = {
