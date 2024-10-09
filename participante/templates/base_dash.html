@@ -356,8 +356,7 @@
 
               <!-- Nav Item - User Information -->
               <li class="nav-item dropdown no-arrow">
-                {% if request.user.is_authenticated and
-                request.user.is_superuser %}
+                {% if request.user.is_authenticated and request.user.is_superuser %}
                 <a
                   class="nav-link dropdown-toggle"
                   href="#"

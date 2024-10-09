@@ -177,7 +177,7 @@
 				<a href="{% url "participante:logout" %}">Sair</a>
 			</li>
 
-			{% elif user.is_authenticated %}
+			{% elif request.user.is_authenticated %}
 
 			<li>
 				<a class="page-scroll" href="{% url 'participante:checkout' %}">Comprar Cupons</a>
