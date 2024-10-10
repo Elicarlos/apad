@@ -545,7 +545,8 @@ def adddocfiscalbyop(request, id):
                 if documentoFiscal_form.is_valid():
                     new_documentoFiscal = documentoFiscal_form.save(commit=False)
                     new_documentoFiscal.user = user_aux
-                    new_documentoFiscal.lojista = lojista
+                    new_documentoFiscal.lojista = lojista                   
+                    
                     new_documentoFiscal.save()
 
                     return render(request,
@@ -563,7 +564,22 @@ def adddocfiscalbyop(request, id):
             documentoFiscal_form = UserAddFiscalDocForm()
     else:
         if is_superuser:
-            documentoFiscal_form = UserAddFiscalDocFormSuperuser()
+            # Gerar o número do documento com base no último documento fiscal
+            last_document = DocumentoFiscal.objects.order_by('id').last()
+            if last_document:
+                new_document_number = last_document.id + 1
+            else:
+                new_document_number = 1
+
+            numero_documento = f"b-{new_document_number}"
+            
+            # Converte a data para o formato dd/mm/yyyy
+            data_formatada = datetime.now().strftime("%d/%m/%Y")
+
+            documentoFiscal_form = UserAddFiscalDocFormSuperuser(initial={
+                'numeroDocumento': numero_documento,  # Preencher o campo com o novo número
+                'dataDocumento': data_formatada  # Data formatada no formato dd/mm/yyyy
+            })
         else:
             documentoFiscal_form = UserAddFiscalDocForm()
     
