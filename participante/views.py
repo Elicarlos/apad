@@ -525,7 +525,7 @@ def adddocfiscal(request):
 @user_passes_test(lambda u: u.is_superuser)
 @transaction.atomic
 def adddocfiscalbyop(request, id):
-    print()
+    print("Operadorrrrr")
     user = get_object_or_404(User, id=id)
     is_superuser = request.user.is_superuser
     
