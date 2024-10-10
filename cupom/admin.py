@@ -8,12 +8,19 @@ from import_export import resources, fields
 class CupomResource(resources.ModelResource):
     nome_participante = fields.Field(attribute='user__profile__nome', column_name='Nome do Participante')
     cpf_participante = fields.Field(attribute='user__profile__CPF', column_name='CPF do Participante')
+    id_cupom = fields.Field(attribute='id', column_name='ID do Cupom')
     numero_documento_fiscal = fields.Field(attribute='documentoFiscal__numeroDocumento', column_name='Número do Documento Fiscal')
 
     class Meta:
         model = Cupom
-        fields = ('nome_participante', 'cpf_participante', 'numero_documento_fiscal', 'dataCriacao', 'impresso', 'dataImpressao')
-        export_order = ('nome_participante', 'cpf_participante', 'numero_documento_fiscal', 'dataCriacao', 'impresso', 'dataImpressao')
+        fields = (
+            'id_cupom', 'nome_participante', 'cpf_participante', 
+            'dataCriacao', 'impresso', 'dataImpressao', 'numero_documento_fiscal'
+        )
+        export_order = (
+            'id_cupom', 'nome_participante', 'cpf_participante', 
+            'dataCriacao', 'impresso', 'dataImpressao', 'numero_documento_fiscal'
+        )
 
 
 
