@@ -9,8 +9,26 @@ from localflavor.br.forms import *
 from localflavor.br.br_states import STATE_CHOICES
 from localflavor.br.forms import BRCPFField, BRZipCodeField
 from django.core.exceptions import ValidationError
+from datetime import datetime
+
+from datetime import date, datetime
 
 
+
+
+class UserAddFiscalDocFormSuperuserNovo(forms.ModelForm):
+    # Esconde o campo 'numeroDocumento' no template
+    numeroDocumento = forms.CharField(widget=forms.HiddenInput(), required=False)
+    # Define a data atual como valor inicial para o campo data
+    dataDocumento = forms.DateField(widget=forms.HiddenInput(), initial=datetime.today)
+    
+    class Meta:
+        model = DocumentoFiscal
+        fields = ['valorDocumento', 'dataDocumento', 'numeroDocumento']
+        widgets = {
+            'valorDocumento': forms.TextInput(attrs={'placeholder': 'Valor'}),
+            'dataDocumento': forms.HiddenInput(),  # Será a data atual, não precisa ser editado
+        }
 
 
 class LoginForm(forms.Form):
@@ -120,13 +138,19 @@ class UserEditForm(forms.ModelForm):
             'date_joined': forms.HiddenInput,
         }
         exclude = ('password','username',)
+        
+    def __init__(self, *args, **kwargs):
+        super(UserEditForm, self).__init__(*args, **kwargs)
+        # Se você deseja garantir que `is_active` nunca seja alterado, não o inclua no formulário
+        if 'is_active' in self.fields:
+            del self.fields['is_active']
 
 
 class UserAddCoupom(forms.ModelForm):
     numeroDoCupom = forms.CharField(label='Numero do cupom')
     valorDoCupom = forms.DecimalField(label='Valor do cupom')
 
-from datetime import date
+
 class UserAddFiscalDocForm(forms.ModelForm):
     lojista_cnpj = BRCNPJField(label='CNPJ', initial='11.630.639/0001-77',  required=True, max_length=18, widget=forms.HiddenInput(attrs={'class':'cnpj', 'autocomplete':'off'}))
     dataDocumento = forms.DateField(label='Data do pagamento',widget=forms.TextInput(attrs={ 'class':'date', 'autocomplete':'off'}))

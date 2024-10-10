@@ -10,9 +10,9 @@
 
 
 del latest.dump
-heroku pg:backups:capture --app lqd2023
-heroku pg:backups:download --app lqd2023
+heroku pg:backups:capture --app apad
+heroku pg:backups:download --app apad
 
-pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d lqd2023 latest.dump
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -U postgres -d apad-backup latest.dump
 
   # pg_restore --verbose --clean --no-acl --no-owner -h localhost -U myuser -d mydb latest.dump
